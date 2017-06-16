@@ -3,10 +3,16 @@ const options = {
   phoneNumber: '08 91528 3215',
   faxNumber: '08 91528 3212',
   officeAddress: 'Somewhere',
-  socialLinks: {
-    facebook: 'facebookurl',
-    twitter: 'twitterurl',
-  },
+  socialLinks: [
+    {
+      type: 'facebook',
+      url: 'http://www.facebook.com/',
+    },
+    {
+      type: 'twitter',
+      url: 'http://www.twitter.com/',
+    },
+  ],
   trackingType: 'GTW',
   trackingId: 'awda2323',
   googleMapsApiKey: null,
