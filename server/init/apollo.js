@@ -11,13 +11,13 @@ const setupGraphiql = (app) => {
   }));
 }
 
-export const setupApollo = (app) => {
+export const initApollo = (app) => {
   app.use('/graphql', bodyParser.json(), graphqlExpress({
     schema
   }));
 };
 
 export const initApolloDebug = (app) => {
-  setupApollo(app);
+  initApollo(app);
   setupGraphiql(app);
 };

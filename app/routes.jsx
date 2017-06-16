@@ -19,17 +19,17 @@ import { fetchWPData } from './fetch-data';
 // Declare function to retreive data on the server using fetchData
 export default () => {
   return (
-    <Route path="/" component={App} name="App" fetchData={fetchWPData}>
-      <IndexRoute component={Page} name="Home" fetchData={fetchWPData} />
-      <Route path={`/${BLOG_SLUG}`} component={Blog} name="Blog" fetchData={fetchWPData} />
-      <Route path={`/${BLOG_SLUG}/page/:page`} component={Blog} name="Blog" fetchData={fetchWPData} />
-      <Route path={`/${BLOG_SLUG}/:post`} component={BlogPost} name="BlogPost" fetchData={fetchWPData} />
-      <Route path={`/${CATEGORY_SLUG}/:slug`} component={Category} name="Category" fetchData={fetchWPData} />
-      <Route path={`/${CATEGORY_SLUG}/:slug/page/:page`} component={Category} name="Category" fetchData={fetchWPData} />
-      <Route path={`/${AUTHOR_SLUG}/:name`} component={Author} name="Author" fetchData={fetchWPData} />
-      <Route path={`/${AUTHOR_SLUG}/:name/page/:page`} component={Author} name="Author" fetchData={fetchWPData} />
-      <Route path={`/${SEARCH_SLUG}`} component={Search} name="Search" fetchData={fetchWPData} />
-      <Route path="*" component={Page} name="Page" fetchData={fetchWPData} />
+    <Route path="/" component={App} name="App" >
+      <IndexRoute component={Page} name="Home" />
+      <Route path={`/${BLOG_SLUG}`} component={Blog} name="Blog" />
+      <Route path={`/${BLOG_SLUG}/page/:page`} component={Blog} name="Blog" />
+      <Route path={`/${BLOG_SLUG}/:post`} component={BlogPost} name="BlogPost" />
+      <Route path={`/${CATEGORY_SLUG}/:slug`} component={Category} name="Category" />
+      <Route path={`/${CATEGORY_SLUG}/:slug/page/:page`} component={Category} name="Category" />
+      <Route path={`/${AUTHOR_SLUG}/:name`} component={Author} name="Author" />
+      <Route path={`/${AUTHOR_SLUG}/:name/page/:page`} component={Author} name="Author" />
+      <Route path={`/${SEARCH_SLUG}`} component={Search} name="Search" />
+      <Route path="*" component={Page} name="Page" />
     </Route>
   );
 };

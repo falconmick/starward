@@ -9,6 +9,7 @@ import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
 import fetchDataForApp from '../../app/utils/fetchDataForApp';
 import { redisConfig, createRedisClient } from '../redis';
 import { environment } from '../utility';
+import { createSsrClient as createClient } from '../../apollo/createClient';
 
 // configure baseURL for axios requests (for serverside API calls)
 axios.defaults.baseURL = baseURL;
@@ -27,7 +28,8 @@ const redisClient = createRedisClient(REDIS_PREFIX);
  */
 export default function render(req, res) {
   const history = createMemoryHistory();
-  const store = configureStore({}, history);
+  const apolloClient = createClient(req);
+  const store = configureStore({}, history, apolloClient);
   const routes = createRoutes(store);
 
   /*
@@ -57,10 +59,11 @@ export default function render(req, res) {
     fetchDataForRoute(props)
       .then(data => {
         store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} });
-        const html = pageRenderer(store, props);
-        res.status(200).send(html);
-        // update cache with html after returning it to the client so they don't need to wait
-        redisClient.setex(props.location.pathname, redisConfig.redisLongExpiry, html);
+        pageRenderer(store, props, apolloClient, (html) => {
+          res.status(200).send(html);
+          // update cache with html after returning it to the client so they don't need to wait
+          redisClient.setex(props.location.pathname, redisConfig.redisLongExpiry, html);
+        });
       })
       .catch(err => {
         console.error(err);

@@ -4,7 +4,7 @@ import { ROOT_API, POSTS_PER_PAGE } from '../../../config/app';
 
 // List of GraphQL API endpoints and axios.get() requests - https://github.com/mzabriskie/axios#example
 
-const settingsApi = axios.get(`${ROOT_API}/settings/`);
+// const settingsApi = axios.get(`${ROOT_API}/settings/`);
 const menuApi = (name) => axios.get(`${ROOT_API}/menu?name=${name}`);
 const pageApi = (slug) => axios.get(`${ROOT_API}/page?slug=${slug}`);
 const postsApi = (page) => axios.get(`${ROOT_API}/posts?page=${page}`);
@@ -26,4 +26,4 @@ const wpService = {
   getSearchResults: (term, type, page, perPage) => searchApi(term, type, page, perPage)
 };
 
-export default wpService;
+//export default wpService;

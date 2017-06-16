@@ -3,18 +3,21 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import { ApolloProvider } from 'react-apollo';
 import createRoutes from './routes';
 import * as types from './actions/types';
 import configureStore from './utils/configureStore';
 import fetchDataForRoute from './utils/fetchDataForRoute';
 import fetchDataForApp from './utils/fetchDataForApp';
+import { createClient } from '../apollo/createClient';
 import styles from '../public/assets/sass/styles.scss';
 
 // Grab the state from a global injected into
 // server-generated HTML
 const initialState = window.__INITIAL_STATE__;
+const apolloClient = createClient();
 
-const store = configureStore(initialState, browserHistory);
+const store = configureStore(initialState, browserHistory, apolloClient);
 const history = syncHistoryWithStore(browserHistory, store);
 const routes = createRoutes(store);
 
@@ -54,8 +57,8 @@ function onUpdate() {
 // Router converts <Route> element hierarchy to a route config:
 // Read more https://github.com/rackt/react-router/blob/latest/docs/Glossary.md#routeconfig
 render(
-  <Provider store={store}>
+  <ApolloProvider store={store} client={apolloClient}>
     <Router history={history} onUpdate={onUpdate}>
       {routes}
     </Router>
-  </Provider>, document.getElementById('app'));
+  </ApolloProvider>, document.getElementById('app'));

@@ -104,4 +104,4 @@ const fetchWPData = (params, routeName, location) => {
   }
 };
 
-export default fetchWPData;
+// export default fetchWPData;

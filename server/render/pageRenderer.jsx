@@ -1,19 +1,25 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { renderToString } from 'react-dom/server';
-import { Provider } from 'react-redux';
 import { RouterContext } from 'react-router';
 
-const createApp = (store, props) => {
+const createApp = (store, props, apolloClient, resCallback) => {
+  if (!apolloClient) {
+    throw new Error('Page Renderer needs an apollo client');
+  }
   try {
-    return renderToString(
-      <Provider store={store}>
+    const app = (
+      <ApolloProvider store={store} client={apolloClient}>
         <RouterContext {...props} />
-      </Provider>
+      </ApolloProvider>
     );
+    getDataFromTree(app).then(() => {
+      const initialState = store.getState();
+      resCallback(renderToString(app), initialState);
+    });
   } catch (err) {
     console.error(err);
-    return '';
   }
 };
 
@@ -37,9 +43,9 @@ const buildPage = ({ componentHTML, initialState, headAssets }) => {
 </html>`;
 };
 
-export default (store, props) => {
-  const initialState = store.getState();
-  const componentHTML = createApp(store, props);
+export default (store, props, apolloClient, resCallback) => {
   const headAssets = Helmet.rewind();
-  return buildPage({ componentHTML, initialState, headAssets });
+  createApp(store, props, apolloClient, (html, initialState) => {
+    resCallback(buildPage({ html, initialState, headAssets }));
+  });
 };

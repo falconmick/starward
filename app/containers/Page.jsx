@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import {
+  gql,
+  graphql,
+} from 'react-apollo';
 import { Loading } from '../components/Content/Loading';
 import { FourOhFour } from '../components/Content/FourOhFour';
 import { PageContent } from '../components/Page/PageContent';
@@ -13,13 +16,12 @@ class Page extends Component {
   }
 }
 
-function mapStateToProps({starward, loading}) {
-  const { page, settings } = starward;
-  return {
-    loading,
-    page,
-    settings
-  };
-}
+const pageQuery = gql`
+  query query {
+      settings {
+          name
+      }
+  }
+`;
 
-export default connect(mapStateToProps, { })(Page);
+export default graphql(pageQuery)(Page);

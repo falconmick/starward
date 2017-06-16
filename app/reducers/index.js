@@ -6,11 +6,14 @@ import gravityforms from '../reducers/gravityforms';
 
 // Combine reducers with routeReducer which keeps track of
 // router state
-const rootReducer = combineReducers({
-  loading,
-  starward,
-  gravityforms,
-  routing
-});
+const rootReducer = (apolloReducer) => {
+  return combineReducers({
+    loading,
+    starward,
+    gravityforms,
+    routing,
+    apolloReducer
+  });
+}
 
 export default rootReducer;
