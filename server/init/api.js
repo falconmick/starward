@@ -1,7 +1,11 @@
 import moment from 'moment';
-import { appSettings, gravityForms, wp } from '../../graphQL';
+//import { appSettings, gravityForms, wp } from '../../graphQL';
 import { serversideStateCharacterBlacklistRegex, REDIS_PREFIX } from '../../config/app';
 import { createRedisClient } from '../redis';
+
+const appSettings = () => {return {then: () => { return {catch: () => {}};}};};
+const gravityForms = () => {return {then: () => { return {catch: () => {}};}};};
+const wp = () => {return {then: () => { return {catch: () => {}};}};};
 
 /* ----------- App API Helpers ----------- */
 const client = createRedisClient(REDIS_PREFIX);

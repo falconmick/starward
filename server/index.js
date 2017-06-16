@@ -4,6 +4,7 @@ import { isDebug } from '../config/app';
 import initExpress from './init/express';
 import initApiRoutes from './init/api';
 import initRoutes from './init/routes';
+import {initApollo, initApolloDebug} from './init/apollo';
 import renderMiddleware from './render/middleware';
 
 const app = express();
@@ -37,6 +38,15 @@ initApiRoutes(app);
  * Note: Some of these routes have passport and database model dependencies
  */
 initRoutes(app);
+
+/*
+ * Setup Apollo GraphQL + GraphQLi (if debug)
+ */
+if (isDebug) {
+  initApolloDebug(app);
+} else {
+  initApollo(app);
+}
 
 /*
  * This is where the magic happens. We take the locals data we have already

@@ -86,6 +86,11 @@
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.5.1",
     "webpack-hot-middleware": "^2.12.2",
-    "redis": "^2.7.1"
+    "redis": "^2.7.1",
+    "graphql": "^0.10.1",
+    "graphql-server-express": "^0.8.4",
+    "graphql-tools": "^1.0.0",
+    "graphql-type-json": "^0.1.4",
+    "lodash": "^4.17.4"
   }
 }
