@@ -60,6 +60,11 @@ module.exports = {
     {
       test: /.(png|jpg|jpeg|gif)(\?v=\d+\.\d+\.\d+)?$/,
       loader: "file-loader"
+    },
+    {
+      test: /\.(graphqls|gql)$/,
+      exclude: /node_modules/,
+      loader: 'graphql-tag/loader'
     }
   ],
   externals: externalNodeModules,

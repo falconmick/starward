@@ -2530,6 +2530,10 @@ graphql-server-module-graphiql@^0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.8.2.tgz#18e20a149fc704f554feb831b87a24658785d6e2"
 
+graphql-tag@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.3.0.tgz#b3e528f7ab9af865512d7fe15384e67c1386a3ca"
+
 graphql-tools@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-1.0.0.tgz#76b25e1dce0521b31d5566aac281b2f134bc49c8"
