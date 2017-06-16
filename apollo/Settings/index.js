@@ -17,4 +17,4 @@ type Settings {
 `;
 
 export default () => [Settings, SocialLink];
-export { resolvers } from './resolvers';
+export { resolvers } from './settingsResolvers';
