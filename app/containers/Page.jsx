@@ -12,9 +12,6 @@ class Page extends Component {
     const { loading, data = {} } = this.props;
     const { page, settings } = data;
 
-    // until we have page contents we cannot render
-    return <FourOhFour />;
-
     if (loading) return <Loading />;
     if (!page) return <FourOhFour />;
     return <PageContent {...page} siteName={settings.name} />;
@@ -26,6 +23,7 @@ const pageQuery = gql`
       page(slug: $slug) {
           id
           date
+          acf
       }
       settings {
           name
