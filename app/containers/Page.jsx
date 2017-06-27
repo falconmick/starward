@@ -9,7 +9,12 @@ import { PageContent } from '../components/Page/PageContent';
 
 class Page extends Component {
   render() {
-    const { page, settings, loading } = this.props;
+    const { loading, data = {} } = this.props;
+    const { page, settings } = data;
+
+    // until we have page contents we cannot render
+    return <FourOhFour />;
+
     if (loading) return <Loading />;
     if (!page) return <FourOhFour />;
     return <PageContent {...page} siteName={settings.name} />;
@@ -17,11 +22,19 @@ class Page extends Component {
 }
 
 const pageQuery = gql`
-  query query {
+  query PageQuery($slug: String!) {
+      page(slug: $slug) {
+          id
+          date
+      }
       settings {
           name
       }
   }
 `;
 
-export default graphql(pageQuery)(Page);
+export default graphql(pageQuery, {
+  options: (props) => ({
+    variables: { slug: props.route.name },
+  }),
+})(Page);
