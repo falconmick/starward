@@ -1,14 +1,13 @@
 import {
   makeExecutableSchema,
 } from 'graphql-tools';
-import GraphQLJSON from 'graphql-type-json';
 import { merge } from 'lodash';
-import GraphQLDate from './customScalars/Date';
+import { AcfLayoutScalarType, DateScalarType } from './customScalars';
 import Settings, { resolvers as settingsResolvers } from './Settings';
 import Page, { resolvers as pageResolvers } from './Page';
 
 const CustomScalars = `
-  scalar JSON,
+  scalar Acf
   scalar Date
 `
 
@@ -24,7 +23,7 @@ const SchemaDefinition = `
   }
 `;
 
-const rootResolvers = { JSON: GraphQLJSON, Date: GraphQLDate };
+const rootResolvers = { Acf: AcfLayoutScalarType, Date: DateScalarType };
 const resolvers = merge(rootResolvers, settingsResolvers, pageResolvers);
 
 export default makeExecutableSchema({

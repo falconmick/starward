@@ -1,4 +1,4 @@
-import SocialLink from '../SocialLink';
+import SocialLink from './SocialLink';
 
 const Settings = `
 type Settings {

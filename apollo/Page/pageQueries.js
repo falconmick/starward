@@ -10,7 +10,8 @@ export default (obj, args) => {
     const wpPageURL = `${wpPagesURL}?slug=${slug}`;
     return axios.get(wpPageURL)
       .then(res => {
-        resolve(res.data[0]);
+        const page = res.data[0];
+        resolve(page);
       })
       .catch(error => {
         reject(error);
