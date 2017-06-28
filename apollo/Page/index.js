@@ -1,6 +1,5 @@
 import WpContent from './WpContent';
-import Yoast, { resolvers as yoastResolvers } from './Yoast';
-import { resolvers as pageResolvers } from './pageResolvers';
+import Yoast from './Yoast';
 import Acf from './Acf';
 
 const Page = `
@@ -33,5 +32,4 @@ type Page {
 `;
 
 export default () => [Page, WpContent, Yoast, Acf];
-// be careful here.. If any resolvers share a root element they will override
-export const resolvers = {...yoastResolvers, ...pageResolvers}
+export { resolvers } from './pageResolvers';

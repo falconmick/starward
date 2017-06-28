@@ -1,23 +1,4 @@
 const Yoast = `
-type Yoast {
-  focuskw: String!
-  title: String!
-  metadesc: String!
-  linkdex: String!
-  metakeywords: String!
-  metaRobotsNoIndex: MetaRobotsNoIndex!
-  canonical: String!
-  redirect: String!
-}
-`;
-
-export default () => [Yoast];
-export { resolvers } from './yoastResolvers';
-
-
-/*
-
- const Yoast = `
  type Yoast {
  focuskw: String!
  title: String!
@@ -38,4 +19,4 @@ export { resolvers } from './yoastResolvers';
  }
  `;
 
- */
+export default () => [Yoast];
