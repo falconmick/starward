@@ -5,7 +5,23 @@ const Yoast = `
  metadesc: String!
  linkdex: String!
  metakeywords: String!
- metaRobotsNoIndex: MetaRobotsNoIndex!
+ canonical: String!
+ redirect: String!
+ }
+ `;
+
+export default () => [Yoast];
+
+/*
+
+ const Yoast = `
+ type Yoast {
+ focuskw: String!
+ title: String!
+ metadesc: String!
+ linkdex: String!
+ metakeywords: String!
+ meta-robots-noindex: String!
  meta-robots-nofollow: String!
  meta-robots-adv: String!
  canonical: String!
@@ -18,5 +34,4 @@ const Yoast = `
  twitter-image: String!
  }
  `;
-
-export default () => [Yoast];
+ */

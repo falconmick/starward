@@ -19,16 +19,25 @@ class Page extends Component {
 }
 
 const pageQuery = gql`
-  query PageQuery($slug: String!) {
-      page(slug: $slug) {
-          id
-          date
-          acf
-      }
-      settings {
-          name
-      }
-  }
+    query PageQuery($slug: String!) {
+        page(slug: $slug) {
+            acf {
+                layout
+            }
+            yoast {
+                focuskw
+                title
+                metadesc
+                linkdex
+                metakeywords
+                canonical
+                redirect
+            }
+        }
+        settings {
+            name
+        }
+    }
 `;
 
 export default graphql(pageQuery, {
