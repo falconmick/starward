@@ -1,2 +1,2 @@
 export { DateScalarType } from './Date';
-export { AcfLayoutScalarType } from './AcfLayout';
+export { RawJsonScalarType } from './RawJson';

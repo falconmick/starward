@@ -1,13 +1,37 @@
-import Layout from './Layout';
+import WpContent from './WpContent';
+import Yoast, { resolvers as yoastResolvers } from './Yoast';
+import { resolvers as pageResolvers } from './pageResolvers';
+import Acf from './Acf';
 
 const Page = `
 type Page {
-    id: Int!,
+    id: ID!,
     date: Date!,
     date_gmt: Date!
-    acf: Acf
+    guid: WpContent
+    modified: Date
+    modified_gmt: Date
+    slug: String!
+    status: String!
+    type: String!
+    link: String!
+    title: WpContent!
+    content: WpContent!
+    excerpt: WpContent!
+    author: Int!
+    featured_media: Int!
+    parent: Int!
+    menu_order: Int!
+    comment_status: String!
+    ping_status: String!
+    template: String!
+    meta: [String]!
+    better_featured_image: Int
+    yoast: Yoast!
+    acf: Acf!
 }
 `;
 
-export default () => [Page, Layout];
-export { resolvers } from './pageResolvers';
+export default () => [Page, WpContent, Yoast, Acf];
+// be careful here.. If any resolvers share a root element they will override
+export const resolvers = {...yoastResolvers, ...pageResolvers}
