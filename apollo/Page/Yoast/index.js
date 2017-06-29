@@ -5,33 +5,18 @@ const Yoast = `
  metadesc: String!
  linkdex: String!
  metakeywords: String!
+ metaRobotsNoindex: String!
+ metaRobotsNofollow: String!
+ metaRobotsAdv: String!
  canonical: String!
  redirect: String!
+ opengraphTitle: String!
+ opengraphDescription: String!
+ opengraphImage: String!
+ twitterTitle: String!
+ twitterDescription: String!
+ twitterImage: String!
  }
  `;
 
 export default () => [Yoast];
-
-/*
-
- const Yoast = `
- type Yoast {
- focuskw: String!
- title: String!
- metadesc: String!
- linkdex: String!
- metakeywords: String!
- meta-robots-noindex: String!
- meta-robots-nofollow: String!
- meta-robots-adv: String!
- canonical: String!
- redirect: String!
- pengraph-title: String!
- opengraph-description: String!
- opengraph-image: String!
- twitter-title: String!
- twitter-description: String!
- twitter-image: String!
- }
- `;
- */
