@@ -8,11 +8,11 @@ export const Head = (props, context) => {
     metadesc,
     canonical
   } = props;
-  const nofollow = props['meta-robots-nofollow'];
-  const noindex = props['meta-robots-noindex'];
-  const ogDescription = props['opengraph-description'];
-  const ogImage = props['opengraph-image'];
-  const ogTitle = props['opengraph-title'];
+  const nofollow = props['metaRobotsNofollow'];
+  const noindex = props['metaRobotsNoindex'];
+  const ogDescription = props['opengraphDescription'];
+  const ogImage = props['opengraphImage'];
+  const ogTitle = props['opengraphTitle'];
 
   const meta = [
     {name: 'viewport', content: 'width=device-width, initial-scale=1.0'},

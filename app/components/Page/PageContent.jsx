@@ -10,12 +10,12 @@ export const PageContent = props => {
     const ComponentName = Layout[item.acf_fc_layout];
     return <ComponentName key={key} {...item} />;
   };
-  const { acf, content, title, seo, siteName } = props;
+  const { acf, content, title, yoast, siteName } = props;
   if (!acf.layout && !content) return <FourOhFour />;
   if (acf && acf.layout) {
     return (
       <main className="content" role="main">
-        <Head {...seo} defaultTitle={`${title} - ${siteName}`} />
+        <Head {...yoast} defaultTitle={`${title} - ${siteName}`} />
         <article>
           {acf.layout.map((item, index) => getComponent(item, index))}
         </article>
