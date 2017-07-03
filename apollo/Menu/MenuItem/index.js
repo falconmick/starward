@@ -19,3 +19,4 @@ type MenuItem {
 `;
 
 export default () => [MenuItem];
+export { resolvers } from './menuItemResolver';

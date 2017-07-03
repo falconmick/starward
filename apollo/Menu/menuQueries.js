@@ -10,7 +10,12 @@ export const getListOfMenus = () => {
     axios.get(wpMenuLocations)
       .then(res => {
         const menuLocations = Object.keys(res.data)
-          .map((k) => res.data[k]);
+          .map((k) => {
+            return {
+              ...res.data[k],
+              slug: k
+            };
+          });
         resolve(menuLocations);
       })
       .catch(err => {

@@ -18,6 +18,7 @@ const RootQuery = `
     page(slug: String!): Page
     menu: Menu
     menus: [Menu]
+    menuItems(menuSlug: String): [MenuItem]
   }
 `;
 const SchemaDefinition = `
