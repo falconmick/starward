@@ -31,10 +31,9 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({starward, loading}) {
+function mapStateToProps({loading}) {
   return {
-    loading,
-    starward
+    loading
   };
 };
 
