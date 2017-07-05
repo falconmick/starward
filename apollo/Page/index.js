@@ -1,5 +1,5 @@
 import WpContent from './WpContent';
-import Yoast from './Yoast';
+import Yoast from '../Yoast';
 import Acf from './Acf';
 
 const Page = `
