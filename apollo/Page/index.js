@@ -1,6 +1,6 @@
-import WpContent from './WpContent';
+import WpContent from '../WpContent';
 import Yoast from '../Yoast';
-import Acf from './Acf';
+import Acf from '../Acf';
 
 const Page = `
 type Page {
