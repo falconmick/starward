@@ -1,11 +1,12 @@
 import WpContent from '../WpContent';
 import Yoast from '../Yoast';
+import BetterFeaturedImage from '../BetterFeaturedImage';
 import Acf from '../Acf';
 
 const Page = `
 type Page {
-    id: ID!,
-    date: Date!,
+    id: ID!
+    date: Date!
     date_gmt: Date!
     guid: WpContent
     modified: Date
@@ -25,7 +26,7 @@ type Page {
     ping_status: String!
     template: String!
     meta: [String]!
-    better_featured_image: Int
+    better_featured_image: BetterFeaturedImage
     yoast: Yoast!
     acf: Acf!
 }

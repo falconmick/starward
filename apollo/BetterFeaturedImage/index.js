@@ -1,7 +1,7 @@
 import MediaDetails from './MediaDetails';
 
 const BetterFeaturedImage = `
-type Page {
+type BetterFeaturedImage {
     id: ID!,
     alt_text: String!,
     caption: String!,

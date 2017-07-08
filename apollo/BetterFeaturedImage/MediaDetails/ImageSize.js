@@ -3,8 +3,8 @@ type ImageSize {
     size: String!,
     width: Int!,
     height: Int!,
-    mime-type: String!,
-    source_url: String!,
+    mimeType: String!,
+    sourceUrl: String!,
 }
 `;
 
