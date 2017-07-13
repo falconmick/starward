@@ -1,6 +1,6 @@
 const Acf = `
 type Acf {
-  layout: RawJson!
+  layout: RawJson
 }
 `;
 

@@ -20,7 +20,6 @@ type Post {
     excerpt: WpContent!
     author: Int!
     featured_media: Int!
-    parent: Int!
     comment_status: String!
     ping_status: String!
     sticky: Boolean!

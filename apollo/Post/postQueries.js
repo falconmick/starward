@@ -6,7 +6,7 @@ import { camelCaseYoastObject } from '../Yoast/util';
 const wpPostsURL = `${WP_API}/wp/v2/posts`;
 
 const makePostGraphQl = (post) => {
-  const { yoast = null, ...otherProps } = post;
+  const { yoast, ...otherProps } = post;
   let graphQlYoast = null;
   if (post && yoast) {
     graphQlYoast = camelCaseYoastObject(yoast);
@@ -14,7 +14,7 @@ const makePostGraphQl = (post) => {
   return {yoast: graphQlYoast, ...otherProps};
 };
 
-export const getPost = () => {
+export const getPosts = () => {
   return new Promise((resolve, reject) => {
     return axios.get(wpPostsURL)
       .then(res => {
@@ -28,7 +28,7 @@ export const getPost = () => {
   });
 };
 
-export const getPosts = (obj, args) => {
+export const getPost = (obj, args) => {
   const { slug } = args;
   return new Promise((resolve, reject) => {
     const wpPageURL = `${wpPostsURL}?slug=${slug}`;
