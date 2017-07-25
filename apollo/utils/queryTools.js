@@ -19,7 +19,10 @@ export const dashCaseToCamelCase = (dashCase, startingIndex = 0) => {
   return dashCase;
 };
 
-
+export const getSlug = (splat) => {
+  const splitArray = splat === null ? [''] : splat.split('/');
+  return splitArray[splitArray.length - 1];
+}
 
 // move to tests
 /*

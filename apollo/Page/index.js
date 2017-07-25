@@ -32,5 +32,5 @@ type Page {
 }
 `;
 
-export default () => [Page, WpContent, Yoast, Acf];
+export default () => [Page, WpContent, Yoast, Acf, BetterFeaturedImage];
 export { resolvers } from './pageResolvers';

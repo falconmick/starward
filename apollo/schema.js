@@ -17,7 +17,7 @@ const CustomScalars = `
 const RootQuery = `
   type RootQuery {
     settings: Settings,
-    page(slug: String!): Page
+    page(splat: String!): Page
     menuItems(slug: String): [MenuItem]
     categories: [Category]
     post(slug: String!): Post
