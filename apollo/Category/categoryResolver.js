@@ -1,7 +1,8 @@
-import query from './categoryQueries';
+import { getCategories, getCategory } from './categoryQueries';
 
 export const resolvers = {
   RootQuery: {
-    categories: query
+    categories: getCategories,
+    category: getCategory
   }
 };

@@ -2,6 +2,7 @@ import WpContent from '../WpContent';
 import BetterFeaturedImage from '../BetterFeaturedImage';
 import Yoast from '../Yoast';
 import Acf from '../Acf';
+import Category from '../Category';
 
 const Post = `
 type Post {
@@ -26,13 +27,13 @@ type Post {
     template: String!
     format: String!
     meta: [String]!
-    categories: [Int]!
+    categories: [Category]!
     tags: [Int]!
-    better_featured_image: BetterFeaturedImage!
+    better_featured_image: BetterFeaturedImage
     yoast: Yoast!
     acf: Acf!
 }
 `;
 
-export default () => [Post, WpContent, BetterFeaturedImage, Yoast, Acf];
+export default () => [Post, WpContent, BetterFeaturedImage, Yoast, Acf, Category];
 export { resolvers } from './postResolvers';

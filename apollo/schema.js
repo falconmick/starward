@@ -20,6 +20,7 @@ const RootQuery = `
     page(splat: String): Page
     menuItems(slug: String): [MenuItem]
     categories: [Category]
+    category(id: Int!): Category
     post(slug: String!): Post
     posts: [Post]
   }
