@@ -4,6 +4,7 @@ import Yoast from '../Yoast';
 import Acf from '../Acf';
 import Category from '../Category';
 import User from '../User';
+import Media from '../Media';
 
 const Post = `
 type Post {
@@ -21,7 +22,7 @@ type Post {
     content: WpContent!
     excerpt: WpContent!
     author: User!
-    featured_media: Int!
+    featured_media: Media
     comment_status: String!
     ping_status: String!
     sticky: Boolean!
@@ -36,5 +37,5 @@ type Post {
 }
 `;
 
-export default () => [Post, WpContent, BetterFeaturedImage, Yoast, Acf, Category, User];
+export default () => [Post, WpContent, BetterFeaturedImage, Yoast, Acf, Category, User, Media];
 export { resolvers } from './postResolvers';

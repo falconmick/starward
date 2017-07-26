@@ -1,4 +1,4 @@
-import MediaDetails from './MediaDetails';
+import MediaDetail from '../Media/MediaDetail';
 
 const BetterFeaturedImage = `
 type BetterFeaturedImage {
@@ -7,9 +7,9 @@ type BetterFeaturedImage {
     caption: String!,
     description: String!,
     media_type: String!,
-    media_details: MediaDetails!
+    media_details: MediaDetail!
     source_url: String!
 }
 `;
 
-export default () => [BetterFeaturedImage, MediaDetails];
+export default () => [BetterFeaturedImage, MediaDetail];
