@@ -8,18 +8,15 @@ const wpPagesURL = `${WP_API}/wp/v2/pages`;
 
 export default (obj, args) => {
   const { splat = '' } = args;
-  const slug = getSlug(splat);
-  const splatAsUrl = `${WP_URL}/${splat}`;
+  const slug = getSlug(splat) || 'home';
+  const splatAsUrl = `${WP_URL}/${splat}`.replace(/\/$/, '');
   return new Promise((resolve, reject) => {
     const wpPageURL = `${wpPagesURL}?slug=${slug}`;
     return axios.get(wpPageURL)
       .then(res => {
-        console.log('splatAsUrl: ' + splatAsUrl);
         const page = res.data.filter(slugPage => {
           const { link = '' } = slugPage;
           const linkWithoutSlash = link.replace(/\/$/, '');
-
-          console.log('linkWithoutSlash: ' + linkWithoutSlash);
 
           return linkWithoutSlash === splatAsUrl;
         })[0];

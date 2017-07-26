@@ -19,7 +19,7 @@ class Page extends Component {
 }
 
 const pageQuery = gql`
-    query PageQuery($splat: String!) {
+    query PageQuery($splat: String) {
         page(splat: $splat) {
             acf {
                 layout
@@ -42,6 +42,6 @@ const pageQuery = gql`
 
 export default graphql(pageQuery, {
   options: (props) => ({
-    variables: { splat: props.params.splat || 'Home' },
+    variables: { splat: props.params.splat },
   }),
 })(Page);
