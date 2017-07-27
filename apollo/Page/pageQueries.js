@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { WP_API, WP_URL, HOME_SLUG } from '../../config/app';
 import { getSlug } from '../utils/queryTools';
-import { camelCaseYoastObject } from '../Yoast/util';
 
 /* ----------- WP REST API v2 endpoints ----------- */
 const wpPagesURL = `${WP_API}/wp/v2/pages`;
@@ -30,12 +29,7 @@ export default (obj, args) => {
 
           return linkWithoutSlash === splatAsUrl;
         })[0];
-        if (page && page.yoast) {
-          page.yoast = camelCaseYoastObject(page.yoast);
-          resolve(page);
-        } else {
-          reject('page not found');
-        }
+        resolve(page);
       })
       .catch(error => {
         reject(error);

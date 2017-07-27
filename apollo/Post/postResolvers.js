@@ -2,6 +2,7 @@ import { getPost, getPosts } from './postQueries';
 import { getCategories } from '../Category/categoryQueries';
 import { getUser } from '../User/userQueries';
 import { getMedia } from '../Media/mediaQueries';
+import { resolveDashCase } from '../utils/resolverTools';
 
 export const resolvers = {
   RootQuery: {
@@ -20,6 +21,9 @@ export const resolvers = {
         return null;
       }
       return getMedia(null, {id: featured_media});
-    }
+    },
+    yoast: ({yoast}) => {
+      return resolveDashCase(yoast);
+    },
   },
 };

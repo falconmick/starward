@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { camelCaseYoastObject } from '../Yoast/util';
 import { WP_API } from '../../config/app';
 
 /* ----------- WP REST API v2 endpoints ----------- */
@@ -11,16 +10,8 @@ export const getCategories = (obj, args) => {
     const categoryUrl = listOfIds ? `${wpCategories}?include=${listOfIds.join(',')}` : wpCategories;
     axios.get(categoryUrl)
       .then(res => {
-        const graphQlCategory = res.data.reduce((accumulator, category) => {
-          if (category && category.yoast) {
-            const { yoast, ...otherCategoryParts } = category;
-            const graphQlYoast = camelCaseYoastObject(yoast);
-            accumulator.push({yoast: graphQlYoast, ...otherCategoryParts});
-          }
-          return accumulator;
-        }, []);
-
-        resolve(graphQlCategory);
+        const categories = res.data;
+        resolve(categories);
       })
       .catch(err => {
         reject(err);
@@ -35,14 +26,7 @@ export const getCategory = (obj, args) => {
     axios.get(url)
       .then(res => {
         const category = res.data;
-        if (category && category.yoast) {
-          const { yoast, ...otherCategoryParts } = category;
-          const graphQlYoast = camelCaseYoastObject(yoast);
-          const safeCategory = {yoast: graphQlYoast, ...otherCategoryParts};
-          resolve(safeCategory);
-        } else {
-          reject('category not found');
-        }
+        resolve(category);
       })
       .catch(err => {
         reject(err);
