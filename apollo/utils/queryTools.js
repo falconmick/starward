@@ -1,3 +1,4 @@
+import axios from 'axios';
 
 // todo: write tests
 export const dashCaseToCamelCase = (dashCase, startingIndex = 0) => {
@@ -22,7 +23,39 @@ export const dashCaseToCamelCase = (dashCase, startingIndex = 0) => {
 export const getSlug = (splat) => {
   const splitArray = splat === null ? [''] : splat.split('/');
   return splitArray[splitArray.length - 1];
-}
+};
+
+export const createApiGraphqlProxy = (url) => {
+  const __runQuery = (queryUrl) => {
+    return new Promise((resolve, reject) => {
+      return axios.get(queryUrl)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  };
+
+  const selectWithId = (id) => {
+    const getWithIdUrl = `${url}/${id}`;
+    return __runQuery(getWithIdUrl);
+  };
+
+  const selectAll = () => {
+    return __runQuery(url);
+  };
+
+  const selectWithIdList = (idList) => {
+
+  }
+
+  return {
+    selectWithId,
+    selectAll
+  };
+};
 
 // move to tests
 /*
