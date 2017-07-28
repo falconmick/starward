@@ -3,6 +3,28 @@ import Yoast from '../Yoast';
 import BetterFeaturedImage from '../BetterFeaturedImage';
 import Acf from '../Acf';
 
+/**
+ * Example usage:
+ * note: never place variables into queries directly
+ * use arguments: http://graphql.org/graphql-js/passing-arguments/
+ *
+  query PageQuery($splat: String) {
+    page(splat: $splat) {
+      acf {
+        layout
+      }
+      yoast {
+        focuskw
+        title
+        metadesc
+        linkdex
+        metakeywords
+        canonical
+        redirect
+      }
+    }
+  }
+ */
 const Page = `
 type Page {
     id: ID!

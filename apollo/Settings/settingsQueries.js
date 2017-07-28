@@ -1,15 +1,12 @@
-import axios from 'axios';
-import { WP_API } from '../../config/app';
+import { createWordpressGraphqlProxy } from '../utils/queryTools';
 
-/* ----------- WP REST API v2 endpoints ----------- */
-const wpSettingsURL = `${WP_API}/acf/v2/options/`;
+const wpSettingsProxy = createWordpressGraphqlProxy('acf/v2/options');
+
+const extractSettings = (settingsData) => {
+  return settingsData.acf;
+}
 
 export default () => {
-  return new Promise((resolve, reject) => {
-    axios.get(wpSettingsURL)
-      .then(res => {
-        resolve(res.data.acf);
-      });
-  });
+  return wpSettingsProxy.runQuery({dataCallback: extractSettings});
 };
 

@@ -50,6 +50,8 @@ export const resultArrayToSingle = (resultArray) => {
 };
 
 export const createApiGraphqlProxy = (url) => {
+  // internal query runner that all other exposed
+  // query executing functions use
   const __runQuery = (queryUrl, dataCallback) => {
     return new Promise((resolve, reject) => {
       return axios.get(queryUrl)
@@ -62,6 +64,10 @@ export const createApiGraphqlProxy = (url) => {
         });
     });
   };
+
+  const runQuery = ({ dataCallback } = {}) => {
+    return __runQuery(url, dataCallback);
+  }
 
   const select = (id, { dataCallback, idPrefix = ''} = {}) => {
     const getWithIdUrl = `${url}/${idPrefix + id}`;
@@ -80,7 +86,8 @@ export const createApiGraphqlProxy = (url) => {
   return {
     select,
     selectAll,
-    selectWithIdList
+    selectWithIdList,
+    runQuery
   };
 };
 

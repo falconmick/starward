@@ -6,6 +6,28 @@ import Category from '../Category';
 import User from '../User';
 import Media from '../Media';
 
+/**
+ * Example usage:
+ * note: never place variables into queries directly
+ * use arguments: http://graphql.org/graphql-js/passing-arguments/
+ *
+  query PostQuery {
+    posts {
+      ...postFragment
+    }
+    post(slug:"second-post") {
+      ...postFragment
+    }
+  }
+
+  fragment postFragment on Post {
+    id
+    slug
+    content {
+      rendered
+    }
+  }
+ */
 const Post = `
 type Post {
     id: ID!

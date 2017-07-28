@@ -1,5 +1,18 @@
 import SocialLink from './SocialLink';
 
+/**
+ * Example usage:
+ *
+ {
+   settings {
+     name
+     socialLinks {
+       type
+       url
+     }
+   }
+ }
+ */
 const Settings = `
 type Settings {
     # WP generic data
