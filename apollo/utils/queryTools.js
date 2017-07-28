@@ -26,12 +26,36 @@ export const getSlug = (splat) => {
   return splitArray[splitArray.length - 1];
 };
 
+// first we curry the splat url into our function so that the
+// callback which is ran by the wp proxy can have access to
+// this data outside of the context of our query
+export const curryFindForSplat = (splatAsUrl) => {
+  return (listOfMatchingPages) => {
+    // find the page which has our exact url
+    // and return the first result as there should
+    // be 0-1 results returned from this, 0 meaning
+    // the page doesn't exist and 1 meaning it was
+    // found and matched
+    return listOfMatchingPages.filter(slugPage => {
+      const { link = '' } = slugPage;
+      const linkWithoutTrailingSlash = link.replace(/\/$/, '');
+
+      return linkWithoutTrailingSlash === splatAsUrl;
+    })[0];
+  };
+};
+
+export const resultArrayToSingle = (resultArray) => {
+  return resultArray ? resultArray[0] : null;
+};
+
 export const createApiGraphqlProxy = (url) => {
-  const __runQuery = (queryUrl) => {
+  const __runQuery = (queryUrl, dataCallback) => {
     return new Promise((resolve, reject) => {
       return axios.get(queryUrl)
         .then(res => {
-          resolve(res.data);
+          const data = dataCallback ? dataCallback(res.data) : res.data;
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -39,18 +63,18 @@ export const createApiGraphqlProxy = (url) => {
     });
   };
 
-  const select = (id) => {
-    const getWithIdUrl = `${url}/${id}`;
-    return __runQuery(getWithIdUrl);
+  const select = (id, { dataCallback, idPrefix = ''} = {}) => {
+    const getWithIdUrl = `${url}/${idPrefix + id}`;
+    return __runQuery(getWithIdUrl, dataCallback);
   };
 
-  const selectAll = () => {
-    return __runQuery(url);
+  const selectAll = ({ dataCallback } = {}) => {
+    return __runQuery(url, dataCallback);
   };
 
-  const selectWithIdList = (idList) => {
+  const selectWithIdList = (idList, { dataCallback } = {}) => {
     const getWithIdListUrl = idList && idList.length > 0 ? `${url}?include=${idList.join(',')}` : url;
-    return __runQuery(getWithIdListUrl);
+    return __runQuery(getWithIdListUrl, dataCallback);
   }
 
   return {
