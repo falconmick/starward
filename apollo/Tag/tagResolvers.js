@@ -1,8 +1,8 @@
-import { getUsers, getUser } from './userQueries';
+import { getTags, getTag } from './tagQueries';
 
 export const resolvers = {
   RootQuery: {
-    users: getUsers,
-    user: getUser
+    tags: getTags,
+    tag: getTag
   }
 };

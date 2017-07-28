@@ -2,6 +2,7 @@ import { getPost, getPosts } from './postQueries';
 import { getCategories } from '../Category/categoryQueries';
 import { getUser } from '../User/userQueries';
 import { getMedia } from '../Media/mediaQueries';
+import { getTags } from '../Tag/tagQueries';
 import { resolveDashCase } from '../utils/resolverTools';
 
 export const resolvers = {
@@ -25,5 +26,8 @@ export const resolvers = {
     yoast: ({yoast}) => {
       return resolveDashCase(yoast);
     },
+    tags: ({tags}) => {
+      return getTags(null, {listOfIds: tags});
+    }
   },
 };

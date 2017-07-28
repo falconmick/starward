@@ -5,6 +5,7 @@ import Acf from '../Acf';
 import Category from '../Category';
 import User from '../User';
 import Media from '../Media';
+import Tag from '../Tag';
 
 /**
  * Example usage:
@@ -52,12 +53,12 @@ type Post {
     format: String!
     meta: [String]!
     categories: [Category]!
-    tags: [Int]!
+    tags: [Tag]!
     better_featured_image: BetterFeaturedImage
     yoast: Yoast!
     acf: Acf!
 }
 `;
 
-export default () => [Post, WpContent, BetterFeaturedImage, Yoast, Acf, Category, User, Media];
+export default () => [Post, WpContent, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag];
 export { resolvers } from './postResolvers';
