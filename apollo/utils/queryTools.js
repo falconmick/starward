@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { WP_API } from '../../config/app';
 
 // todo: write tests
 export const dashCaseToCamelCase = (dashCase, startingIndex = 0) => {
@@ -38,7 +39,7 @@ export const createApiGraphqlProxy = (url) => {
     });
   };
 
-  const selectWithId = (id) => {
+  const select = (id) => {
     const getWithIdUrl = `${url}/${id}`;
     return __runQuery(getWithIdUrl);
   };
@@ -48,13 +49,20 @@ export const createApiGraphqlProxy = (url) => {
   };
 
   const selectWithIdList = (idList) => {
-
+    const getWithIdListUrl = idList && idList.length > 0 ? `${url}?include=${idList.join(',')}` : url;
+    return __runQuery(getWithIdListUrl);
   }
 
   return {
-    selectWithId,
-    selectAll
+    select,
+    selectAll,
+    selectWithIdList
   };
+};
+
+export const createWordpressGraphqlProxy = (resourceUrl) => {
+  const url = `${WP_API}/${resourceUrl}`;
+  return createApiGraphqlProxy(url);
 };
 
 // move to tests

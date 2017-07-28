@@ -21,7 +21,7 @@ const RootQuery = `
     settings: Settings,
     page(splat: String): Page
     menuItems(slug: String): [MenuItem]
-    categories: [Category]
+    categories(listOfIds:[Int!]): [Category]
     category(id: Int!): Category
     post(slug: String!): Post
     posts: [Post]

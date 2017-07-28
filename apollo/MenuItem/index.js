@@ -1,3 +1,26 @@
+/**
+ * Example usage:
+ * note: never place variables into queries directly
+ * use arguments: http://graphql.org/graphql-js/passing-arguments/
+ *
+  fragment menuFragment on MenuItem {
+    url
+    title
+    classes
+  }
+
+ {
+   headerMenu: menuItems(slug:"primary_navigation") {
+     ...menuFragment
+     children {
+       ...menuFragment
+         children {
+         ...menuFragment
+       }
+     }
+   }
+ }
+ */
 const MenuItem = `
 type MenuItem {
     ID: ID!
