@@ -42,9 +42,9 @@ type Post {
     status: String!
     type: String!
     link: String!
-    title: WpContent!
+    title: String!
     content: WpContent!
-    excerpt: WpContent!
+    excerpt: String!
     author: User!
     featured_media: Media
     comment_status: String!

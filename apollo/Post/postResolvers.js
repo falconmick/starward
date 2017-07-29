@@ -28,6 +28,12 @@ export const resolvers = {
     },
     tags: ({tags}) => {
       return getTags(null, {listOfIds: tags});
-    }
+    },
+    title: ({title}) => {
+      return title.rendered;
+    },
+    excerpt: ({excerpt}) => {
+      return excerpt.rendered;
+    },
   },
 };
