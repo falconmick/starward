@@ -19,7 +19,7 @@ export const createPagableType = (dataType) => {
 export const createIdFromArgs = (...args) => {
   const csl = args.join(':');
   return md5(csl);
-}
+};
 
 // wraps the data inside of a pagination based schema. the id
 // you pass down should be a combination of pagination data +
@@ -38,22 +38,4 @@ export const createPaginationCallback = (page, perPage, id) => {
       pageData: data,
     };
   };
-}
-
-// export const paginateProxyQuery = (graphqlProxy, page, perPage) => {
-//   // retrieve all of the query functions on the graphqlProxy
-//   return Object.keys(graphqlProxy).reduce((accumulator, key) => {
-//     // extract user of wrappers arguments for un-wrapped query
-//     const wrappedCall = ({ dataCallback = emptyDataCallback, ...otherOptions } = {}) => {
-//       // chain our pagination information to the end of the data callback chain
-//       const callbackWithPagination = chainResponseCallback(dataCallback, addPaginationCallback(page, perPage));
-//       // execute wrapped query
-//       return graphqlProxy[key]({dataCallback: callbackWithPagination, ...otherOptions});
-//     };
-//
-//     // save the newly wrapped query to our wrapper
-//     // eslint-disable-next-line no-param-reassign
-//     accumulator[key] = wrappedCall;
-//     return accumulator;
-//   }, {});
-// };
+};
