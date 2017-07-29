@@ -6,6 +6,7 @@ import Category from '../Category';
 import User from '../User';
 import Media from '../Media';
 import Tag from '../Tag';
+import { createPagableType } from '../utils/pager';
 
 /**
  * Example usage:
@@ -60,5 +61,7 @@ type Post {
 }
 `;
 
-export default () => [Post, WpContent, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag];
+const PaginatedPostType = createPagableType('Post');
+
+export default () => [Post, PaginatedPostType, WpContent, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag];
 export { resolvers } from './postResolvers';

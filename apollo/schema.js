@@ -25,7 +25,7 @@ const RootQuery = `
     categories(listOfIds:[Int!]): [Category]
     category(id: Int!): Category
     post(slug: String!): Post
-    posts: [Post]
+    posts(page: Int, perPage: Int): PostPager
     users: [User]
     user(id: Int!): User
     media(id: Int!): Media

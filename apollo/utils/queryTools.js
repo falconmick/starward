@@ -49,6 +49,37 @@ export const resultArrayToSingle = (resultArray) => {
   return resultArray ? resultArray[0] : null;
 };
 
+// queries allow you to apply changes to the data that is returned
+// from your query before it resolves the promise. One of these
+// callbacks accepts response.data as the first argument and
+// response as the second. This is because when you use this function
+// to chain the callbacks the response.data could have been modified
+// by another callback previously and is passed from callback to callback
+// getting updates from each callback, whereas the response is the original
+// one that the query got back from the external API. A simple usecase is
+// that returns data that we need to shape, and then we want to record the
+// pagination info aswell. Rather than making a callback that does both,
+// we simply make 1 callback for each and chain them using this.
+//
+// NEVER modify response and NEVER modify currentData, always return
+// a new object (it won't break anything, your just breaking good
+// good principle by doing so.
+//
+// example usage:
+//
+// const chainedCallback = chainResponseCallback(addPaginationCallback, shapeDataCallback);
+// myWpProxy.runQuery({dataCallback: chainedCallback});
+export const chainResponseCallback = (...callbacks) => {
+  return (data, response) => {
+    let currentData = data;
+    callbacks.forEach(callback => {
+      currentData = callback(currentData, response);
+    });
+
+    return currentData;
+  };
+};
+
 export const createApiGraphqlProxy = (url) => {
   // internal query runner that all other exposed
   // query executing functions use
@@ -56,13 +87,17 @@ export const createApiGraphqlProxy = (url) => {
     return new Promise((resolve, reject) => {
       return axios.get(queryUrl)
         .then(res => {
-          const data = dataCallback ? dataCallback(res.data) : res.data;
+          const data = dataCallback ? dataCallback(res.data, res) : res.data;
           resolve(data);
         })
         .catch(error => {
           reject(error);
         });
     });
+  };
+
+  const __createPaginationQueryString = (page, perPage) => {
+    return `page=${page}&per_page=${perPage}`;
   };
 
   const runQuery = ({ dataCallback } = {}) => {
@@ -78,6 +113,11 @@ export const createApiGraphqlProxy = (url) => {
     return __runQuery(url, dataCallback);
   };
 
+  const selectPage = ({ dataCallback, page, perPage } = {}) => {
+    const pagedUrl = `${url}?${__createPaginationQueryString(page, perPage)}`;
+    return __runQuery(pagedUrl, dataCallback);
+  }
+
   const selectWithIdList = (idList, { dataCallback } = {}) => {
     const getWithIdListUrl = idList && idList.length > 0 ? `${url}?include=${idList.join(',')}` : url;
     return __runQuery(getWithIdListUrl, dataCallback);
@@ -87,6 +127,7 @@ export const createApiGraphqlProxy = (url) => {
     select,
     selectAll,
     selectWithIdList,
+    selectPage,
     runQuery
   };
 };
