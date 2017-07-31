@@ -63,15 +63,6 @@ const pageQuery = gql`
     ${post.fragments.archives}
 `;
 
-const loadPageQuery = gql`
-    query PageQuery($page:Int, $perPage:Int) {
-        posts(page:$page, perPage:$perPage) {
-            ...archivePost
-        }
-    }
-    ${post.fragments.archives}
-`;
-
 export default graphql(pageQuery, {
   options: (props) => ({
     variables: {
@@ -79,7 +70,7 @@ export default graphql(pageQuery, {
       perPage: props.params.perPage || POSTS_PER_PAGE
     },
   }),
-  props: ({ data: { loading, posts, categories, settings, fetchMore } }) => {
+  props: ({ data: { loading, posts, categories, settings } }) => {
     return {
       loading,
       categories,
@@ -89,27 +80,7 @@ export default graphql(pageQuery, {
         page: posts.page,
         totalPages: posts.totalPages,
         totalItems: posts.totalItems,
-      },
-      loadPage: (pageNumber) => {
-        return fetchMore({
-          query: loadPageQuery,
-          variables: {
-            page: pageNumber,
-            perPage: POSTS_PER_PAGE
-          },
-          updateQuery: (previousResult, { fetchMoreResult }) => {
-            return Object.assign({}, previousResult, {
-              blog: [...previousResult.blog, fetchMoreResult.posts.pageData],
-              pagination: {
-                page: fetchMoreResult.posts.page,
-                totalPages: fetchMoreResult.posts.totalPages,
-                totalItems: fetchMoreResult.posts.totalItems,
-              },
-            });
-          }
-        });
       }
     };
   }
 })(Blog);
-

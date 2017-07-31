@@ -23,10 +23,9 @@ export const PostList = props => {
         {posts.map((post, index) => <PostListItem key={index} {...post} />)}
       </section>
       <Pagination
-        totalItems={totalItems}
         totalPages={totalPages}
-        urlBase={urlBase}
         currentPage={currentPage}
+        urlBase={urlBase}
       />
     </section>
   );
