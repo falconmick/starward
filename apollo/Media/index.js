@@ -26,6 +26,7 @@ type Media {
     date_gmt: Date!
     # contains a raw link to the resource, media_details is the better way to do this
     guid: WpContent
+    url: String!
     modified: Date
     modified_gmt: Date
     slug: String!

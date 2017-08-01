@@ -35,5 +35,8 @@ export const resolvers = {
     excerpt: ({excerpt}) => {
       return excerpt.rendered;
     },
+    content: ({content}) => {
+      return content.rendered;
+    }
   },
 };

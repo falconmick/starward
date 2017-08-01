@@ -38,7 +38,7 @@ type Page {
     type: String!
     link: String!
     title: WpContent!
-    content: WpContent!
+    content: String!
     excerpt: WpContent!
     author: Int!
     featured_media: Int!

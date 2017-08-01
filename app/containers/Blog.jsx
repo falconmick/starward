@@ -6,7 +6,7 @@ import { Title } from '../components/Content/Title';
 import { Loading } from '../components/Content/Loading';
 import { FourOhFour } from '../components/Content/FourOhFour';
 import { PostList } from '../components/Posts/PostList.jsx';
-import { post } from '../utils/fragments';
+import { postFragment } from '../utils/fragments';
 
 const Blog = (props) => {
   const { blog, settings, loading, categories, pagination } = props;
@@ -44,7 +44,7 @@ const pageQuery = gql`
             name
         }
     }
-    ${post.fragments.archives}
+    ${postFragment.archives}
 `;
 
 export default graphql(pageQuery, {
@@ -54,7 +54,7 @@ export default graphql(pageQuery, {
       perPage: props.params.perPage || POSTS_PER_PAGE
     },
   }),
-  props: ({ data: { loading, posts, categories, settings } }) => {
+  props: ({ data: { loading, posts = {}, categories, settings } }) => {
     return {
       loading,
       categories,

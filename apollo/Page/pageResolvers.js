@@ -9,5 +9,8 @@ export const resolvers = {
     yoast: ({yoast}) => {
       return resolveDashCase(yoast);
     },
+    content: ({content}) => {
+      return content.rendered;
+    }
   }
 };

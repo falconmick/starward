@@ -43,7 +43,7 @@ type Post {
     type: String!
     link: String!
     title: String!
-    content: WpContent!
+    content: String!
     excerpt: String!
     author: User!
     featured_media: Media
