@@ -1,12 +1,8 @@
-import React, { Component } from 'react';
-import {
-  gql,
-  graphql,
-} from 'react-apollo';
+import React from 'react';
+import { gql, graphql } from 'react-apollo';
 import { BLOG_SLUG, POSTS_PER_PAGE } from '../../config/app';
 import { Head } from '../components/Common/Head';
 import { Title } from '../components/Content/Title';
-import { RenderContent } from '../components/Content/RenderContent';
 import { Loading } from '../components/Content/Loading';
 import { FourOhFour } from '../components/Content/FourOhFour';
 import { PostList } from '../components/Posts/PostList.jsx';
@@ -35,20 +31,8 @@ const Blog = (props) => {
   );
 };
 
-// function mapStateToProps({starward, loading}) {
-//   const { page, posts, settings } = starward;
-//   return {
-//     loading,
-//     page,
-//     settings,
-//     blog: posts
-//   };
-// }
-//
-// export default connect(mapStateToProps, { })(Blog);
-
 const pageQuery = gql`
-    query PageQuery($page:Int, $perPage:Int) {
+    query BlogArchiveQuery($page:Int, $perPage:Int) {
         posts(page:$page, perPage:$perPage) {
             ...archivePost
         }

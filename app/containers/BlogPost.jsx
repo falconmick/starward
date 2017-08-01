@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { gql, graphql } from 'react-apollo';
 import { Head } from '../components/Common/Head';
 import { Loading } from '../components/Content/Loading';
 import { FourOhFour } from '../components/Content/FourOhFour';
@@ -9,6 +9,7 @@ import { PostMeta } from '../components/Posts/PostMeta';
 import { FeaturedImage } from '../components/Posts/FeaturedImage';
 import { PostCategories } from '../components/Posts/PostCategories';
 import { PostItemPagination } from '../components/Posts/PostItemPagination';
+import { post } from '../utils/fragments';
 
 class BlogPost extends Component {
   render() {
@@ -47,13 +48,47 @@ class BlogPost extends Component {
   }
 }
 
-function mapStateToProps({starward, loading}) {
-  const { settings, activePost } = starward;
-  return {
-    loading,
-    settings,
-    post: activePost
-  };
-}
+// function mapStateToProps({starward, loading}) {
+//   const { settings, activePost } = starward;
+//   return {
+//     loading,
+//     settings,
+//     post: activePost
+//   };
+// }
 
-export default connect(mapStateToProps, { })(BlogPost);
+// export default connect(mapStateToProps, { })(BlogPost)
+
+const pageQuery = gql`
+    query BlogPostQuery($slug: String!) {
+        post(slug: $slug) {
+            ...singlePost
+        }
+        settings {
+            name
+        }
+    }
+    ${post.fragments.post}
+`;
+
+export default graphql(pageQuery, {
+  options: (props) => ({
+    variables: {
+      slug: props.params.post,
+    },
+  }),
+  // props: ({ data: { loading, posts, categories, settings } }) => {
+  //   return {
+  //     loading,
+  //     categories,
+  //     settings,
+  //     blog: posts.pageData,
+  //     pagination: {
+  //       page: posts.page,
+  //       totalPages: posts.totalPages,
+  //       totalItems: posts.totalItems,
+  //     }
+  //   };
+  // }
+})(BlogPost);
+
