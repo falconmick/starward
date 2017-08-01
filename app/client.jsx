@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ApolloProvider } from 'react-apollo';
@@ -10,6 +9,7 @@ import configureStore from './utils/configureStore';
 import fetchDataForRoute from './utils/fetchDataForRoute';
 import fetchDataForApp from './utils/fetchDataForApp';
 import { createClient } from '../apollo/createClient';
+// eslint-disable-next-line no-unused-vars
 import styles from '../public/assets/sass/styles.scss';
 
 // Grab the state from a global injected into

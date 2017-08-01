@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
-import { renderToString } from 'react-dom/server';
+import ReactDOMServer from 'react-dom/server';
 import { RouterContext } from 'react-router';
 
 const createApp = (store, props, apolloClient, resCallback) => {
@@ -16,7 +16,8 @@ const createApp = (store, props, apolloClient, resCallback) => {
     );
     getDataFromTree(app).then(() => {
       const initialState = store.getState();
-      resCallback(renderToString(app), initialState);
+      const html = ReactDOMServer.renderToString(app);
+      resCallback(html, initialState);
     });
   } catch (err) {
     console.error(err);
@@ -25,7 +26,7 @@ const createApp = (store, props, apolloClient, resCallback) => {
 
 const styles = process.env.NODE_ENV === 'production' ? '<link rel="stylesheet" href="/assets/css/styles.css">' : '';
 
-const buildPage = ({ componentHTML, initialState, headAssets }) => {
+const buildPage = ({ html, initialState, headAssets }) => {
   return `
 <!doctype html>
 <html>
@@ -36,7 +37,7 @@ const buildPage = ({ componentHTML, initialState, headAssets }) => {
     ${styles}
   </head>
   <body>
-    <div id="app">${componentHTML}</div>
+    <div id="app">${html}</div>
     <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
     <script type="text/javascript" charset="utf-8" src="/assets/app.js"></script>
   </body>
