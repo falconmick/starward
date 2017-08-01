@@ -1,4 +1,4 @@
-import md5 from 'md5';
+import md5 from 'crypto-js/md5';
 
 export const createPagableType = (dataType) => {
   const typeName = `${dataType}Pager`;
