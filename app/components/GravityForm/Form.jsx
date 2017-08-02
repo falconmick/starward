@@ -1,4 +1,69 @@
 import React, { Component } from 'react';
+import {
+  gql,
+  graphql
+} from 'react-apollo';
+
+class GravityForm extends Component {
+
+  render() {
+    const { form } = this.props;
+    const { isActive, title, id, button, fields, confirmations } = form;
+    return (
+      <div className="form" id={`gravity_form_${id}`}>
+        {JSON.stringify(this.props)}
+        </div>
+    );
+  }
+}
+
+const formQuery = gql`
+    query gravityForm($formId:Int!)
+    {
+        form(formId: $formId) {
+            isActive
+            title
+            id
+            button {
+                text
+            }
+            fields {
+                id
+                type
+                defaultValue
+                placeholder
+                maxLength
+                isRequired
+                cssClass
+                description
+            }
+            confirmations {
+                isDefault
+                type
+                message
+                url
+            }
+        }
+    }
+`;
+
+export default graphql(formQuery, {
+  options: (props) => ({
+    variables: { formId: props.formId },
+  }),
+  props: ({ data: { loading, form = {} } }) => {
+    return {
+      loading,
+      form,
+    };
+  }
+})(GravityForm);
+
+
+/* old version
+
+
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getForm, updateForm, submitForm } from '../../actions/gravityforms';
 import { RenderFields } from './RenderFields';
@@ -91,3 +156,7 @@ const mapStateToProps = ({gravityforms}) => {
 };
 
 export default connect(mapStateToProps, { getForm, updateForm, submitForm })(GravityForm);
+
+
+
+ */

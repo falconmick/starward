@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {
   gql,
   graphql,
+  compose
 } from 'react-apollo';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { Header } from '../components/Common/Header';
 import { Footer } from '../components/Common/Footer';
 import { TrackingScript } from '../components/Common/TrackingScript';
