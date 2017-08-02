@@ -21,6 +21,7 @@ const createApp = (store, props, apolloClient, resCallback) => {
     });
   } catch (err) {
     console.error(err);
+    resCallback();
   }
 };
 

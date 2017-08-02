@@ -1,18 +1,66 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   gql,
   graphql
 } from 'react-apollo';
+import { FormError } from './FormError';
+import { FormConfirmation } from './FormConfirmation';
+import { Button, FormButton } from './Button';
 
-class GravityForm extends Component {
+class GravityForm extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      submitFailed: false,
+      formSubmitted: false,
+      formSubmitting: false,
+      isValid: false,
+    };
+
+    this.getDefaultConfirmationMessage = this.getDefaultConfirmationMessage.bind(this);
+  }
+
+  // todo: add reselect
+  getDefaultConfirmationMessage(confirmations) {
+    const defaultConfirmation = confirmations.filter(confirmation => {
+      return confirmation.isDefault;
+    })[0] || {};
+
+    return defaultConfirmation.message || '';
+  }
 
   render() {
-    const { form } = this.props;
-    const { isActive, title, id, button, fields, confirmations } = form;
+    const { form, loading, showTitle, showDescription, errorMessage = 'There was a problem with your submission' } = this.props;
+    const { isActive, title, description, id, button, fields, confirmations } = form;
+    const confirmationMessage = this.getDefaultConfirmationMessage(confirmations);
+
     return (
       <div className="form" id={`gravity_form_${id}`}>
-        {JSON.stringify(this.props)}
-        </div>
+        {showTitle ? <h3 className="form_title">{title}</h3> : null}
+        {showDescription ? <p className="form_description">{description}</p> : null}
+        <FormError
+          errorMessage={errorMessage}
+          showError={this.state.submitFailed}
+        />
+        <FormConfirmation
+          confirmation={confirmationMessage}
+          showConfirmation={this.state.formSubmitted && confirmationMessage}
+        />
+        <form onSubmit={(event) => this.submit(event)} noValidate>
+          {/*<RenderFields*/}
+            {/*fields={fields}*/}
+            {/*formValues={formValues}*/}
+            {/*submitFailed={submitFailed}*/}
+            {/*submitSuccess={submitSuccess}*/}
+            {/*updateForm={(value, field, valid) => this.updateFormHandler(value, field, valid)}*/}
+          {/*/>*/}
+          <FormButton
+            text={button.text}
+            isValid={this.state.isValid}
+            showLoading={this.state.formSubmitting}
+          />
+        </form>
+      </div>
     );
   }
 }
@@ -23,6 +71,7 @@ const formQuery = gql`
         form(formId: $formId) {
             isActive
             title
+            description
             id
             button {
                 text
