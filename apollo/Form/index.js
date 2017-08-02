@@ -7,6 +7,31 @@ import Confirmation from './Confirmation';
  * note: never place variables into queries directly
  * use arguments: http://graphql.org/graphql-js/passing-arguments/
  *
+ {
+   form(formId:1){
+     isActive
+     title
+     button {
+       text
+     }
+     fields {
+       id
+       type
+       defaultValue
+       placeholder
+       maxLength
+       isRequired
+       cssClass
+       description
+     }
+     confirmations {
+       isDefault
+       type
+       message
+       url
+     }
+   }
+ }
  *
  * NOTE:
  * notifications - notifications are returned from the API request, however I currently cannot see use for this so
