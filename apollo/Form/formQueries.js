@@ -23,3 +23,24 @@ export const getForm = (obj, args) => {
       });
   });
 };
+
+export const pushForm = (obj, args) => {
+  const { formId } = args;
+
+  const route = `forms/${formId}`;
+  const unixExpiry = calcurateUnixExpiry(new Date());
+  const signature = calculateSignature(unixExpiry, 'GET', route);
+
+  const url = `${WP_URL}/gravityformsapi/${route}?api_key=${GRAVITY_PUBLIC}&signature=${signature}&expires=${unixExpiry}`;
+
+  return new Promise((resolve, reject) => {
+    return axios.get(url)
+      .then(res => {
+        const data = res.data;
+        resolve(data);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+};
