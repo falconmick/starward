@@ -1,11 +1,16 @@
 import Button from './Button';
+import Field from './Field';
+import Confirmation from './Confirmation';
 
 /**
  * Example usage:
  * note: never place variables into queries directly
  * use arguments: http://graphql.org/graphql-js/passing-arguments/
  *
-
+ *
+ * NOTE:
+ * notifications - notifications are returned from the API request, however I currently cannot see use for this so
+ *                I have ommited it from the form type
  */
 const Form = `
 type Form {
@@ -24,9 +29,10 @@ type Form {
     dateCreated: Date!
     isTrash: Boolean!
     button: Button!
-    fields: 
+    fields: [Field!]
+    confirmations: [Confirmation!]
 }
 `;
 
-export default () => [Form, Button];
+export default () => [Form, Button, Field, Confirmation];
 export { resolvers } from './formResolver';

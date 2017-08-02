@@ -16,7 +16,14 @@ export const getForm = (obj, args) => {
     return axios.get(url)
       .then(res => {
         const data = res.data;
-        resolve(data);
+
+        if (data.status !== 200) {
+          reject('Got an error from form, please add better validation helpers here');
+          return;
+        }
+
+
+        resolve(data.response);
       })
       .catch(error => {
         reject(error);
