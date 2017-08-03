@@ -8,14 +8,34 @@ import { FormConfirmation } from './FormConfirmation';
 import { FormButton } from './Button';
 import { RenderFields } from './RenderFields';
 
+// todo: add reselect
+// for now only running on construct as
+// we don't have reselect to save our lives
+const extractFormValues = (fileds = [], formValues = []) => {
+  const extractedFormValues = fileds.map(field => {
+    const existingFormValue = formValues.find(formValue => formValue.id === field.id);
+
+    if (existingFormValue) {
+      return existingFormValue;
+    }
+    return { id: field.id, value: field.defaultValue };
+  });
+
+  return extractedFormValues;
+}
+
 class GravityForm extends PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { form = {} } = props;
+    const { fields = [] } = form;
     this.state = {
       submitFailed: false,
       formSubmitted: false,
       formSubmitting: false,
       isValid: false,
+      formValues: extractFormValues(fields, []),
     };
 
     this.getDefaultConfirmationMessage = this.getDefaultConfirmationMessage.bind(this);
@@ -31,8 +51,9 @@ class GravityForm extends PureComponent {
   }
 
   render() {
-    const { form, loading, showTitle, showDescription, errorMessage = 'There was a problem with your submission' } = this.props;
-    const { isActive, title, description, id, button, fields, confirmations } = form;
+    const { form, showTitle, showDescription, errorMessage = 'There was a problem with your submission' } = this.props;
+    const { formValues } = this.state;
+    const { isActive, title, description, id, button = {}, fields = [], confirmations = [] } = form;
     const confirmationMessage = this.getDefaultConfirmationMessage(confirmations);
 
     return (
@@ -50,7 +71,7 @@ class GravityForm extends PureComponent {
         <form onSubmit={(event) => this.submit(event)} noValidate>
           <RenderFields
             fields={fields}
-            // formValues={formValues}
+            formValues={formValues}
             // submitFailed={submitFailed}
             // submitSuccess={submitSuccess}
             // updateForm={(value, field, valid) => this.updateFormHandler(value, field, valid)}
@@ -79,6 +100,7 @@ const formQuery = gql`
             }
             fields {
                 id
+                label
                 type
                 defaultValue
                 placeholder

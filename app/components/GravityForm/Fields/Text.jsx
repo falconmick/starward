@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { textValdation } from '../Helpers/validation';
 
 /*
@@ -20,18 +20,34 @@ import { textValdation } from '../Helpers/validation';
 
  */
 
+const updateField = (event, field) => {
+  const { id, required } = field;
+  const value = event.target ? event.target.value : null;
+  const valid = textValdation(required, value);
+  // this.props.updateForm(value, id, valid);
+}
+
 export default (props) => {
-  const { field } = this.props; // , value, submitFailed, isValid
+  const { field, value } = props; // , value, submitFailed, isValid
 
   // temp
-  const value = 'test';
   const submitFailed = false;
   const isValid = true;
   // temp
-
-  const { id, type, label, classes, placeholder, required, maxLength } = field;
+/*
+                id
+                label
+                type
+                defaultValue
+                placeholder
+                maxLength
+                isRequired
+                cssClass
+                description
+*/
+  const { id, type, label, cssClass, placeholder, required, maxLength } = field;
   return (
-    <div className={!isValid && submitFailed ? `field error ${classes}` : `field ${classes}`}>
+    <div className={!isValid && submitFailed ? `field error ${cssClass}` : `field ${cssClass}`}>
       <div className="text">
         <label htmlFor={id}>
           {label}{required ? <abbr>*</abbr> : null}
@@ -42,7 +58,7 @@ export default (props) => {
             placeholder={placeholder}
             maxLength={maxLength}
             required={required}
-            onChange={(event) => this.updateField(event, field)}
+            onChange={(event) => updateField(event, field)}
           />
         </label>
       </div>

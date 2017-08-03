@@ -18,16 +18,20 @@ const createApp = (store, props, apolloClient, resCallback) => {
       const initialState = store.getState();
       const html = ReactDOMServer.renderToString(app);
       resCallback(html, initialState);
+    })
+    .catch((error) => {
+      console.error(error);
+      resCallback();
     });
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     resCallback();
   }
 };
 
 const styles = process.env.NODE_ENV === 'production' ? '<link rel="stylesheet" href="/assets/css/styles.css">' : '';
 
-const buildPage = ({ html, initialState, headAssets }) => {
+const buildPage = ({ html = '', initialState = {}, headAssets}) => {
   return `
 <!doctype html>
 <html>

@@ -11,8 +11,7 @@ import { TrackingScript } from '../components/Common/TrackingScript';
 
 class App extends Component {
   render() {
-    const { children, data, location } = this.props;
-    const { settings, headerMenu } = data;
+    const { children, data, location, settings = {}, headerMenu = {} } = this.props;
     return (
       <div className={location.pathname === '/' ? 'home' : location.pathname.replace(/\//g, '')}>
         <Header
@@ -68,6 +67,12 @@ const apollo = graphql(menuQuery, {
   options: () => ({
     variables: { slug: 'primary_navigation' },
   }),
+  props: ({ data: { settings, headerMenu } }) => {
+    return {
+      settings,
+      headerMenu,
+    };
+  }
 });
 
 const redux = connect(mapStateToProps, { });
