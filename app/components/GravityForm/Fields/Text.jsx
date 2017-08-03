@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { textValdation } from '../Helpers/validation';
 
-export default class Text extends Component {
+/*
+
   componentWillMount() {
     this.updateField({target: null}, this.props.field);
   }
@@ -16,26 +17,35 @@ export default class Text extends Component {
     const valid = textValdation(required, value);
     this.props.updateForm(value, id, valid);
   }
-  render() {
-    const { field, value, submitFailed, isValid } = this.props;
-    const { id, type, label, classes, placeholder, required, maxLength } = field;
-    return (
-      <div className={!isValid && submitFailed ? `field error ${classes}` : `field ${classes}`}>
-        <div className="text">
-          <label htmlFor={id}>
-            {label}{required ? <abbr>*</abbr> : null}
-            <input
-              name={id}
-              type={type}
-              value={!value ? '' : value}
-              placeholder={placeholder}
-              maxLength={maxLength}
-              required={required}
-              onChange={(event) => this.updateField(event, field)}
-            />
-          </label>
-        </div>
+
+ */
+
+export default (props) => {
+  const { field } = this.props; // , value, submitFailed, isValid
+
+  // temp
+  const value = 'test';
+  const submitFailed = false;
+  const isValid = true;
+  // temp
+
+  const { id, type, label, classes, placeholder, required, maxLength } = field;
+  return (
+    <div className={!isValid && submitFailed ? `field error ${classes}` : `field ${classes}`}>
+      <div className="text">
+        <label htmlFor={id}>
+          {label}{required ? <abbr>*</abbr> : null}
+          <input
+            name={id}
+            type={type}
+            value={!value ? '' : value}
+            placeholder={placeholder}
+            maxLength={maxLength}
+            required={required}
+            onChange={(event) => this.updateField(event, field)}
+          />
+        </label>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};

@@ -5,7 +5,8 @@ import {
 } from 'react-apollo';
 import { FormError } from './FormError';
 import { FormConfirmation } from './FormConfirmation';
-import { Button, FormButton } from './Button';
+import { FormButton } from './Button';
+import { RenderFields } from './RenderFields';
 
 class GravityForm extends PureComponent {
   constructor() {
@@ -47,13 +48,13 @@ class GravityForm extends PureComponent {
           showConfirmation={this.state.formSubmitted && confirmationMessage}
         />
         <form onSubmit={(event) => this.submit(event)} noValidate>
-          {/*<RenderFields*/}
-            {/*fields={fields}*/}
-            {/*formValues={formValues}*/}
-            {/*submitFailed={submitFailed}*/}
-            {/*submitSuccess={submitSuccess}*/}
-            {/*updateForm={(value, field, valid) => this.updateFormHandler(value, field, valid)}*/}
-          {/*/>*/}
+          <RenderFields
+            fields={fields}
+            // formValues={formValues}
+            // submitFailed={submitFailed}
+            // submitSuccess={submitSuccess}
+            // updateForm={(value, field, valid) => this.updateFormHandler(value, field, valid)}
+          />
           <FormButton
             text={button.text}
             isValid={this.state.isValid}
