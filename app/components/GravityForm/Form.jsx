@@ -22,7 +22,14 @@ const extractFormValues = (fileds = [], formValues = []) => {
   });
 
   return extractedFormValues;
-}
+};
+
+const createNewFormValues = (field, formValues) => {
+  const { value, id } = field;
+  const formField = formValues.filter(f => f.id !== id);
+  const newFormFields = [...formField, {id, value}];
+  return newFormFields;
+};
 
 class GravityForm extends PureComponent {
   constructor(props) {
@@ -39,15 +46,20 @@ class GravityForm extends PureComponent {
     };
 
     this.getDefaultConfirmationMessage = this.getDefaultConfirmationMessage.bind(this);
+    this.updateForm = this.updateForm.bind(this);
   }
 
   // todo: add reselect
   getDefaultConfirmationMessage(confirmations) {
-    const defaultConfirmation = confirmations.filter(confirmation => {
-      return confirmation.isDefault;
-    })[0] || {};
+    const defaultConfirmation = confirmations.find(confirmation => confirmation.isDefault) || {};
 
     return defaultConfirmation.message || '';
+  }
+
+  updateForm(field) {
+    const { formValues } = this.state;
+    const newFormFields = createNewFormValues(field, formValues);
+    this.setState({formValues: newFormFields});
   }
 
   render() {
@@ -74,7 +86,7 @@ class GravityForm extends PureComponent {
             formValues={formValues}
             // submitFailed={submitFailed}
             // submitSuccess={submitSuccess}
-            // updateForm={(value, field, valid) => this.updateFormHandler(value, field, valid)}
+            updateForm={(field) => this.updateForm(field)}
           />
           <FormButton
             text={button.text}

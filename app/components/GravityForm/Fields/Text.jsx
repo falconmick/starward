@@ -20,15 +20,20 @@ import { textValdation } from '../Helpers/validation';
 
  */
 
-const updateField = (event, field) => {
+const validateField = (event, field) => {
   const { id, required } = field;
   const value = event.target ? event.target.value : null;
   const valid = textValdation(required, value);
+  return {
+    value,
+    valid,
+    id
+  };
   // this.props.updateForm(value, id, valid);
 }
 
 export default (props) => {
-  const { field, value } = props; // , value, submitFailed, isValid
+  const { field, value, updateForm } = props; // , value, submitFailed, isValid
 
   // temp
   const submitFailed = false;
@@ -58,7 +63,7 @@ export default (props) => {
             placeholder={placeholder}
             maxLength={maxLength}
             required={required}
-            onChange={(event) => updateField(event, field)}
+            onChange={(event) => updateForm(validateField(event, field))}
           />
         </label>
       </div>
