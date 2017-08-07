@@ -1,72 +1,66 @@
 import React from 'react';
 import { textValdation } from '../Helpers/validation';
 
-/*
+// form validation MUST follow the signature of
+// field (from graphql), value (current state)
+// as this function is used by the container component
+// in a generic way for all fields. Signature:
+// (field, value) => boolean
+const fieldValidation = (field, value) => {
+  const { isRequired } = field;
+  const fieldIsValid = textValdation(isRequired, value);
+  return fieldIsValid;
+};
 
-  componentWillMount() {
-    this.updateField({target: null}, this.props.field);
-  }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.submitSuccess !== nextProps.submitSuccess) {
-      this.updateField({target: null}, nextProps.field);
-    }
-  }
-  updateField(event, field) {
-    const { id, required } = field;
-    const value = event.target ? event.target.value : null;
-    const valid = textValdation(required, value);
-    this.props.updateForm(value, id, valid);
-  }
-
- */
-
-const validateField = (event, field) => {
-  const { id, required } = field;
-  const value = event.target ? event.target.value : null;
-  const valid = textValdation(required, value);
+// may be very simple, but more complicated
+// fields could have more complex requriements
+// so this is here as an example of how to do so.
+const updateField = (id, value) => {
   return {
     value,
-    valid,
     id
   };
-  // this.props.updateForm(value, id, valid);
-}
+};
 
-export default (props) => {
-  const { field, value, updateForm } = props; // , value, submitFailed, isValid
+// extract the input and create a payload to send
+// to the updateForm callback
+const onInputChange = (id, event) => {
+  const value = event.target ? event.target.value : null;
+  return updateField(id, value);
+};
 
-  // temp
-  const submitFailed = false;
-  const isValid = true;
-  // temp
-/*
-                id
-                label
-                type
-                defaultValue
-                placeholder
-                maxLength
-                isRequired
-                cssClass
-                description
-*/
-  const { id, type, label, cssClass, placeholder, required, maxLength } = field;
+const TextField = (props) => {
+  const { field, fieldState, isValid, updateForm } = props;
+  const { value } = fieldState;
+  const { id, type, label, cssClass, placeholder, isRequired, maxLength } = field;
   return (
-    <div className={!isValid && submitFailed ? `field error ${cssClass}` : `field ${cssClass}`}>
+    <div className={!isValid ? `field error ${cssClass}` : `field ${cssClass}`}>
       <div className="text">
         <label htmlFor={id}>
-          {label}{required ? <abbr>*</abbr> : null}
+          {label}{isRequired ? <abbr>*</abbr> : null}
           <input
             name={id}
             type={type}
             value={!value ? '' : value}
             placeholder={placeholder}
             maxLength={maxLength}
-            required={required}
-            onChange={(event) => updateForm(validateField(event, field))}
+            required={isRequired}
+            onChange={(event) => updateForm(onInputChange(id, event))}
           />
         </label>
       </div>
     </div>
   );
+};
+
+// all Fields now return a component to render and validation
+// to ensure that upon load we are able to correctly calculate
+// form state (which relies on validation that must be ran before
+// we construct the DOM, which means that we cannot wait for the
+// Component to be mounted before we have access to it's validation
+// methods.. The other benifit of extracting validation is the consuming
+// component can choose to ignore validation if it pleases.
+export default {
+  component: TextField,
+  validation: fieldValidation
 };

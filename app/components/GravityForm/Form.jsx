@@ -7,29 +7,8 @@ import { FormError } from './FormError';
 import { FormConfirmation } from './FormConfirmation';
 import { FormButton } from './Button';
 import { RenderFields } from './RenderFields';
-
-// todo: add reselect
-// for now only running on construct as
-// we don't have reselect to save our lives
-const extractFormValues = (fileds = [], formValues = []) => {
-  const extractedFormValues = fileds.map(field => {
-    const existingFormValue = formValues.find(formValue => formValue.id === field.id);
-
-    if (existingFormValue) {
-      return existingFormValue;
-    }
-    return { id: field.id, value: field.defaultValue };
-  });
-
-  return extractedFormValues;
-};
-
-const createNewFormValues = (field, formValues) => {
-  const { value, id } = field;
-  const formField = formValues.filter(f => f.id !== id);
-  const newFormFields = [...formField, {id, value}];
-  return newFormFields;
-};
+import * as FormFields from './Fields';
+import { createNewFormValues, extractFormValues } from './Helpers';
 
 class GravityForm extends PureComponent {
   constructor(props) {
@@ -47,6 +26,7 @@ class GravityForm extends PureComponent {
 
     this.getDefaultConfirmationMessage = this.getDefaultConfirmationMessage.bind(this);
     this.updateForm = this.updateForm.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   // todo: add reselect
@@ -56,16 +36,29 @@ class GravityForm extends PureComponent {
     return defaultConfirmation.message || '';
   }
 
-  updateForm(field) {
+  updateForm(formValue) {
     const { formValues } = this.state;
-    const newFormFields = createNewFormValues(field, formValues);
+    const { form } = this.props;
+    const { fields } = form;
+    const fieldForFormValue = fields.find(field => field.id === formValue.id);
+    // given the field we use for this form value, it's value, and all form values
+    // currently stored inside of state
+    // remove the old formValue via id, apply field validation, and create a new
+    // form values object which contains the old form values + our updated form value
+    const newFormFields = createNewFormValues(fieldForFormValue, formValue, formValues);
     this.setState({formValues: newFormFields});
+  }
+
+  // todo: submit to graphql!
+  submit(event) {
+    event.preventDefault();
+    this.setState({formSubmitted: true});
   }
 
   render() {
     const { form, showTitle, showDescription, errorMessage = 'There was a problem with your submission' } = this.props;
-    const { formValues } = this.state;
-    const { isActive, title, description, id, button = {}, fields = [], confirmations = [] } = form;
+    const { formValues, formSubmitted } = this.state;
+    const { title, description, id, button = {}, fields = [], confirmations = [] } = form;
     const confirmationMessage = this.getDefaultConfirmationMessage(confirmations);
 
     return (
@@ -78,14 +71,13 @@ class GravityForm extends PureComponent {
         />
         <FormConfirmation
           confirmation={confirmationMessage}
-          showConfirmation={this.state.formSubmitted && confirmationMessage}
+          showConfirmation={formSubmitted && confirmationMessage}
         />
         <form onSubmit={(event) => this.submit(event)} noValidate>
           <RenderFields
             fields={fields}
             formValues={formValues}
-            // submitFailed={submitFailed}
-            // submitSuccess={submitSuccess}
+            hasSubmitted={formSubmitted}
             updateForm={(field) => this.updateForm(field)}
           />
           <FormButton
@@ -131,6 +123,41 @@ const formQuery = gql`
     }
 `;
 
+// todo: add reselect
+const formatComponentName = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+// todo: add reselect
+// after we get the form data back from
+// graphql, we need to dynamically fetch the
+// Field component that we can get via then
+// field's component and validation for the typre
+const prepareForm = (form) => {
+  const { fields = [], ...restOfForm } = form;
+  const fullFields = fields.map(field => {
+    const { type } = field;
+    // formCode is the default object {component, validation} returned
+    // by each Field component inside the /Fields folder
+    // we need to extract validation here instead of just validating
+    // inside of the component due to that would require either
+    // the adition of redux (would be ok) so we can pass validation
+    // as a param to the action OR for some stupid callback system
+    // with a timer to callback to validate (validating can cause a state
+    // update, which cannot happen inside of render)
+    // therefor we extract validation at the container level so we may
+    // instantly upon mounting, apply the valication logic
+    const formCode = FormFields[formatComponentName(type)];
+    // the following adds the component and validation to the field type
+    const fullField = { ...field, component: formCode.component, formValidation: formCode.validation };
+    return fullField;
+  });
+  // we have modified fields therefore we MUST NOT MUTATE and return a new fields array
+  // via de-structuring the remaining params not updated
+  const fullForm = { ...restOfForm, fields: fullFields};
+  return fullForm;
+}
+
 export default graphql(formQuery, {
   options: (props) => ({
     variables: { formId: props.formId },
@@ -138,109 +165,7 @@ export default graphql(formQuery, {
   props: ({ data: { loading, form = {} } }) => {
     return {
       loading,
-      form,
+      form: prepareForm(form),
     };
   }
 })(GravityForm);
-
-
-/* old version
-
-
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { getForm, updateForm, submitForm } from '../../actions/gravityforms';
-import { RenderFields } from './RenderFields';
-import { Button } from './Button';
-import { FormError } from './FormError';
-import { FormConfirmation } from './FormConfirmation';
-
-class GravityForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      submitFailed: false
-    };
-  }
-  componentWillMount() {
-    if (!this.props.gravityforms[this.props.formId]) this.props.getForm(this.props.formId);
-  }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.formId !== nextProps.formId) {
-      this.props.getForm(nextProps.formId);
-    }
-  }
-  getButtonClasses(isValid, loading) {
-    if (loading) return 'loading';
-    else if (!isValid) return 'disabled';
-    return 'active';
-  }
-  updateFormHandler(value, field, valid) {
-    this.props.updateForm(value, field, valid, this.props.formId);
-  }
-  submit(event) {
-    event.preventDefault();
-    const {formId, gravityforms} = this.props;
-    if (gravityforms[formId].isValid) {
-      this.setState({submitFailed: false});
-      this.props.submitForm(formId, gravityforms[formId].formValues);
-    } else this.setState({submitFailed: true});
-  }
-  render() {
-    const { gravityforms, formId, showTitle, showDescription } = this.props;
-    // Handle no form with formId
-    if (!gravityforms[formId]) return <p>No form found with ID {formId}</p>;
-    // Pluck values from Gravity Form API response made in componentWillMount
-    const { activeForm, formValues, loading, submitting, submitSuccess, isValid } = gravityforms[formId];
-    // Handle form loading
-    if (loading) return <p className="loading">Loading</p>;
-    // Handle error
-    if (!activeForm) return <span>Something went wrong loading form with ID: {formId}</span>;
-    // Pluck values from activeForm in the Gravity Forms API response
-    const { title, description, button, fields, confirmation } = activeForm;
-    // Submit failed watcher
-    const { submitFailed } = this.state;
-    // Handle form with zero fields
-    if (!fields) return <span>Form with ID {formId} has no fields</span>;
-    return (
-      <div className="form" id={`gravity_form_${formId}`}>
-        {showTitle ? <h3 className="form_title">{title}</h3> : null}
-        {showDescription ? <p className="form_description">{description}</p> : null}
-        <FormError
-          errorMessage="There was a problem with your submission"
-          showError={submitFailed}
-        />
-        <FormConfirmation
-          confirmation={confirmation}
-          showConfirmation={submitSuccess && confirmation}
-        />
-        <form onSubmit={(event) => this.submit(event)} noValidate>
-          <RenderFields
-            fields={fields}
-            formValues={formValues}
-            submitFailed={submitFailed}
-            submitSuccess={submitSuccess}
-            updateForm={(value, field, valid) => this.updateFormHandler(value, field, valid)}
-          />
-          <Button
-            text={button}
-            className={this.getButtonClasses(isValid, loading)}
-            showLoading={submitting}
-          />
-        </form>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = ({gravityforms}) => {
-  return {
-    gravityforms
-  };
-};
-
-export default connect(mapStateToProps, { getForm, updateForm, submitForm })(GravityForm);
-
-
-
- */
