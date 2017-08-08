@@ -35,9 +35,17 @@ const RootQuery = `
     form(formId: Int!): Form
   }
 `;
+
+const RootMutation = `
+  type RootMutation {
+    submitForm(formId: Int!): SubmittedForm;
+  }
+`;
+
 const SchemaDefinition = `
   schema {
     query: RootQuery
+    mutation: RootMutation
   }
 `;
 
@@ -47,7 +55,8 @@ const resolvers = merge(rootResolvers, settingsResolvers, pageResolvers,
   mediaResolvers, tagResolvers, formResolvers);
 
 export default makeExecutableSchema({
-  typeDefs: [CustomScalars, SchemaDefinition, RootQuery, Settings, Page, MenuItem, Category, Post, User, Media, Tag, Form],
+  typeDefs: [CustomScalars, SchemaDefinition, RootQuery, RootMutation, Settings, Page, MenuItem, Category, Post, User,
+    Media, Tag, Form],
   resolvers,
   resolverValidationOptions: {
     requireResolversForAllFields: false
