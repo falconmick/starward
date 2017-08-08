@@ -12,6 +12,7 @@ import User, { resolvers as userResolvers } from './User';
 import Media, { resolvers as mediaResolvers } from './Media';
 import Tag, { resolvers as tagResolvers } from './Tag';
 import Form, { resolvers as formResolvers } from './Form';
+import SubmittedForm, { resolvers as submittedFormResolvers } from './SubmittedForm';
 
 const CustomScalars = `
   scalar RawJson
@@ -38,7 +39,7 @@ const RootQuery = `
 
 const RootMutation = `
   type RootMutation {
-    submitForm(formId: Int!): SubmittedForm;
+    submitForm(form: SubmittedFormInput!): SubmittedForm!
   }
 `;
 
@@ -52,11 +53,11 @@ const SchemaDefinition = `
 const rootResolvers = { RawJson: RawJsonScalarType, Date: DateScalarType };
 const resolvers = merge(rootResolvers, settingsResolvers, pageResolvers,
   menuItemResolvers, categoryResolvers, postResolvers, userResolvers,
-  mediaResolvers, tagResolvers, formResolvers);
+  mediaResolvers, tagResolvers, formResolvers, submittedFormResolvers);
 
 export default makeExecutableSchema({
   typeDefs: [CustomScalars, SchemaDefinition, RootQuery, RootMutation, Settings, Page, MenuItem, Category, Post, User,
-    Media, Tag, Form],
+    Media, Tag, Form, SubmittedForm],
   resolvers,
   resolverValidationOptions: {
     requireResolversForAllFields: false
