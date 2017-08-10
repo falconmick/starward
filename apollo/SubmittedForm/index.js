@@ -34,7 +34,7 @@ const SubmittedForm = `
 type SubmittedForm {
     id: ID!
     fields: [SubmitField!]
-    isValid: Boolean
+    isValid: Boolean!
     validation: [FormValidation!]
 }
 input SubmittedFormInput {

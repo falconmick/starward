@@ -49,14 +49,28 @@ class GravityForm extends PureComponent {
     this.setState({formValues: newFormFields});
   }
 
-  // todo: submit to graphql!
-  submit(event) {
+  /*
+      id: ID!
+    fields: [SubmitField!]
+    isValid: Boolean!
+    validation: [FormValidation!]
+   */
+  submit(submitForm, event) {
     event.preventDefault();
-    this.setState({formSubmitted: true});
+    this.setState({formSubmitting: true});
+    submitForm()
+      .then(({data}) => {
+        const { fields, isValid, validation };
+
+        this.setState({formSubmitting: true, submitFailed: !isValid, });
+      })
+      .catch((error) => {
+
+      });
   }
 
   render() {
-    const { form, showTitle, showDescription, errorMessage = 'There was a problem with your submission' } = this.props;
+    const { form, showTitle, showDescription, submitForm, errorMessage = 'There was a problem with your submission' } = this.props;
     const { formValues, formSubmitted } = this.state;
     const { title, description, id, button = {}, fields = [], confirmations = [] } = form;
     const confirmationMessage = this.getDefaultConfirmationMessage(confirmations);
@@ -73,7 +87,7 @@ class GravityForm extends PureComponent {
           confirmation={confirmationMessage}
           showConfirmation={formSubmitted && confirmationMessage}
         />
-        <form onSubmit={(event) => this.submit(event)} noValidate>
+        <form onSubmit={(event) => this.submit(submitForm, event)} noValidate>
           <RenderFields
             fields={fields}
             formValues={formValues}
@@ -119,6 +133,20 @@ const formQuery = gql`
                 message
                 url
             }
+        }   
+    }
+    mutation SubmitFormMutation($form:SubmittedFormInput!) {
+        submitForm(form:$form) {
+            id
+            fields {
+                id
+                value
+            }
+            isValid
+            validation {
+                message
+                fieldId
+            }
         }
     }
 `;
@@ -156,16 +184,19 @@ const prepareForm = (form) => {
   // via de-structuring the remaining params not updated
   const fullForm = { ...restOfForm, fields: fullFields};
   return fullForm;
-}
+};
 
 export default graphql(formQuery, {
   options: (props) => ({
     variables: { formId: props.formId },
   }),
-  props: ({ data: { loading, form = {} } }) => {
+  props: ({ mutate, data: { loading, form = {} } }) => {
     return {
       loading,
       form: prepareForm(form),
+      submitForm: (submittedFormInput) => mutate({
+        variables: { submittedFormInput }
+      })
     };
   }
 })(GravityForm);
