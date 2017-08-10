@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import {
   gql,
-  graphql
+  graphql,
+  compose
 } from 'react-apollo';
 import { FormError } from './FormError';
 import { FormConfirmation } from './FormConfirmation';
 import { FormButton } from './Button';
 import { RenderFields } from './RenderFields';
 import * as FormFields from './Fields';
-import { createNewFormValues, extractFormValues } from './Helpers';
+import { createNewFormValues, extractFormValues, updateFormValuesFromServer } from './Helpers';
 
 class GravityForm extends PureComponent {
   constructor(props) {
@@ -57,15 +58,28 @@ class GravityForm extends PureComponent {
    */
   submit(submitForm, event) {
     event.preventDefault();
-    this.setState({formSubmitting: true});
-    submitForm()
+    this.setState({formSubmitting: true, formSubmitted: false});
+    const submitValues = this.state.formValues.map(formValue => {
+      const { id, value } = formValue;
+      return { id, value };
+    });
+    submitForm({fields: submitValues, id: this.props.formId})
       .then(({data}) => {
-        const { fields, isValid, validation };
-
-        this.setState({formSubmitting: true, submitFailed: !isValid, });
+        const { submitForm: result = {} } = data;
+        const { fields, isValid, validation } = result;
+        const updatedValues = fields.map(field => {
+          const validationError = validation.find(validationItem => validationItem.fieldId === field.id);
+          if (validationError) {
+            // validationError.message has a validation message! But we don't show validation errors :(
+            return { ...field, serverValid: false };
+          }
+          return { ...field, serverValid: true };
+        });
+        const formValues = updateFormValuesFromServer(this.state.formValues, updatedValues);
+        this.setState({formSubmitting: false, submitFailed: false, formSubmitted: true, formValues, isValid});
       })
-      .catch((error) => {
-
+      .catch((err) => {
+        this.setState({formSubmitting: false, submitFailed: true, formSubmitted: true});
       });
   }
 
@@ -135,6 +149,9 @@ const formQuery = gql`
             }
         }   
     }
+`;
+
+const formMutation = gql`  
     mutation SubmitFormMutation($form:SubmittedFormInput!) {
         submitForm(form:$form) {
             id
@@ -186,17 +203,28 @@ const prepareForm = (form) => {
   return fullForm;
 };
 
-export default graphql(formQuery, {
-  options: (props) => ({
-    variables: { formId: props.formId },
+export default compose(
+  graphql(formQuery, {
+    options: (props) => ({
+      variables: { formId: props.formId },
+    }),
+    props: ({ mutate, data: { loading, form = {} } }) => {
+      return {
+        loading,
+        form: prepareForm(form),
+        submitForm: (submittedFormInput) => mutate({
+          variables: { submittedFormInput }
+        })
+      };
+    }
   }),
-  props: ({ mutate, data: { loading, form = {} } }) => {
-    return {
-      loading,
-      form: prepareForm(form),
-      submitForm: (submittedFormInput) => mutate({
-        variables: { submittedFormInput }
-      })
-    };
-  }
-})(GravityForm);
+  graphql(formMutation, {
+    props: ({ mutate }) => {
+      return {
+        submitForm: (submittedFormInput) => mutate({
+          variables: { form: submittedFormInput }
+        })
+      };
+    }
+  })
+)(GravityForm);
