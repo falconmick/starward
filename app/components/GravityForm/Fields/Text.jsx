@@ -1,5 +1,7 @@
 import React from 'react';
 import { textValdation } from '../Helpers/validation';
+import { Field } from './Field';
+import { FormField } from './FormField';
 
 // form validation MUST follow the signature of
 // field (from graphql), value (current state)
@@ -34,22 +36,19 @@ const TextField = (props) => {
   const { value } = fieldState;
   const { id, type, label, cssClass, placeholder, isRequired, maxLength } = field;
   return (
-    <div className={!isValid ? `field error ${cssClass}` : `field ${cssClass}`}>
-      <div className="text">
-        <label htmlFor={id}>
-          {label}{isRequired ? <abbr>*</abbr> : null}
-          <input
-            name={id}
-            type={type}
-            value={!value ? '' : value}
-            placeholder={placeholder}
-            maxLength={maxLength}
-            required={isRequired}
-            onChange={(event) => updateForm(onInputChange(id, event))}
-          />
-        </label>
-      </div>
-    </div>
+    <FormField cssClass={cssClass} isValid={isValid} fieldType="text">
+      <Field htmlFor={id} label={label} isRequired={isRequired}>
+        <input
+          name={id}
+          type={type}
+          value={!value ? '' : value}
+          placeholder={placeholder}
+          maxLength={maxLength}
+          required={isRequired}
+          onChange={(event) => updateForm(onInputChange(id, event))}
+        />
+      </Field>
+    </FormField>
   );
 };
 
