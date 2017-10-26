@@ -21,8 +21,8 @@ const isEmpty = (required, value) => {
 export const textValdation = (required, value) => {
   return isEmpty(required, value) ? false : true;
 };
-export const selectValidation = (required, value, placeholder) => {
-  return value === placeholder && required ? false : true;
+export const selectValidation = (required, value) => {
+  return isEmpty(required, value) ? false : true;
 };
 export const checkboxValidation = (required, values) => {
   return required && values.length < 1 ? false : true;
