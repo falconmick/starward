@@ -1,4 +1,4 @@
-import { WP_URL, HOME_SLUG } from '../../config/app';
+import { WP_URL, HOME_SLUG } from '../../app/config/app';
 import { getSlug, createWordpressGraphqlProxy, curryFindForSplat } from '../utils/queryTools';
 
 const wpPageProxy = createWordpressGraphqlProxy('wp/v2/pages');

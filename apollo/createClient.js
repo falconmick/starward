@@ -1,5 +1,5 @@
 import { ApolloClient, createNetworkInterface } from 'react-apollo';
-import { GRAPHQL_ENDPOINT } from '../config/app';
+import { GRAPHQL_ENDPOINT } from '../app/config/app';
 
 export const createSsrClient = (req) => {
   const networkInterface = createNetworkInterface({

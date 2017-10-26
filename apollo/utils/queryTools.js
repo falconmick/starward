@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { WP_API } from '../../config/app';
+import { WP_API } from '../../app/config/app';
 
 // todo: write tests
 export const dashCaseToCamelCase = (dashCase, startingIndex = 0) => {
