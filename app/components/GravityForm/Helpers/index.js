@@ -26,12 +26,15 @@ export const extractFormValues = (fileds = [], formValues = []) => {
       return existingFormValue;
     }
 
-    // if has choices type, use that as default
-    const defaultChoicesValue = field.choices.length > 0 ?
+    // if has checkbox type, use that as default
+    const defaultCheckbox = field.type === 'checkbox' ?
       field.choices.filter(choice => choice.isSelected).map(choice => ({value: choice.value})) :
       null;
+    const defaultRadio = field.type === 'radio' ?
+      field.choices.find(choice => choice.isSelected).value :
+      null;
     // we have a new field, create form state
-    return createFormValue({ id: field.id, value: defaultChoicesValue || field.defaultValue }, field);
+    return createFormValue({ id: field.id, value: defaultCheckbox || defaultRadio || field.defaultValue }, field);
   });
 
   return extractedFormValues;
