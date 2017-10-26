@@ -59,9 +59,10 @@ export default function render(req, res) {
     store.dispatch({ type: types.CREATE_REQUEST });
     fetchDataForRoute(props)
       .then(data => {
+        const status = data && data.handle404 ? 404 : 200;
         store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} });
         pageRenderer(store, props, apolloClient, (html) => {
-          res.status(200).send(html);
+          res.status(status).send(html);
           // update cache with html after returning it to the client so they don't need to wait
           redisClient.setex(props.location.pathname, redisConfig.redisLongExpiry, html);
         });

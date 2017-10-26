@@ -1,4 +1,5 @@
 import { WP_URL } from '../config/app';
+/* Render title in hypen joined, lowercase string */
 
 /* Get slug from Wordpress URL */
 export const getSlug = (url) => {
@@ -10,7 +11,6 @@ export const getSlug = (url) => {
   return url;
 };
 
-/* Render title in hypen joined, lowercase string */
 export const getClassFromTitle = (title) => {
   return title.split(' ').join('-').toLowerCase();
 };
