@@ -36,7 +36,7 @@ const RadioField = (props) => {
   const { value } = fieldState;
   const { id, label, cssClass, isRequired, choices } = field;
   return (
-    <FormField cssClass={cssClass} isValid={isValid} fieldType="textarea">
+    <FormField cssClass={cssClass} isValid={isValid} fieldType="radio">
       <Field htmlFor={id} label={label} isRequired={isRequired}>
         {choices.map((choice, index) => {
           const { value: choiceValue, text } = choice;

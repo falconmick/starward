@@ -53,7 +53,7 @@ const CheckboxField = (props) => {
   const { id, label, cssClass, isRequired, choices } = field;
   const rawValues = value.map(val => val.value);
   return (
-    <FormField cssClass={cssClass} isValid={isValid} fieldType="textarea">
+    <FormField cssClass={cssClass} isValid={isValid} fieldType="checkbox">
       <Field htmlFor={id} label={label} isRequired={isRequired}>
         {choices.map((choice, index) => {
           const { value: choiceValue, text } = choice;
