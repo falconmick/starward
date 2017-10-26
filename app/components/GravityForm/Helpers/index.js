@@ -26,8 +26,12 @@ export const extractFormValues = (fileds = [], formValues = []) => {
       return existingFormValue;
     }
 
+    // if has choices type, use that as default
+    const defaultChoicesValue = field.choices.length > 0 ?
+      field.choices.filter(choice => choice.isSelected).map(choice => ({value: choice.value})) :
+      null;
     // we have a new field, create form state
-    return createFormValue({ id: field.id, value: field.defaultValue }, field);
+    return createFormValue({ id: field.id, value: defaultChoicesValue || field.defaultValue }, field);
   });
 
   return extractedFormValues;

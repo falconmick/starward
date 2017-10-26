@@ -9,11 +9,11 @@ const filterNull = (item) => {
 
 const formBody = (field) => {
   if (Array.isArray(field.value)) {
-    return field.value.map(subFields => {
-      return { key: `input_${subFields.id}`, value: subFields.value };
+    return field.value.map((subFields, index) => {
+      return { key: `input_${field.id}_${subFields.id || (index + 1)}`, value: subFields.value };
     });
   }
-  return { key: `input_${field.id}`, value: field.value };
+  return [{ key: `input_${field.id}`, value: field.value }];
 };
 
 const updateForm = (form, isValid, validation = []) => {
@@ -33,7 +33,8 @@ const updateInvalidForm = (form, validation = {}) => {
 
 export const submitForm = (obj, args) => {
   const { form } = args;
-  const { id, fields } = form;
+  const { id, fields: fieldsString } = form;
+  const fields = JSON.parse(fieldsString);
 
   const route = `forms/${id}/submissions`;
   const unixExpiry = calcurateUnixExpiry(new Date());
@@ -43,15 +44,18 @@ export const submitForm = (obj, args) => {
   const gravityFields = fields
     .filter(filterNull)
     .reduce((acc, field) => {
-      const fieldAsBody = formBody(field);
-      // eslint-disable-next-line no-param-reassign
-      acc[fieldAsBody.key] = fieldAsBody.value;
+      const fieldAsBodyArray = formBody(field);
+
+      fieldAsBodyArray.forEach(fieldAsBody => {
+        // eslint-disable-next-line no-param-reassign
+        acc[fieldAsBody.key] = fieldAsBody.value;
+      });
       return acc;
     }, {});
 
   const body = {
     input_values: gravityFields
-  }
+  };
 
   return new Promise((resolve, reject) => {
     return axios.post(url, body)

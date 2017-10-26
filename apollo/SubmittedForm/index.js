@@ -33,13 +33,13 @@ variables:
 const SubmittedForm = `
 type SubmittedForm {
     id: ID!
-    fields: [SubmitField!]
+    fields: String!
     isValid: Boolean!
     validation: [FormValidation!]
 }
 input SubmittedFormInput {
     id: ID!
-    fields: [SubmitFieldInput!]
+    fields: String!
 }
 `;
 

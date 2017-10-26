@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+export const Required = props => {
+  const { isRequired } = props;
+  return isRequired ? <abbr>*</abbr> : null;
+};
+
 export const Field = props => {
   const { htmlFor, label, isRequired, children } = props;
 
   return (
     <label htmlFor={htmlFor}>
-      {label}{isRequired ? <abbr>*</abbr> : null}
+      {label}<Required isRequired={isRequired} />
       {children}
     </label>
   );

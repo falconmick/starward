@@ -1,3 +1,5 @@
+import Choice from './Choice';
+
 /**
  * Example usage:
  * note: never place variables into queries directly
@@ -31,8 +33,7 @@ type Field {
   visibility: String
   noDuplicates: Boolean!
   defaultValue: String
-  # todo: transform csv/json or whatever it is into an array instead of string
-  choices: String
+  choices: [Choice!]
   conditionalLogic: String
   productField: String
   # todo: why is the API giving us a string?
@@ -51,4 +52,4 @@ type Field {
 }
 `;
 
-export default () => [Field];
+export default () => [Field, Choice];

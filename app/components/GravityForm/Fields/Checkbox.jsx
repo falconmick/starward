@@ -17,34 +17,60 @@ const fieldValidation = (field, value) => {
 // may be very simple, but more complicated
 // fields could have more complex requriements
 // so this is here as an example of how to do so.
-const updateField = (id, value) => {
+const updateField = (id, selectedValues) => {
   return {
-    value,
+    value: selectedValues,
     id
   };
 };
 
 // extract the input and create a payload to send
 // to the updateForm callback
-const onInputChange = (id, event) => {
+const onInputChange = selectedValues => (id, event) => {
   const value = event.target ? event.target.value : null;
-  return updateField(id, value);
+  const checked = event.target ? event.target.checked : null;
+
+  let updatedValues = null;
+  if (value) {
+    const rawValues = selectedValues.map(val => val.value);
+    const valueIndex = rawValues.indexOf(value);
+    // if the value is already in the values, remove it
+    if (valueIndex !== -1) {
+      rawValues.splice(valueIndex, 1);
+    }
+    if (checked) {
+      rawValues.push(value);
+    }
+
+    updatedValues = rawValues.map(val => ({ value: val }));
+  }
+  return updateField(id, updatedValues || selectedValues);
 };
 
 const CheckboxField = (props) => {
   const { field, fieldState, isValid, updateForm } = props;
   const { value } = fieldState;
-  const { id, type, label, cssClass, placeholder, isRequired, maxLength } = field;
+  const { id, label, cssClass, isRequired, choices } = field;
+  const rawValues = value.map(val => val.value);
   return (
     <FormField cssClass={cssClass} isValid={isValid} fieldType="textarea">
       <Field htmlFor={id} label={label} isRequired={isRequired}>
-        {/*<input*/}
-          {/*type="checkbox"*/}
-          {/*name={choice.id}*/}
-          {/*value={choice.value}*/}
-          {/*checked={values.indexOf(choice.value) !== -1}*/}
-          {/*onClick={(event) => this.updateField(event, field)}*/}
-        {/*/>*/}
+        {choices.map((choice, index) => {
+          const { value: choiceValue, text } = choice;
+          return (
+            <label key={index}>
+              <input
+                type="checkbox"
+                name={id}
+                value={choiceValue}
+                checked={rawValues.includes(choiceValue)}
+                onChange={(event) => updateForm(onInputChange(value)(id, event))}
+              />
+              {text}
+            </label>
+          );
+        })}
+
       </Field>
     </FormField>
   );

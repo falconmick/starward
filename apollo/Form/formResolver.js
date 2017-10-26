@@ -1,8 +1,11 @@
 /* eslint-disable camelcase */
 import moment from 'moment';
 import { getForm } from './formQueries';
+import { resolvers as fieldResolvers } from './Field/fieldResolver';
 
+// maybe move field into it's own apollo root folder instead of merging here.
 export const resolvers = {
+  ...fieldResolvers,
   RootQuery: {
     form: getForm,
   },

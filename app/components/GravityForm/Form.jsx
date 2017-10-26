@@ -47,7 +47,8 @@ class GravityForm extends PureComponent {
     // remove the old formValue via id, apply field validation, and create a new
     // form values object which contains the old form values + our updated form value
     const newFormFields = createNewFormValues(fieldForFormValue, formValue, formValues);
-    this.setState({formValues: newFormFields});
+    const isValid = newFormFields.filter(field => !field.formValid).length === 0;
+    this.setState({formValues: newFormFields, isValid});
   }
 
   /*
@@ -57,16 +58,21 @@ class GravityForm extends PureComponent {
     validation: [FormValidation!]
    */
   submit(submitForm, event) {
+    const { isValid } = this.state;
     event.preventDefault();
+    if (!isValid) {
+      return;
+    }
     this.setState({formSubmitting: true, formSubmitted: false});
     const submitValues = this.state.formValues.map(formValue => {
       const { id, value } = formValue;
       return { id, value };
     });
-    submitForm({fields: submitValues, id: this.props.formId})
+    submitForm({fields: JSON.stringify(submitValues), id: this.props.formId})
       .then(({data}) => {
         const { submitForm: result = {} } = data;
-        const { fields, isValid, validation } = result;
+        const { fields: stringFields, validation } = result;
+        const fields = JSON.parse(stringFields);
         const updatedValues = fields.map(field => {
           const validationError = validation.find(validationItem => validationItem.fieldId === field.id);
           if (validationError) {
@@ -140,6 +146,11 @@ const formQuery = gql`
                 isRequired
                 cssClass
                 description
+                choices {
+                    text
+                    value
+                    isSelected
+                }
             }
             confirmations {
                 isDefault
@@ -155,10 +166,7 @@ const formMutation = gql`
     mutation SubmitFormMutation($form:SubmittedFormInput!) {
         submitForm(form:$form) {
             id
-            fields {
-                id
-                value
-            }
+            fields 
             isValid
             validation {
                 message
