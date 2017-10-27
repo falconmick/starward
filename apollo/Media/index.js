@@ -22,13 +22,13 @@ import MediaDetail from './MediaDetail';
 const Media = `
 type Media {
     id: ID!
-    date: Date!
-    date_gmt: Date!
+    # in UTC time
+    created: Date!
+    # in UTC time
+    modified: Date
     # contains a raw link to the resource, media_details is the better way to do this
     guid: WpContent
     url: String!
-    modified: Date
-    modified_gmt: Date
     slug: String!
     status: String!
     type: String!

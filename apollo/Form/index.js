@@ -51,6 +51,7 @@ type Form {
     postTitleTemplate: String
     postContentTemplate: String
     isActive: Boolean!
+    # Date created in UTC
     dateCreated: Date!
     isTrash: Boolean!
     button: Button!

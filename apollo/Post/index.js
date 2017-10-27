@@ -33,11 +33,11 @@ import { createPagableType } from '../utils/pager';
 const Post = `
 type Post {
     id: ID!
-    date: Date!
-    date_gmt: Date!
-    guid: WpContent
+    # in UTC time
+    created: Date!
+    # in UTC time
     modified: Date!
-    modified_gmt: Date!
+    guid: WpContent
     slug: String!
     status: String!
     type: String!

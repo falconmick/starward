@@ -15,7 +15,6 @@ import SocialLink from './SocialLink';
  */
 const Settings = `
 type Settings {
-    # WP generic data
     name: String!,
     emailAddress: String,
     phoneNumber: String,

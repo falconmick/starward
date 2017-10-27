@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { getPost, getPosts } from './postQueries';
 import { getCategories } from '../Category/categoryQueries';
 import { getUser } from '../User/userQueries';
@@ -37,6 +38,14 @@ export const resolvers = {
     },
     content: ({content}) => {
       return content.rendered;
+    },
+    created: ({date_gmt}) => {
+      const asMoment = moment.utc(date_gmt);
+      return asMoment.toISOString();
+    },
+    modified: ({modified_gmt}) => {
+      const asMoment = moment.utc(modified_gmt);
+      return asMoment.toISOString();
     }
   },
 };
