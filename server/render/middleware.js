@@ -80,18 +80,23 @@ export default function render(req, res) {
     } else if (redirect) {
       res.redirect(302, redirect.pathname + redirect.search);
     } else if (props) {
-      redisClient.get(props.location.pathname, (error, result) => {
-        if (result) {
-          res.status(200).send(result);
-        } else if (props.routes[0].name === 'App') {
-          fetchDataForApp(props)
-            .then(settings => {
-              requestSuccess(props, settings);
+      redisClient.get(props.location.pathname)
+        .then(cacheResult => {
+          const { cacheHit, result } = cacheResult;
+          if (cacheHit) {
+            res.status(200).send(result);
+          } else if (props.routes[0].name === 'App') {
+            fetchDataForApp(props)
+              .then(settings => {
+                requestSuccess(props, settings);
             });
-        } else {
-          requestSuccess(props);
-        }
-      });
+          } else {
+            requestSuccess(props);
+          }
+        })
+        .catch(cacheError => {
+          res.status(500).json({});
+        });
     } else {
       res.sendStatus(404);
     }

@@ -5,6 +5,7 @@ import initExpress from './init/express';
 import initRoutes from './init/routes';
 import {initApollo, initApolloDebug} from './init/apollo';
 import renderMiddleware from './render/middleware';
+import flushRedisEndpoint from './init/flushRedisEndpoint';
 
 global.fetch = require('node-fetch');
 
@@ -36,6 +37,11 @@ if (isDebug) {
  * Bootstrap application settings
  */
 initExpress(app);
+
+/*
+ * Setup Flush redis API endpoint
+ */
+flushRedisEndpoint(app);
 
 /*
  * REMOVE if you do not need any routes

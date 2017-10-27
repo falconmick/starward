@@ -11,18 +11,38 @@ export default (client, keyPrefix) => {
 
   const keyGenerator = createKeyGenerator(keyPrefix);
 
-  const __get = (key, resultCallback) => {
-    if (client) { // if redis enabled
-      const fullKey = keyGenerator(key);
-      redisDebugLogger(`get( ${fullKey} ) start`);
-      client.get(fullKey, (err, result) => {
-        // redisDebugLogger(`get( ${fullKey} ) err: {$err}, result: ${result}`);
-        resultCallback(err, result);
-      });
-      redisDebugLogger(`get( ${fullKey} ) end`);
-    } else {
-      resultCallback(null, null);
-    }
+  const __cacheHit = result => {
+    return {
+      result,
+      cacheHit: true,
+    };
+  };
+  const __cacheMiss = () => {
+    return {
+      result: null,
+      cacheHit: false,
+    };
+  };
+
+  const __get = (key) => {
+    return new Promise((resolve, reject) => {
+      if (client) { // if redis enabled
+        const fullKey = keyGenerator(key);
+        redisDebugLogger(`get( ${fullKey} ) start`);
+        client.get(fullKey, (err, result) => {
+          if (err) {
+            reject(err);
+          } else if (result === null) {
+            resolve(__cacheMiss());
+          } else {
+            resolve(__cacheHit(result));
+          }
+        });
+        redisDebugLogger(`get( ${fullKey} ) end`);
+      } else {
+        resolve(__cacheMiss());
+      }
+    });
   };
 
   const __setex = (key, secondsToExpire, strData) => {
@@ -34,15 +54,21 @@ export default (client, keyPrefix) => {
     }
   };
 
-  const __flushdb = (callback) => {
-    if (client) {
-      redisDebugLogger('flushdb start');
-      client.flushdb((fail, success) => {
-        const wasSuccess = success ? 'success' : 'a failure';
-        redisDebugLogger(`flushdb was ${wasSuccess}`);
-        callback(fail, success);
-      });
-    }
+  const __flushdb = () => {
+    return new Promise((resolve, reject) => {
+      if (client) {
+        redisDebugLogger('flushdb start');
+        client.flushdb((err, result) => {
+          if (err) {
+            redisDebugLogger('flushdb was a failure');
+            reject(err);
+          } else {
+            redisDebugLogger('flushdb was successful');
+            resolve(result);
+          }
+        });
+      }
+    });
   };
 
   return {
