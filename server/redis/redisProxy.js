@@ -74,6 +74,6 @@ export default (client, keyPrefix) => {
   return {
     get: __get,
     setex: __setex,
-    flushdb: __flushdb
+    flushdb: __flushdb,
   };
 };

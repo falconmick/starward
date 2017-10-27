@@ -6,6 +6,7 @@ import initRoutes from './init/routes';
 import {initApollo, initApolloDebug} from './init/apollo';
 import renderMiddleware from './render/middleware';
 import flushRedisEndpoint from './init/flushRedisEndpoint';
+import { redisClient } from './redis';
 
 global.fetch = require('node-fetch');
 
@@ -28,7 +29,7 @@ if (isDebug) {
  * Setup Apollo GraphQL + GraphQLi (if debug)
  */
 if (isDebug) {
-  initApolloDebug(app);
+  initApolloDebug(app, redisClient);
 } else {
   initApollo(app);
 }
@@ -41,7 +42,7 @@ initExpress(app);
 /*
  * Setup Flush redis API endpoint
  */
-flushRedisEndpoint(app);
+flushRedisEndpoint(app, redisClient);
 
 /*
  * REMOVE if you do not need any routes
@@ -56,6 +57,6 @@ initRoutes(app);
  * renderMiddleware matches the URL with react-router and renders the app into
  * HTML
  */
-app.get('*', renderMiddleware);
+app.get('*', renderMiddleware(redisClient));
 
 app.listen(app.get('port'));

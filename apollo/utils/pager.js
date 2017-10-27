@@ -18,7 +18,7 @@ export const createPagableType = (dataType) => {
 
 export const createIdFromArgs = (...args) => {
   const csl = args.join(':');
-  return md5(csl);
+  return md5(csl).toString();
 };
 
 // wraps the data inside of a pagination based schema. the id

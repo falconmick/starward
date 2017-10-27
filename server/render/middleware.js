@@ -8,7 +8,7 @@ import { REDIS_PREFIX } from '../config/app';
 import pageRenderer from './pageRenderer';
 import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
 import fetchDataForApp from '../../app/utils/fetchDataForApp';
-import { redisConfig, createRedisClient } from '../redis';
+import { redisConfig } from '../redis';
 import { environment } from '../utility';
 import { createSsrClient as createClient } from '../../apollo/createClient';
 
@@ -19,15 +19,13 @@ axios.defaults.baseURL = baseURL;
 if (environment.isRedisEnabled && !REDIS_PREFIX) {
   throw new Error('REDIS_PREFIX needs to be configured in app.js for redis to work');
 }
-// create redis client
-const redisClient = createRedisClient(REDIS_PREFIX);
 
 /*
  * Export render function to be used in server/config/routes.js
  * We grab the state passed in from the server and the req object from Express/Koa
  * and pass it into the Router.run function.
  */
-export default function render(req, res) {
+export default (redisClient) => (req, res) => {
   const history = createMemoryHistory();
   const apolloClient = createClient(req);
   const store = configureStore({}, history, apolloClient);

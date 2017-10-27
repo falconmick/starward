@@ -1,9 +1,10 @@
 import redis from 'redis';
 import redisProxy from './redisProxy';
 import { isRedisEnabled } from '../utility/environment';
+import { REDIS_PREFIX } from '../config/app';
 
-export default (keyPrefix) => {
-  if(isRedisEnabled) {
+const _redisClient = (keyPrefix) => {
+  if (isRedisEnabled) {
     const client = redis.createClient();
 
     client.on('error', err => {
@@ -19,3 +20,6 @@ export default (keyPrefix) => {
 
   return redisProxy();
 };
+export default _redisClient;
+
+export const redisClient = _redisClient(REDIS_PREFIX);

@@ -1,10 +1,11 @@
 import { WP_URL, HOME_SLUG, WP_API } from '../../app/config/app';
 import { getSlug, createWordpressGraphqlProxy, curryFindForSplat } from '../utils/queryTools';
 import { createIdFromArgs, createPaginationCallback } from '../utils/pager';
+import { cacheResolver } from '../utils/redis';
 
 const wpPageProxy = createWordpressGraphqlProxy('wp/v2/pages');
 
-export const pageQuery = (obj, args) => {
+export const pageQuery = cacheResolver('pageQuery', (obj, args) => {
   const { splat = '' } = args;
   // if we have no slug, it's home so we need to add the Home Slug
   const slug = getSlug(splat) || HOME_SLUG;
@@ -14,9 +15,9 @@ export const pageQuery = (obj, args) => {
   // apply findPageForSplat to reduce that down to a single page
   const findPageForSplat = curryFindForSplat(splatAsUrl);
   return wpPageProxy.select(slug, {dataCallback: findPageForSplat, idPrefix: '?slug='});
-};
+});
 
-export const pageSearchQuery = (obj, args) => {
+export const pageSearchQuery = cacheResolver('pageSearchQuery', (obj, args) => {
   const { query, page = 1, perPage = 10 } = args;
   let queryArgs = {
     search: query,
@@ -27,4 +28,4 @@ export const pageSearchQuery = (obj, args) => {
   const id = createIdFromArgs(page, perPage, query);
   const paginationCallback = createPaginationCallback(page, perPage, id);
   return wpPageProxy.selectPage({ dataCallback: paginationCallback, page, perPage, queryArgs });
-};
+});

@@ -9,7 +9,7 @@ const setupGraphiql = (app) => {
   app.use('/graphiql', graphiqlExpress({
     endpointURL: '/graphql'
   }));
-}
+};
 
 export const initApollo = (app) => {
   app.use('/graphql', bodyParser.json(), graphqlExpress({
@@ -17,7 +17,7 @@ export const initApollo = (app) => {
   }));
 };
 
-export const initApolloDebug = (app) => {
-  initApollo(app);
+export const initApolloDebug = (app, redisClient) => {
+  initApollo(app, redisClient);
   setupGraphiql(app);
 };
