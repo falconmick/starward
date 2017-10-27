@@ -23,11 +23,12 @@ const RootQuery = `
   type RootQuery {
     settings: Settings,
     page(splat: String): Page
+    pages(query: String, page: Int, perPage: Int): PagePager
     menuItems(slug: String): [MenuItem]
     categories(listOfIds:[Int!]): [Category]
     category(id: Int!): Category
     post(slug: String!): Post
-    posts(page: Int, perPage: Int): PostPager
+    posts(query: String, page: Int, perPage: Int): PostPager
     users: [User]
     user(id: Int!): User
     media(id: Int!): Media

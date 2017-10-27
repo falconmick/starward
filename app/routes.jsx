@@ -9,7 +9,6 @@ import Blog from './containers/Blog';
 import BlogPost from './containers/BlogPost';
 import Category from './containers/Category';
 import Author from './containers/Author';
-import Search from './containers/Search';
 // fetchWPData contains switch statement based on route name.
 // It determines which data to load for route on the server
 import { fetchWPData } from './fetch-data';
@@ -28,7 +27,6 @@ export default () => {
       <Route path={`/${CATEGORY_SLUG}/:slug/page/:page`} component={Category} name="Category" />
       <Route path={`/${AUTHOR_SLUG}/:name`} component={Author} name="Author" />
       <Route path={`/${AUTHOR_SLUG}/:name/page/:page`} component={Author} name="Author" />
-      <Route path={`/${SEARCH_SLUG}`} component={Search} name="Search" />
       <Route path="*" component={Page} name="Page" />
     </Route>
   );

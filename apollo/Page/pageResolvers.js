@@ -1,9 +1,10 @@
-import query from './pageQueries';
+import { pageQuery, pageSearchQuery } from './pageQueries';
 import { resolveDashCase } from '../utils/resolverTools';
 
 export const resolvers = {
   RootQuery: {
-    page: query,
+    page: pageQuery,
+    pages: pageSearchQuery,
   },
   Page: {
     yoast: ({yoast}) => {
@@ -11,6 +12,9 @@ export const resolvers = {
     },
     content: ({content}) => {
       return content.rendered;
-    }
+    },
+    title: ({title}) => {
+      return title.rendered;
+    },
   }
 };

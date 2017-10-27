@@ -2,6 +2,7 @@ import WpContent from '../WpContent';
 import Yoast from '../Yoast';
 import BetterFeaturedImage from '../BetterFeaturedImage';
 import Acf from '../Acf';
+import { createPagableType } from '../utils/pager';
 
 /**
  * Example usage:
@@ -37,7 +38,7 @@ type Page {
     status: String!
     type: String!
     link: String!
-    title: WpContent!
+    title: String!
     content: String!
     excerpt: WpContent!
     author: Int!
@@ -54,5 +55,7 @@ type Page {
 }
 `;
 
-export default () => [Page, WpContent, Yoast, Acf, BetterFeaturedImage];
+const PaginatedPostType = createPagableType('Page');
+
+export default () => [Page, PaginatedPostType, WpContent, Yoast, Acf, BetterFeaturedImage];
 export { resolvers } from './pageResolvers';

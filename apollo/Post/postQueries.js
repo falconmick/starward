@@ -4,10 +4,16 @@ import { createPaginationCallback, createIdFromArgs } from '../utils/pager';
 const wpPostProxy = createWordpressGraphqlProxy('wp/v2/posts');
 
 export const getPosts = (obj, args) => {
-  const { page = 1, perPage = 10 } = args;
-  const id = createIdFromArgs(page, perPage);
+  const { query, page = 1, perPage = 10 } = args;
+  let queryArgs = {
+    search: query,
+  };
+  if (!query) {
+    queryArgs = {};
+  }
+  const id = createIdFromArgs(page, perPage, query);
   const paginationCallback = createPaginationCallback(page, perPage, id);
-  return wpPostProxy.selectPage({ dataCallback: paginationCallback, page, perPage });
+  return wpPostProxy.selectPage({ dataCallback: paginationCallback, page, perPage, queryArgs });
 };
 
 export const getPost = (obj, args) => {

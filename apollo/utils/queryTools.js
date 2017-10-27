@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'qs';
 import { WP_API } from '../../app/config/app';
 
 // todo: write tests
@@ -96,8 +97,13 @@ export const createApiGraphqlProxy = (url) => {
     });
   };
 
-  const __createPaginationQueryString = (page, perPage) => {
-    return `page=${page}&per_page=${perPage}`;
+  const __createPaginationQueryString = (page, perPage, queryArgs) => {
+    const queryString = qs.stringify({
+      per_page: perPage,
+      page,
+      ...queryArgs
+    });
+    return queryString;
   };
 
   const runQuery = ({ dataCallback } = {}) => {
@@ -113,8 +119,8 @@ export const createApiGraphqlProxy = (url) => {
     return __runQuery(url, dataCallback);
   };
 
-  const selectPage = ({ dataCallback, page, perPage } = {}) => {
-    const pagedUrl = `${url}?${__createPaginationQueryString(page, perPage)}`;
+  const selectPage = ({ dataCallback, page, perPage, queryArgs = {} } = {}) => {
+    const pagedUrl = `${url}?${__createPaginationQueryString(page, perPage, queryArgs)}`;
     return __runQuery(pagedUrl, dataCallback);
   }
 
