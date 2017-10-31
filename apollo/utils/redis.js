@@ -1,7 +1,7 @@
 import { redisClient, redisConfig } from '../../server/redis';
 import { createIdFromArgs } from './pager';
 
-export const cacheResolver = (queryName, func, options = {}) => (obj, args) => {
+export const cacheResolver = (queryName, options = {}) => func => (obj, args) => {
   const { timeout = redisConfig.redisLongExpiry } = options;
   const argsAsKeyPart = createIdFromArgs(JSON.stringify(args));
   const cacheKey = `${queryName}-${argsAsKeyPart}`;
@@ -24,6 +24,9 @@ export const cacheResolver = (queryName, func, options = {}) => (obj, args) => {
               const returnValueAsString = JSON.stringify(returnValue);
               redisClient.setex(cacheKey, timeout, returnValueAsString);
               resolve(returnValue);
+            })
+            .catch(cacheError => {
+              reject();
             });
         }
       })

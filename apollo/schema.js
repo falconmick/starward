@@ -3,16 +3,16 @@ import {
 } from 'graphql-tools';
 import { merge } from 'lodash';
 import { RawJsonScalarType, DateScalarType } from './customScalars';
-import Settings, { resolvers as settingsResolvers } from './Settings';
-import Page, { resolvers as pageResolvers } from './Page';
-import MenuItem, { resolvers as menuItemResolvers } from './MenuItem';
-import Category, { resolvers as categoryResolvers } from './Category';
-import Post, { resolvers as postResolvers } from './Post';
-import User, { resolvers as userResolvers } from './User';
-import Media, { resolvers as mediaResolvers } from './Media';
-import Tag, { resolvers as tagResolvers } from './Tag';
-import Form, { resolvers as formResolvers } from './Form';
-import SubmittedForm, { resolvers as submittedFormResolvers } from './SubmittedForm';
+import Settings, { resolvers as settingsResolvers } from './types/Settings';
+import Page, { resolvers as pageResolvers } from './types/Page';
+import MenuItem, { resolvers as menuItemResolvers } from './types/MenuItem';
+import Category, { resolvers as categoryResolvers } from './types/Category';
+import Post, { resolvers as postResolvers } from './types/Post';
+import User, { resolvers as userResolvers } from './types/User';
+import Media, { resolvers as mediaResolvers } from './types/Media';
+import Tag, { resolvers as tagResolvers } from './types/Tag';
+import Form, { resolvers as formResolvers } from './types/Form';
+import SubmittedForm, { resolvers as submittedFormResolvers } from './types/SubmittedForm';
 
 const CustomScalars = `
   scalar RawJson
