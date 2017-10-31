@@ -1,4 +1,4 @@
-import { ApolloClient, createNetworkInterface } from 'react-apollo';
+import { ApolloClient, createNetworkInterface, createBatchingNetworkInterface } from 'react-apollo';
 import { GRAPHQL_ENDPOINT } from '../app/config/app';
 
 export const createSsrClient = (req) => {
@@ -20,8 +20,10 @@ export const createSsrClient = (req) => {
 };
 
 export const createClient = () => {
-  const networkInterface = createNetworkInterface({
+  const networkInterface = createBatchingNetworkInterface({
     uri: GRAPHQL_ENDPOINT,
+    batchInterval: 1,  // in milliseconds I break my queries into small chunks for better caching, 1ms is long enough to add them all together
+    batchMax: 10,
   });
 
   return new ApolloClient({

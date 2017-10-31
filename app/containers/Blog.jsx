@@ -6,7 +6,7 @@ import { Title } from '../components/Content/Title';
 import { Loading } from '../components/Content/Loading';
 import { FourOhFour } from '../components/Content/FourOhFour';
 import { PostList } from '../components/Posts/PostList.jsx';
-import { postFragment } from '../utils/fragments';
+import { postFragment } from '../../apollo/fragments';
 
 const Blog = (props) => {
   const { blog, settings, loading, categories, pagination } = props;

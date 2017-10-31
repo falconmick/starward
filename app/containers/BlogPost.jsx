@@ -8,7 +8,7 @@ import { RenderContent } from '../components/Content/RenderContent';
 import { PostMeta } from '../components/Posts/PostMeta';
 import { FeaturedImage } from '../components/Posts/FeaturedImage';
 import { PostCategories } from '../components/Posts/PostCategories';
-import { postFragment } from '../utils/fragments';
+import { postFragment } from '../../apollo/fragments';
 
 const BlogPost = (props) => {
   const { post, settings, loading } = props;

@@ -10,6 +10,7 @@ import { FormButton } from './Button';
 import { RenderFields } from './RenderFields';
 import * as FormFields from './Fields';
 import { createNewFormValues, extractFormValues, updateFormValuesFromServer } from './Helpers';
+import { formQuery } from '../../queries/formQuery';
 
 class GravityForm extends PureComponent {
   constructor(props) {
@@ -28,6 +29,12 @@ class GravityForm extends PureComponent {
     this.getDefaultConfirmationMessage = this.getDefaultConfirmationMessage.bind(this);
     this.updateForm = this.updateForm.bind(this);
     this.submit = this.submit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { form = {} } = nextProps;
+    const { fields = [] } = form;
+    this.setState({formValues: extractFormValues(fields, [])});
   }
 
   // todo: add reselect
@@ -124,43 +131,6 @@ class GravityForm extends PureComponent {
     );
   }
 }
-
-const formQuery = gql`
-    query gravityForm($formId:Int!)
-    {
-        form(formId: $formId) {
-            isActive
-            title
-            description
-            id
-            button {
-                text
-            }
-            fields {
-                id
-                label
-                type
-                defaultValue
-                placeholder
-                maxLength
-                isRequired
-                cssClass
-                description
-                choices {
-                    text
-                    value
-                    isSelected
-                }
-            }
-            confirmations {
-                isDefault
-                type
-                message
-                url
-            }
-        }   
-    }
-`;
 
 const formMutation = gql`  
     mutation SubmitFormMutation($form:SubmittedFormInput!) {

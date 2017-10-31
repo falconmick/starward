@@ -8,9 +8,10 @@ const wpPageProxy = createWordpressGraphqlProxy('wp/v2/pages');
 export const pageQuery = cacheResolver('pageQuery')((obj, args) => {
   const { splat = '' } = args;
   // if we have no slug, it's home so we need to add the Home Slug
-  const slug = getSlug(splat) || HOME_SLUG;
+  const splatNoSlash = splat.replace(/^ *\/|\/ *$/g, '');
+  const slug = getSlug(splatNoSlash) || HOME_SLUG;
   // covert the splat into a full URL for matching (remove trailing /)
-  const splatAsUrl = `${WP_URL}/${splat || ''}`.replace(/\/$/, '');
+  const splatAsUrl = `${WP_URL}/${splatNoSlash || ''}`.replace(/\/$/, '');
   // the data will come back as an array of matching slugs, we need to
   // apply findPageForSplat to reduce that down to a single page
   const findPageForSplat = curryFindForSplat(splatAsUrl);

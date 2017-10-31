@@ -12,6 +12,7 @@ import Author from './containers/Author';
 // fetchWPData contains switch statement based on route name.
 // It determines which data to load for route on the server
 import { fetchWPData } from './fetch-data';
+import { FormPage } from './containers/FormPage';
 // Map paths to components
 // Dynamic params declared using :
 // Use name={} for switch statement in fetchData function
@@ -27,6 +28,7 @@ export default () => {
       <Route path={`/${CATEGORY_SLUG}/:slug/page/:page`} component={Category} name="Category" />
       <Route path={`/${AUTHOR_SLUG}/:name`} component={Author} name="Author" />
       <Route path={`/${AUTHOR_SLUG}/:name/page/:page`} component={Author} name="Author" />
+      <Route path="/preload-form" component={FormPage} formId="1" name="Page" />
       <Route path="*" component={Page} name="Page" />
     </Route>
   );
