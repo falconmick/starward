@@ -37,12 +37,12 @@ export const curryFindForSplat = (splatAsUrl) => {
     // be 0-1 results returned from this, 0 meaning
     // the page doesn't exist and 1 meaning it was
     // found and matched
-    return listOfMatchingPages.filter(slugPage => {
+    return listOfMatchingPages.find(slugPage => {
       const { link = '' } = slugPage;
       const linkWithoutTrailingSlash = link.replace(/\/$/, '');
 
       return linkWithoutTrailingSlash === splatAsUrl;
-    })[0];
+    });
   };
 };
 
