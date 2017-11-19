@@ -36,9 +36,8 @@ type Field {
   choices: [Choice!]
   conditionalLogic: String
   productField: String
-  # todo: why is the API giving us a string?
-  enablePasswordInput: String
-  # todo: convert into number with resolver??
+  enablePasswordInput: Boolean
+  # works as string, but would make sense to convert to int
   maxLength: String
   multipleFiles: Boolean!
   maxFiles: String

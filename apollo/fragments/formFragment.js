@@ -20,6 +20,7 @@ export const formFragment = {
               isRequired
               cssClass
               description
+              enablePasswordInput
               choices {
                   text
                   value

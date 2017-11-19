@@ -34,13 +34,13 @@ const onInputChange = (id, event) => {
 const TextField = props => {
   const { field, fieldState, isValid, updateForm } = props;
   const { value } = fieldState;
-  const { id, type, label, cssClass, placeholder, isRequired, maxLength } = field;
+  const { id, type, label, cssClass, placeholder, isRequired, maxLength, enablePasswordInput } = field;
   return (
     <FormField cssClass={cssClass} isValid={isValid} fieldType="text">
       <Field htmlFor={id} label={label} isRequired={isRequired}>
         <input
           name={id}
-          type={type}
+          type={enablePasswordInput ? 'password' : type}
           value={!value ? '' : value}
           placeholder={placeholder}
           maxLength={maxLength}
