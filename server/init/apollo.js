@@ -1,7 +1,7 @@
 import {
   graphqlExpress,
   graphiqlExpress,
-} from 'graphql-server-express';
+} from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import schema from '../../apollo/schema';
 
