@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { getMedia } from './mediaQueries';
+import { extractRendered } from '../../utils/resolverTools';
 
 export const resolvers = {
   RootQuery: {
@@ -7,7 +8,7 @@ export const resolvers = {
   },
   Media: {
     url: ({guid}) => {
-      return guid && guid.rendered ? guid.rendered : '';
+      return extractRendered(guid);
     },
     created: ({date_gmt}) => {
       const asMoment = moment.utc(date_gmt);
@@ -18,13 +19,13 @@ export const resolvers = {
       return asMoment.toISOString();
     },
     guid: ({guid}) => {
-      return guid && guid.rendered ? guid.rendered : '';
+      return extractRendered(guid);
     },
     title: ({title}) => {
-      return title && title.rendered ? title.rendered : '';
+      return extractRendered(title);
     },
     caption: ({caption}) => {
-      return caption && caption.rendered ? caption.rendered : '';
+      return extractRendered(caption);
     },
   }
 };

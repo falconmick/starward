@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { pageQuery, pageSearchQuery } from './pageQueries';
-import { resolveDashCase } from '../../utils/resolverTools';
+import { extractRendered, resolveDashCase } from '../../utils/resolverTools';
 
 export const resolvers = {
   RootQuery: {
@@ -26,10 +26,10 @@ export const resolvers = {
       return asMoment.toISOString();
     },
     guid: ({guid}) => {
-      return guid && guid.rendered ? guid.rendered : '';
+      return extractRendered(guid);
     },
     excerpt: ({excerpt}) => {
-      return excerpt && excerpt.rendered ? excerpt.rendered : '';
+      return extractRendered(excerpt);
     }
   }
 };

@@ -12,3 +12,7 @@ export const resolveDashCase = (dashCaseObject) => {
     }, {});
   return camelCaseObject;
 };
+
+export const extractRendered = prop => {
+  return prop && prop.rendered ? prop.rendered : '';
+};

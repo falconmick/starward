@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { resolveDashCase } from './resolverTools';
+import { extractRendered, resolveDashCase } from './resolverTools';
 import { getMedia } from '../types/Media/mediaQueries';
 import { getUser } from '../types/User/userQueries';
 
@@ -22,7 +22,7 @@ export const basePostTypeResolvers = {
     return asMoment.toISOString();
   },
   guid: ({guid}) => {
-    return guid && guid.rendered ? guid.rendered : '';
+    return extractRendered(guid);
   }
 };
 
