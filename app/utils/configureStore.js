@@ -11,23 +11,19 @@ import { isClient, isDebug } from '../config/app';
  *                          while using browserHistory for client-side
  *                          rendering.
  */
-export default (initialState, history, apolloClient) => {
-
-  if (!apolloClient) {
-    throw new Error('Store needs Apollo Client!!!');
-  }
+export default (initialState, history) => {
   // Installs hooks that always keep react-router and redux store in sync
-  const middleware = [thunk, routerMiddleware(history), apolloClient.middleware()];
+  const middleware = [thunk, routerMiddleware(history)];
   let store;
 
   if (isClient && isDebug) {
     middleware.push(createLogger());
-    store = createStore(rootReducer(apolloClient.reducer()), initialState, compose(
+    store = createStore(rootReducer(), initialState, compose(
       applyMiddleware(...middleware),
       typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
     ));
   } else {
-    store = createStore(rootReducer(apolloClient.reducer()), initialState, compose(applyMiddleware(...middleware), f => f));
+    store = createStore(rootReducer(), initialState, compose(applyMiddleware(...middleware), f => f));
   }
 
   if (module.hot) {

@@ -1,5 +1,6 @@
 import React from 'react';
-import { gql, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import { BLOG_SLUG, POSTS_PER_PAGE } from '../config/app';
 import { Head } from '../components/Common/Head';
 import { Title } from '../components/Content/Title';

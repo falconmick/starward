@@ -1,4 +1,4 @@
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 import { formFragment } from '../../apollo/fragments/formFragment';
 
 export const formQuery = gql`

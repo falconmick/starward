@@ -28,7 +28,7 @@ if (environment.isRedisEnabled && !REDIS_PREFIX) {
 export default (redisClient) => (req, res) => {
   const history = createMemoryHistory();
   const apolloClient = createClient(req);
-  const store = configureStore({}, history, apolloClient);
+  const store = configureStore({}, history);
   const routes = createRoutes(store);
 
   /*

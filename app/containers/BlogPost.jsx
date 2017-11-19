@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { gql, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import { Head } from '../components/Common/Head';
 import { Loading } from '../components/Content/Loading';
 import { FourOhFour } from '../components/Content/FourOhFour';
