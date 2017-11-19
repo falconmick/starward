@@ -1,16 +1,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
-import loading from '../reducers/loading';
-import starward from '../reducers/starward';
-import gravityforms from '../reducers/gravityforms';
+import counter from '../reducers/counter';
 
 // Combine reducers with routeReducer which keeps track of
 // router state
 const rootReducer = () => {
   return combineReducers({
-    loading,
-    starward,
-    gravityforms,
+    counter,
     routing
   });
 }

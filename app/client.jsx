@@ -5,7 +5,6 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
 import createRoutes from './routes';
-import * as types from './actions/types';
 import configureStore from './utils/configureStore';
 import fetchDataForRoute from './utils/fetchDataForRoute';
 import fetchDataForApp from './utils/fetchDataForApp';
@@ -22,9 +21,8 @@ const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 const routes = createRoutes(store);
 
-function requestSuccess(state, appData) {
-  fetchDataForRoute(state)
-  .then(data => store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} }));
+function requestSuccess(state) {
+  fetchDataForRoute(state);
 }
 
 /**
@@ -44,8 +42,6 @@ function onUpdate() {
   // Reset scroll position
   window.scrollTo(0, 0);
   // Handle data fetcher Redux actions
-  store.dispatch({ type: types.RESET_404 });
-  store.dispatch({ type: types.CREATE_REQUEST });
   if (this.state.routes[0].name === 'App') {
     fetchDataForApp(this.state)
     .then(settings => {

@@ -2,7 +2,6 @@ import axios from 'axios';
 import { createMemoryHistory, match } from 'react-router';
 import createRoutes from '../../app/routes';
 import configureStore from '../../app/utils/configureStore';
-import * as types from '../../app/actions/types';
 import { baseURL } from '../../app/config/app';
 import { REDIS_PREFIX } from '../config/app';
 import pageRenderer from './pageRenderer';
@@ -53,12 +52,10 @@ export default (redisClient) => (req, res) => {
    * given location.
    */
 
-  function requestSuccess(props, appData) {
-    store.dispatch({ type: types.CREATE_REQUEST });
+  function requestSuccess(props) {
     fetchDataForRoute(props)
       .then(data => {
         const status = data && data.handle404 ? 404 : 200;
-        store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} });
         pageRenderer(store, props, apolloClient, (html) => {
           res.status(status).send(html);
           const redisKey = props.location.pathname;
