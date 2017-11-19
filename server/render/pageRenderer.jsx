@@ -21,7 +21,8 @@ const createApp = (store, props, apolloClient, resCallback) => {
       const initialState = store.getState();
       const apolloState = apolloClient.cache.extract();
       const html = ReactDOMServer.renderToString(app);
-      resCallback(html, initialState, apolloState);
+      const headAssets = Helmet.rewind();
+      resCallback(html, initialState, apolloState, headAssets);
     })
     .catch((error) => {
       console.error(error);
@@ -56,8 +57,7 @@ const buildPage = ({ html = '', initialState = {}, apolloState = {}, headAssets}
 };
 
 export default (store, props, apolloClient, resCallback) => {
-  const headAssets = Helmet.rewind();
-  createApp(store, props, apolloClient, (html, initialState, apolloState) => {
+  createApp(store, props, apolloClient, (html, initialState, apolloState, headAssets) => {
     resCallback(buildPage({ html, initialState, apolloState, headAssets }));
   });
 };

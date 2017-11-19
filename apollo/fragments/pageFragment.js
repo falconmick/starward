@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const pageFragment = {
   page: gql`
       fragment defaultPage on Page {
+          title
           acf {
               layout
           }
