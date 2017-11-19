@@ -17,5 +17,14 @@ export const resolvers = {
       const asMoment = moment.utc(modified_gmt);
       return asMoment.toISOString();
     },
+    guid: ({guid}) => {
+      return guid && guid.rendered ? guid.rendered : '';
+    },
+    title: ({title}) => {
+      return title && title.rendered ? title.rendered : '';
+    },
+    caption: ({caption}) => {
+      return caption && caption.rendered ? caption.rendered : '';
+    },
   }
 };

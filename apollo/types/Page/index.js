@@ -1,4 +1,3 @@
-import WpContent from '../WpContent/index';
 import Yoast from '../Yoast/index';
 import BetterFeaturedImage from '../BetterFeaturedImage';
 import Acf from '../Acf';
@@ -33,14 +32,14 @@ type Page {
     created: Date!
     # in UTC time
     modified: Date
-    guid: WpContent
+    guid: String!
     slug: String!
     status: String!
     type: String!
     link: String!
     title: String!
     content: String!
-    excerpt: WpContent!
+    excerpt: String!
     author: Int!
     featured_media: Int!
     parent: Int!
@@ -57,5 +56,5 @@ type Page {
 
 const PaginatedPostType = createPagableType('Page');
 
-export default () => [Page, PaginatedPostType, WpContent, Yoast, Acf, BetterFeaturedImage];
+export default () => [Page, PaginatedPostType, Yoast, Acf, BetterFeaturedImage];
 export { resolvers } from './pageResolvers';

@@ -5,7 +5,7 @@ interface PostType {
     created: Date!
     # in UTC time
     modified: Date!
-    guid: WpContent
+    guid: String!
     slug: String!
     status: String!
     type: String!

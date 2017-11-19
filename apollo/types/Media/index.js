@@ -1,4 +1,3 @@
-import WpContent from '../WpContent/index';
 import MediaDetail from './MediaDetail/index';
 
 /**
@@ -27,19 +26,19 @@ type Media {
     # in UTC time
     modified: Date
     # contains a raw link to the resource, media_details is the better way to do this
-    guid: WpContent
+    guid: String!
     url: String!
     slug: String!
     status: String!
     type: String!
     link: String!
-    title: WpContent!
+    title: String!
     author: Int!
     comment_status: String!
     ping_status: String!
     template: String!
     meta: [String]!
-    caption: WpContent!
+    caption: String!
     alt_text: String
     media_type: String
     mime_type: String
@@ -48,5 +47,5 @@ type Media {
 }
 `;
 
-export default () => [Media, WpContent, MediaDetail];
+export default () => [Media, MediaDetail];
 export { resolvers } from './mediaResolvers';

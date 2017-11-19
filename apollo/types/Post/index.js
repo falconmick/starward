@@ -1,4 +1,3 @@
-import WpContent from '../WpContent/index';
 import BetterFeaturedImage from '../BetterFeaturedImage';
 import Yoast from '../Yoast/index';
 import Acf from '../Acf';
@@ -38,7 +37,7 @@ type Post implements PostType {
     created: Date!
     # in UTC time
     modified: Date!
-    guid: WpContent
+    guid: String!
     slug: String!
     status: String!
     type: String!
@@ -64,5 +63,5 @@ type Post implements PostType {
 
 const PaginatedPostType = createPagableType('Post');
 
-export default () => [Post, PaginatedPostType, WpContent, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag, PostType];
+export default () => [Post, PaginatedPostType, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag, PostType];
 export { resolvers } from './postResolvers';

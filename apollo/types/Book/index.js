@@ -1,4 +1,3 @@
-import WpContent from '../WpContent/index';
 import Yoast from '../Yoast/index';
 import Acf from '../Acf';
 import Genre from '../Genre';
@@ -34,7 +33,7 @@ type Book implements PostType {
     created: Date!
     # in UTC time
     modified: Date!
-    guid: WpContent
+    guid: String!
     slug: String!
     status: String!
     type: String!
@@ -49,5 +48,5 @@ type Book implements PostType {
 
 const PaginatedPostType = createPagableType('Book');
 
-export default () => [Book, PaginatedPostType, WpContent, Yoast, Acf, Genre, PostType];
+export default () => [Book, PaginatedPostType, Yoast, Acf, Genre, PostType];
 export { resolvers } from './bookResolvers';
