@@ -17,7 +17,7 @@ export const postFragment = {
   post: gql`
       fragment singlePost on Post {
           title
-          date
+          modified
           author {
               slug
               name

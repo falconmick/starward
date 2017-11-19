@@ -3,11 +3,13 @@ import { Link } from 'react-router';
 import moment from 'moment';
 
 export const PostMeta = props => {
-  const { date, author } = props;
+  const { modified, author } = props;
+
+  const modifiedMoment = moment(modified);
   return (
     <div className="entry-meta">
-      <time className="updated" dateTime={moment(date).format('YYYY-MM-DD HH:mm')}>
-        Posted {moment(date).calendar()}
+      <time className="updated" dateTime={modifiedMoment.format('YYYY-MM-DD HH:mm')}>
+        Posted {modifiedMoment.calendar()}
       </time>
       {author ?
         <p className="byline author vcard">

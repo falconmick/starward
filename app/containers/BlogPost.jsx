@@ -21,7 +21,7 @@ const BlogPost = (props) => {
   // this so I've just decided to remove.
   const {
     title,
-    date,
+    modified,
     author,
     featuredImage,
     content,
@@ -33,7 +33,7 @@ const BlogPost = (props) => {
       <Head {...seo} defaultTitle={`${title} - ${settings.name}`} />
       <article className="hentry">
         <Title title={title} />
-        <PostMeta date={date} author={author} />
+        <PostMeta modified={modified} author={author} />
         <FeaturedImage
           size="large"
           {...featuredImage}
