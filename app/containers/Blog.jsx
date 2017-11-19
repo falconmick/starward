@@ -8,7 +8,7 @@ import { FourOhFour } from '../components/Content/FourOhFour';
 import { PostList } from '../components/Posts/PostList.jsx';
 import { postFragment } from '../../apollo/fragments';
 
-const Blog = (props) => {
+const Blog = props => {
   const { blog, settings, loading, categories, pagination } = props;
   const { page, totalPages, totalItems } = pagination;
   const pageTitle = 'blog';

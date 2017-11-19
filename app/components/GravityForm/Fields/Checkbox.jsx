@@ -47,7 +47,7 @@ const onInputChange = selectedValues => (id, event) => {
   return updateField(id, updatedValues || selectedValues);
 };
 
-const CheckboxField = (props) => {
+const CheckboxField = props => {
   const { field, fieldState, isValid, updateForm } = props;
   const { value } = fieldState;
   const { id, label, cssClass, isRequired, choices } = field;

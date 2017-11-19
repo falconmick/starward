@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
-export const Head = (props) => {
+export const Head = props => {
   const {
     title,
     defaultTitle,

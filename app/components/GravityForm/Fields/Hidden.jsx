@@ -17,7 +17,7 @@ const onInputChange = (id, event) => {
   return updateField(id, value);
 };
 
-const HiddenField = (props) => {
+const HiddenField = props => {
   const { field, fieldState, updateForm } = props;
   const { value } = fieldState;
   const { id, type } = field;

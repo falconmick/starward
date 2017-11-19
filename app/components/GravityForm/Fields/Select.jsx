@@ -31,7 +31,7 @@ const onInputChange = (id, event) => {
   return updateField(id, value);
 };
 
-const SelectField = (props) => {
+const SelectField = props => {
   const { field, fieldState, isValid, updateForm } = props;
   const { value } = fieldState;
   const { id, label, cssClass, isRequired, choices, placeholder } = field;

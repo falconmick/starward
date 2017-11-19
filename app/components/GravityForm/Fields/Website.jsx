@@ -31,7 +31,7 @@ const onInputChange = (id, event) => {
   return updateField(id, value);
 };
 
-const WebsiteField = (props) => {
+const WebsiteField = props => {
   const { field, fieldState, isValid, updateForm } = props;
   const { value } = fieldState;
   const { id, type, label, cssClass, placeholder, isRequired, maxLength } = field;

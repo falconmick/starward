@@ -31,7 +31,7 @@ const onInputChange = (id, event) => {
   return updateField(id, value);
 };
 
-const RadioField = (props) => {
+const RadioField = props => {
   const { field, fieldState, isValid, updateForm } = props;
   const { value } = fieldState;
   const { id, label, cssClass, isRequired, choices } = field;

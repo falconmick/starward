@@ -10,7 +10,7 @@ import { FeaturedImage } from '../components/Posts/FeaturedImage';
 import { PostCategories } from '../components/Posts/PostCategories';
 import { postFragment } from '../../apollo/fragments';
 
-const BlogPost = (props) => {
+const BlogPost = props => {
   const { post, settings, loading } = props;
   if (loading) return <Loading />;
   if (!post) return <FourOhFour />;
