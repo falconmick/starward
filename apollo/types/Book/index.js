@@ -1,11 +1,7 @@
 import WpContent from '../WpContent/index';
-import BetterFeaturedImage from '../BetterFeaturedImage';
 import Yoast from '../Yoast/index';
 import Acf from '../Acf';
-import Category from '../Category';
-import User from '../User/index';
-import Media from '../Media';
-import Tag from '../Tag/index';
+import Genre from '../Genre';
 import PostType from '../../interface/postType';
 import { createPagableType } from '../../utils/pager';
 
@@ -31,8 +27,8 @@ import { createPagableType } from '../../utils/pager';
     }
   }
  */
-const Post = `
-type Post implements PostType {
+const Book = `
+type Book implements PostType {
     id: ID!
     # in UTC time
     created: Date!
@@ -45,24 +41,13 @@ type Post implements PostType {
     link: String!
     title: String!
     content: String!
-    excerpt: String!
-    author: User!
-    featured_media: Media
-    comment_status: String!
-    ping_status: String!
-    sticky: Boolean!
-    template: String!
-    format: String!
-    meta: [String]!
-    categories: [Category]!
-    tags: [Tag]!
-    better_featured_image: BetterFeaturedImage
     yoast: Yoast!
     acf: Acf!
+    genres: [Genre]!
 }
 `;
 
-const PaginatedPostType = createPagableType('Post');
+const PaginatedPostType = createPagableType('Book');
 
-export default () => [Post, PaginatedPostType, WpContent, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag, PostType];
-export { resolvers } from './postResolvers';
+export default () => [Book, PaginatedPostType, WpContent, Yoast, Acf, Genre, PostType];
+export { resolvers } from './bookResolvers';

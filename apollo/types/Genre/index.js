@@ -24,8 +24,8 @@ import Taxonomy from '../../interface/taxonomy';
     name
   }
  */
-const Category = `
-type Category implements Taxonomy {
+const Genre = `
+type Genre implements Taxonomy {
     id: ID!
     count: Int!
     description: String!
@@ -38,5 +38,5 @@ type Category implements Taxonomy {
 }
 `;
 
-export default () => [Category, Yoast, Taxonomy];
-export { resolvers } from './categoryResolver';
+export default () => [Genre, Yoast, Taxonomy];
+export { resolvers } from './genreResolver';
