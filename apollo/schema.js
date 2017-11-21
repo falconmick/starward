@@ -14,10 +14,6 @@ import Tag, { resolvers as tagResolvers } from './types/Tag';
 import Form, { resolvers as formResolvers } from './types/Form';
 import SubmittedForm, { resolvers as submittedFormResolvers } from './types/SubmittedForm';
 
-
-import Book, { resolvers as bookResolvers } from './types/Book';
-import Genre, { resolvers as genreResolvers } from './types/Genre';
-
 const CustomScalars = `
   scalar RawJson
   scalar Date
@@ -39,11 +35,6 @@ const RootQuery = `
     tag(id: Int!): Tag
     tags(listOfIds:[Int!]): [Tag!]
     form(formId: Int!): Form
-    
-    book(slug: String!): Book
-    books(query: String, page: Int, perPage: Int): BookPager
-    genres(listOfIds:[Int!]): [Category]
-    genre(id: Int!): Category
   }
 `;
 
@@ -63,12 +54,11 @@ const SchemaDefinition = `
 const rootResolvers = { RawJson: RawJsonScalarType, Date: DateScalarType };
 const resolvers = merge(rootResolvers, settingsResolvers, pageResolvers,
   menuItemResolvers, categoryResolvers, postResolvers, userResolvers,
-  mediaResolvers, tagResolvers, formResolvers, submittedFormResolvers,
-  bookResolvers, genreResolvers);
+  mediaResolvers, tagResolvers, formResolvers, submittedFormResolvers);
 
 export default makeExecutableSchema({
   typeDefs: [CustomScalars, SchemaDefinition, RootQuery, RootMutation, Settings, Page, MenuItem, Category, Post, User,
-    Media, Tag, Form, SubmittedForm,    Book, Genre],
+    Media, Tag, Form, SubmittedForm],
   resolvers,
   resolverValidationOptions: {
     requireResolversForAllFields: false

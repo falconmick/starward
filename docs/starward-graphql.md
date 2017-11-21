@@ -153,6 +153,9 @@ intelisence, schema type checking and documentation provided via #'s in our Type
   returning ACF fields which have their own GraphQL queries. However we should be able to get a total GraphQL network status 
   and figure out if we have any sub-queries loading still and show that loading screen! Please add either of these if you have 
   the time!
+  * pre-fetching is (somewhat) possible via createCustomPage, see FormPage.jsx for an example implementation that pre-fetches the form 
+  for this page. This is only possible when you know what queries to run before the page is executed, for example 
+  when you access /contact-page you might know that you will need formId 3, so you can safely pre-fetch!
 - Happy developers
 - Terse definition of required data without needing to buid 100 endpoints. Now for example if I were to build RedLily onto this I would 
 have just passed the project Id's down to the other Projects CTA and write a query that request JUST 
