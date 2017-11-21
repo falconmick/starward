@@ -95,6 +95,11 @@ Make sure that your redis client is running as described above, then:
 
 `yarn analyse`
 
+### GraphQL Documentation:
+- [Starward GraphQL Docs](docs/starward-graphql.md)
+- [Extending GraphQL](docs/extending-graphql.md)
+- [Adding Custom Post Types](docs/adding-custom-post-types.md)
+
 ### Styling
 
 Sass partials are contained within `/public/assets/sass` and are split between four folders:
