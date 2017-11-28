@@ -1,3 +1,6 @@
+import { resolvers } from './menuItemResolver';
+import { apolloBundle } from '../../utils/apolloBundle';
+
 /**
  * Example usage:
  * note: never place variables into queries directly
@@ -41,5 +44,7 @@ type MenuItem {
 }
 `;
 
-export default () => [MenuItem];
-export { resolvers } from './menuItemResolver';
+export const MenuItemBundle = apolloBundle({
+  type: MenuItem,
+  resolvers,
+});

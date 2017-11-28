@@ -1,5 +1,7 @@
 import Yoast from '../Yoast/index';
 import Taxonomy from '../../interface/taxonomy';
+import { resolvers } from './categoryResolver';
+import { apolloBundle } from '../../utils/apolloBundle';
 
 /**
  * Example usage:
@@ -38,5 +40,8 @@ type Category implements Taxonomy {
 }
 `;
 
-export default () => [Category, Yoast, Taxonomy];
-export { resolvers } from './categoryResolver';
+export const CategoryBundle = apolloBundle({
+  type: Category,
+  dependencies: [Yoast, Taxonomy],
+  resolvers,
+});

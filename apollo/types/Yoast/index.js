@@ -1,3 +1,5 @@
+import { apolloBundle } from '../../utils/apolloBundle';
+
 const Yoast = `
  type Yoast {
  focuskw: String!
@@ -19,4 +21,6 @@ const Yoast = `
  }
  `;
 
-export default () => [Yoast];
+export const YoastBundle = apolloBundle({
+  type: Yoast,
+});

@@ -7,6 +7,8 @@ import Media from '../Media';
 import Tag from '../Tag/index';
 import PostType from '../../interface/postType';
 import { createPagableType } from '../../utils/pager';
+import { resolvers } from './postResolvers';
+import { apolloBundle } from '../../utils/apolloBundle';
 
 /**
  * Example usage:
@@ -63,5 +65,8 @@ type Post implements PostType {
 
 const PaginatedPostType = createPagableType('Post');
 
-export default () => [Post, PaginatedPostType, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag, PostType];
-export { resolvers } from './postResolvers';
+export const PostBundle = apolloBundle({
+  type: Post,
+  dependencies: [PaginatedPostType, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag, PostType],
+  resolvers,
+});

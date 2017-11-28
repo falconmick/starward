@@ -3,16 +3,17 @@ import {
 } from 'graphql-tools';
 import { merge } from 'lodash';
 import { RawJsonScalarType, DateScalarType } from './customScalars';
-import Settings, { resolvers as settingsResolvers } from './types/Settings';
-import Page, { resolvers as pageResolvers } from './types/Page';
-import MenuItem, { resolvers as menuItemResolvers } from './types/MenuItem';
-import Category, { resolvers as categoryResolvers } from './types/Category';
-import Post, { resolvers as postResolvers } from './types/Post';
-import User, { resolvers as userResolvers } from './types/User';
-import Media, { resolvers as mediaResolvers } from './types/Media';
-import Tag, { resolvers as tagResolvers } from './types/Tag';
-import Form, { resolvers as formResolvers } from './types/Form';
-import SubmittedForm, { resolvers as submittedFormResolvers } from './types/SubmittedForm';
+// import Settings, { resolvers as settingsResolvers } from './types/Settings';
+// import Page, { resolvers as pageResolvers } from './types/Page';
+// import MenuItem, { resolvers as menuItemResolvers } from './types/MenuItem';
+// import Category, { resolvers as categoryResolvers } from './types/Category';
+// import Post, { resolvers as postResolvers } from './types/Post';
+// import User, { resolvers as userResolvers } from './types/User';
+// import Media, { resolvers as mediaResolvers } from './types/Media';
+// import Tag, { resolvers as tagResolvers } from './types/Tag';
+// import Form, { resolvers as formResolvers } from './types/Form';
+// import SubmittedForm, { resolvers as submittedFormResolvers } from './types/SubmittedForm';
+import apolloModules from './apolloModules';
 
 const CustomScalars = `
   scalar RawJson
@@ -52,13 +53,10 @@ const SchemaDefinition = `
 `;
 
 const rootResolvers = { RawJson: RawJsonScalarType, Date: DateScalarType };
-const resolvers = merge(rootResolvers, settingsResolvers, pageResolvers,
-  menuItemResolvers, categoryResolvers, postResolvers, userResolvers,
-  mediaResolvers, tagResolvers, formResolvers, submittedFormResolvers);
+const resolvers = merge(rootResolvers, ...apolloModules.resolvers);
 
 export default makeExecutableSchema({
-  typeDefs: [CustomScalars, SchemaDefinition, RootQuery, RootMutation, Settings, Page, MenuItem, Category, Post, User,
-    Media, Tag, Form, SubmittedForm],
+  typeDefs: [CustomScalars, SchemaDefinition, RootQuery, RootMutation, ...apolloModules.typeDefFuncs],
   resolvers,
   resolverValidationOptions: {
     requireResolversForAllFields: false

@@ -1,5 +1,7 @@
 import SubmitField from './SubmitField/index';
 import FormValidation from './FormValidation/index';
+import { resolvers } from './submittedFormResolver';
+import { apolloBundle } from '../../utils/apolloBundle';
 
 /*
  *Example Useage
@@ -43,5 +45,8 @@ input SubmittedFormInput {
 }
 `;
 
-export default () => [SubmittedForm, SubmitField, FormValidation];
-export { resolvers } from './submittedFormResolver';
+export const SubmittedFormBundle = apolloBundle({
+  type: SubmittedForm,
+  dependencies: [SubmitField, FormValidation],
+  resolvers,
+});

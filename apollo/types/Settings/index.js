@@ -1,4 +1,6 @@
 import SocialLink from './SocialLink/index';
+import { resolvers } from './settingsResolvers';
+import { apolloBundle } from '../../utils/apolloBundle';
 
 /**
  * Example usage:
@@ -28,5 +30,8 @@ type Settings {
 }
 `;
 
-export default () => [Settings, SocialLink];
-export { resolvers } from './settingsResolvers';
+export const SettingsBundle = apolloBundle({
+  type: Settings,
+  dependencies: [SocialLink],
+  resolvers,
+});

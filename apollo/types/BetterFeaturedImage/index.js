@@ -1,4 +1,5 @@
 import MediaDetail from '../Media/MediaDetail/index';
+import { apolloBundle } from '../../utils/apolloBundle';
 
 const BetterFeaturedImage = `
 type BetterFeaturedImage {
@@ -12,4 +13,7 @@ type BetterFeaturedImage {
 }
 `;
 
-export default () => [BetterFeaturedImage, MediaDetail];
+export const BetterFeaturedImageBundle = apolloBundle({
+  type: BetterFeaturedImage,
+  dependencies: [MediaDetail],
+});

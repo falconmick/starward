@@ -1,4 +1,6 @@
 import MediaDetail from './MediaDetail/index';
+import  { resolvers } from './mediaResolvers';
+import { apolloBundle } from '../../utils/apolloBundle';
 
 /**
  * Example usage:
@@ -47,5 +49,8 @@ type Media {
 }
 `;
 
-export default () => [Media, MediaDetail];
-export { resolvers } from './mediaResolvers';
+export const MediaBundle = apolloBundle({
+  type: Media,
+  dependencies: [MediaDetail],
+  resolvers,
+});
