@@ -99,16 +99,38 @@ value before the function in the next part of the curry.
 If you don't want your call cached, just don't use the cacheResolver HOF as shown by getUserNotCached, I don't remember what
 the first paramater is, but the second is the values passed in by the query's paramaters.
 
-## How to hook this all into the schema
+## How to hook into the inbuilt schema
 
-Currently this is a little more manual than would be optimal. In the future I want to return as default a function call in 
-index.js which accepts your type function and resolver, and then import * from /types in schema.js so that we can automate 
-the following.
+if you are not creating your own standalone module (you would do this when you plan on making the code re-usable, perhapse
+you plan to place it inside of a NPM package) all you need to do is open 'apollo/types/index.js' and first import your 
+type and reducer (reducer is optional), create a bundle via apolloBundle (once again, you don't have to include a reducer)
+next you place any of your queries/mutations into rootQuery/rootMutation and finally you add the bundle to apolloModule args!:
 
-1. Open schema.js
-2. Import your default (Type) and resolver (make sure to alias it like all the others!)
-3. add your queries defined in your resolver to RootQuery and RootMutation (perhapse we should move this to the Type folder and just join all types' query/mutation definitions)
-4. add your resolveer to resolvers, the merge function you are passing this into does a deep object merge so that your 
-RootQuery's and Type Resolvers are fully combined!! This is different to destrucuring into a new object in that it 
-traverses down the objects and DEEP CLONES!! :D
-5. add your Type to typeDefs located inside of the exported makeExecutableSchema. 
+    import YourType, { resolvers as yourTypeResolvers } from './YourType';
+    
+    const YourTypeBundle = apolloBundle({type: YourType, resolvers: yourTypeResolvers});
+    
+    const rootQuery = `
+      ...
+      youType(slug: String!): YourType
+      ...
+    `;
+    
+    const rootMutation = `
+      ...
+      submitYouType(form: YouTypeInput!): YouType!
+      ...
+    `;
+    
+    export const inbuiltModule = apolloModule(/* other bundles here*/, YourTypeBundle)(rootQuery)(rootMutation);
+    
+This will add your Type and it's resolvers to the schema!!!
+
+## How to create your own standalone apollo module
+
+The process of creating your very own standalone apollo module (a module that is fully standalone from the inbuilt apollo
+module (but still can use extend!), the main benifit of this is re-use over projects via NPM). It's exactly the same as 
+building new types to extend the inbuilt schema (see the above) but instead of creating your types inside of 'apollo/types'
+you create them in your very own folder where-ever you please. The only added step is to make sure you create your own
+module bundler as seen inside of 'apollo/types/index.js', from there you open 'apollo/apolloModules.js' and add your module to 
+combineModules, and BAM! you have your very own external module hooked into the schema!
