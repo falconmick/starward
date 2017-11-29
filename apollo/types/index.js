@@ -28,5 +28,27 @@ const TagBundle = apolloBundle({type: Tag, resolvers: tagResolvers});
 const UserBundle = apolloBundle({type: User, resolvers: userResolvers});
 const YoastBundle = apolloBundle({type: Yoast});
 
-export default apolloModule(AcfBundle, BetterFeaturedImageBundle, CategoryBundle, FormBundle, MediaBundle,
-  MenuItemBundle, PageBundle, PostBundle, SettingsBundle, SubmittedFormBundle, TagBundle, UserBundle, YoastBundle);
+const rootQuery = `
+  settings: Settings
+  page(splat: String): Page
+  pages(query: String, page: Int, perPage: Int): PagePager
+  menuItems(slug: String): [MenuItem]
+  categories(listOfIds:[Int!]): [Category]
+  category(id: Int!): Category
+  post(slug: String!): Post
+  posts(query: String, page: Int, perPage: Int): PostPager
+  users: [User]
+  user(id: Int!): User
+  media(id: Int!): Media
+  tag(id: Int!): Tag
+  tags(listOfIds:[Int!]): [Tag!]
+  form(formId: Int!): Form
+`;
+
+const rootMutation = `
+  submitForm(form: SubmittedFormInput!): SubmittedForm!
+`;
+
+export const inbuiltModule = apolloModule(AcfBundle, BetterFeaturedImageBundle, CategoryBundle, FormBundle, MediaBundle,
+  MenuItemBundle, PageBundle, PostBundle, SettingsBundle, SubmittedFormBundle, TagBundle, UserBundle, YoastBundle)(rootQuery)(rootMutation);
+

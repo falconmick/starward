@@ -1,11 +1,5 @@
-import inbuiltModule from './types';
-import { apolloModule } from './utils/apolloModule';
+import { inbuiltModule } from './types';
+import { combineModules } from './utils/apolloModule';
 
-// either place entire modules crafted with apolloModule or a destructured array
-// of apolloBundles
-const modules = [
-  inbuiltModule,
-  // your-bundle/modules-here!
-];
-
-export default () => apolloModule(...modules);
+// place your modules into combineModules (i.e. combineModules(inbuiltModule, yourModule, customExtensionModule)
+export const getModule = () => combineModules(inbuiltModule);
