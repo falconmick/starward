@@ -3,7 +3,7 @@
  * note: never place variables into queries directly
  * use arguments: http://graphql.org/graphql-js/passing-arguments/
  *
-  fragment menuFragment on MenuItem {
+ fragment menuFragment on MenuItem {
     url
     title
     classes

@@ -13,7 +13,7 @@ import { createPagableType } from '../../utils/pager';
  * note: never place variables into queries directly
  * use arguments: http://graphql.org/graphql-js/passing-arguments/
  *
-  query PostQuery {
+ query PostQuery {
     posts {
       ...postFragment
     }
@@ -22,7 +22,7 @@ import { createPagableType } from '../../utils/pager';
     }
   }
 
-  fragment postFragment on Post {
+ fragment postFragment on Post {
     id
     slug
     content {

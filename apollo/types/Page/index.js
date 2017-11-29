@@ -8,7 +8,7 @@ import { createPagableType } from '../../utils/pager';
  * note: never place variables into queries directly
  * use arguments: http://graphql.org/graphql-js/passing-arguments/
  *
-  query PageQuery($splat: String) {
+ query PageQuery($splat: String) {
     page(splat: $splat) {
       acf {
         layout

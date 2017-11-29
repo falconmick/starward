@@ -1,4 +1,4 @@
-import Yoast from '../Yoast/index';
+import Yoast from '../Yoast';
 import Taxonomy from '../../interface/taxonomy';
 
 /**
