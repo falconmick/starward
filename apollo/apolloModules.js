@@ -8,4 +8,4 @@ const modules = [
   // your-bundle/modules-here!
 ];
 
-export default apolloModule(...modules);
+export default () => apolloModule(...modules);

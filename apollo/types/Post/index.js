@@ -7,15 +7,13 @@ import Media from '../Media';
 import Tag from '../Tag/index';
 import PostType from '../../interface/postType';
 import { createPagableType } from '../../utils/pager';
-import { resolvers } from './postResolvers';
-import { apolloBundle } from '../../utils/apolloBundle';
 
 /**
  * Example usage:
  * note: never place variables into queries directly
  * use arguments: http://graphql.org/graphql-js/passing-arguments/
  *
-  query PostQuery {
+ query PostQuery {
     posts {
       ...postFragment
     }
@@ -24,7 +22,7 @@ import { apolloBundle } from '../../utils/apolloBundle';
     }
   }
 
-  fragment postFragment on Post {
+ fragment postFragment on Post {
     id
     slug
     content {
@@ -65,8 +63,5 @@ type Post implements PostType {
 
 const PaginatedPostType = createPagableType('Post');
 
-export const PostBundle = apolloBundle({
-  type: Post,
-  dependencies: [PaginatedPostType, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag, PostType],
-  resolvers,
-});
+export default () => [Post, PaginatedPostType, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag, PostType];
+export { resolvers } from './postResolvers';

@@ -1,5 +1,3 @@
-import { resolvers } from './tagResolvers';
-import { apolloBundle } from '../../utils/apolloBundle';
 /**
  * Example usage:
  * note: never place variables into queries directly
@@ -35,7 +33,5 @@ type Tag {
 }
 `;
 
-export const TagBundle = apolloBundle({
-  type: Tag,
-  resolvers,
-});
+export default () => [Tag];
+export { resolvers } from './tagResolvers';

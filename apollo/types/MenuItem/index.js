@@ -1,12 +1,9 @@
-import { resolvers } from './menuItemResolver';
-import { apolloBundle } from '../../utils/apolloBundle';
-
 /**
  * Example usage:
  * note: never place variables into queries directly
  * use arguments: http://graphql.org/graphql-js/passing-arguments/
  *
-  fragment menuFragment on MenuItem {
+ fragment menuFragment on MenuItem {
     url
     title
     classes
@@ -44,7 +41,5 @@ type MenuItem {
 }
 `;
 
-export const MenuItemBundle = apolloBundle({
-  type: MenuItem,
-  resolvers,
-});
+export default () => [MenuItem];
+export { resolvers } from './menuItemResolver';

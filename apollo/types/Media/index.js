@@ -1,23 +1,21 @@
 import MediaDetail from './MediaDetail/index';
-import  { resolvers } from './mediaResolvers';
-import { apolloBundle } from '../../utils/apolloBundle';
 
 /**
  * Example usage:
  * note: never place variables into queries directly
  * use arguments: http://graphql.org/graphql-js/passing-arguments/
  *
-  {
-    media(id:49){
-      id
-      slug
-      guid {
-        rendered
-      }
-    }
-  }
+ {
+   media(id:49){
+     id
+     slug
+     guid {
+       rendered
+     }
+   }
+ }
 
-  fragment mediaFrag on Media {
+ fragment mediaFrag on Media {
   }
  */
 const Media = `
@@ -49,8 +47,5 @@ type Media {
 }
 `;
 
-export const MediaBundle = apolloBundle({
-  type: Media,
-  dependencies: [MediaDetail],
-  resolvers,
-});
+export default () => [Media, MediaDetail];
+export { resolvers } from './mediaResolvers';

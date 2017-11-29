@@ -13,7 +13,9 @@ import { RawJsonScalarType, DateScalarType } from './customScalars';
 // import Tag, { resolvers as tagResolvers } from './types/Tag';
 // import Form, { resolvers as formResolvers } from './types/Form';
 // import SubmittedForm, { resolvers as submittedFormResolvers } from './types/SubmittedForm';
-import apolloModules from './apolloModules';
+import getApolloModules from './apolloModules';
+
+const apolloModules = getApolloModules();
 
 const CustomScalars = `
   scalar RawJson
@@ -53,10 +55,10 @@ const SchemaDefinition = `
 `;
 
 const rootResolvers = { RawJson: RawJsonScalarType, Date: DateScalarType };
-const resolvers = merge(rootResolvers, ...apolloModules.resolvers);
+const resolvers = merge(rootResolvers, apolloModules.resolvers);
 
 export default makeExecutableSchema({
-  typeDefs: [CustomScalars, SchemaDefinition, RootQuery, RootMutation, ...apolloModules.typeDefFuncs],
+  typeDefs: [CustomScalars, SchemaDefinition, RootQuery, RootMutation, ...apolloModules.type],
   resolvers,
   resolverValidationOptions: {
     requireResolversForAllFields: false

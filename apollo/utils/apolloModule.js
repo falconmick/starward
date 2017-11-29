@@ -11,7 +11,7 @@ const _apolloModule = (...apolloBundles) => {
   return {
     __registered_with_apollo_module__: true,
     type: validModules.reduce((accumulator, module) => {
-      return [...accumulator, module.type];
+      return [...accumulator, ...module.type];
     }, []),
     resolvers: merge(...validModules.map(module => module.resolvers).filter(resolver => resolver)),
   };

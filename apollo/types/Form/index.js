@@ -1,8 +1,6 @@
 import Button from './Button/index';
 import Field from './Field/index';
 import Confirmation from './Confirmation/index';
-import { resolvers } from './formResolver';
-import { apolloBundle } from '../../utils/apolloBundle';
 
 /**
  * Example usage:
@@ -62,8 +60,5 @@ type Form {
 }
 `;
 
-export const FormBundle = apolloBundle({
-  type: Form,
-  dependencies: [Button, Field, Confirmation],
-  resolvers,
-});
+export default () => [Form, Button, Field, Confirmation];
+export { resolvers } from './formResolver';

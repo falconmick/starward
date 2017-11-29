@@ -1,6 +1,3 @@
-import { resolvers } from './userResolvers';
-import { apolloBundle } from '../../utils/apolloBundle';
-
 /**
  * Example usage:
  * note: never place variables into queries directly
@@ -33,7 +30,5 @@ type User {
 }
 `;
 
-export const UserBundle = apolloBundle({
-  type: User,
-  resolvers,
-});
+export default () => [User];
+export { resolvers } from './userResolvers';
