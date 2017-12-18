@@ -1,10 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom'
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ApolloProvider } from 'react-apollo';
 import { Provider as ReduxProvider } from 'react-redux';
-import createRoutes from './routes';
+import AppRoutes from './routes';
 import configureStore from './utils/configureStore';
 import fetchDataForRoute from './utils/fetchDataForRoute';
 import fetchDataForApp from './utils/fetchDataForApp';
@@ -18,8 +22,8 @@ const initialState = window.__INITIAL_STATE__;
 const apolloClient = createClient(window.__APOLLO_STATE__);
 
 const store = configureStore(initialState, browserHistory);
-const history = syncHistoryWithStore(browserHistory, store);
-const routes = createRoutes(store);
+// const history = syncHistoryWithStore(browserHistory, store);
+// const routes = createRoutes(store);
 
 function requestSuccess(state) {
   fetchDataForRoute(state);
@@ -57,8 +61,8 @@ function onUpdate() {
 render(
   <ReduxProvider store={store}>
     <ApolloProvider client={apolloClient}>
-      <Router history={history} onUpdate={onUpdate}>
-        {routes}
+      <Router>
+        <AppRoutes />
       </Router>
     </ApolloProvider>
   </ReduxProvider>, document.getElementById('app'));

@@ -1,5 +1,9 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom'
 // Global URLs determined in app.js configuration
 import { BLOG_SLUG, CATEGORY_SLUG, AUTHOR_SLUG, SEARCH_SLUG } from './config/app';
 // Import containers used for below routes
@@ -19,17 +23,17 @@ import { FormPage } from './containers/FormPage';
 // Declare function to retreive data on the server using fetchData
 export default () => {
   return (
-    <Route path="/" component={App} name="App" >
-      <IndexRoute component={Page} name="Home" />
-      <Route path={`/${BLOG_SLUG}`} component={Blog} name="Blog" />
-      <Route path={`/${BLOG_SLUG}/page/:page`} component={Blog} name="Blog" />
-      <Route path={`/${BLOG_SLUG}/:post`} component={BlogPost} name="BlogPost" />
-      <Route path={`/${CATEGORY_SLUG}/:slug`} component={Category} name="Category" />
-      <Route path={`/${CATEGORY_SLUG}/:slug/page/:page`} component={Category} name="Category" />
-      <Route path={`/${AUTHOR_SLUG}/:name`} component={Author} name="Author" />
-      <Route path={`/${AUTHOR_SLUG}/:name/page/:page`} component={Author} name="Author" />
-      <Route path="/preload-form" component={FormPage} formId="1" name="Page" />
+    <Switch>
+      <Route exact path='/' component={Page} />
+      <Route path={`/${BLOG_SLUG}`} component={Blog} />
+      <Route path={`/${BLOG_SLUG}/page/:page`} component={Blog} />
+      <Route path={`/${BLOG_SLUG}/:post`} component={BlogPost} />
+      <Route path={`/${CATEGORY_SLUG}/:slug`} component={Category} />
+      <Route path={`/${CATEGORY_SLUG}/:slug/page/:page`} component={Category} />
+      <Route path={`/${AUTHOR_SLUG}/:name`} component={Author} />
+      <Route path={`/${AUTHOR_SLUG}/:name/page/:page`} component={Author} />
+      <Route path="/preload-form" component={FormPage} formId="1" />
       <Route path="*" component={Page} name="Page" />
-    </Route>
+    </Switch>
   );
 };
