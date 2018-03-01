@@ -22,7 +22,7 @@ const handleLoginFormSubmit = ({loginAction}) => ({gravityForm}) => (formId, fie
     password
   };
 
-  loginAction(loginDetails);
+  loginAction({fields: loginDetails, formId});
 };
 
 // note: if you use <GravityForms currySubmit ...> you can get access to the original submitForm func and do stuff after
