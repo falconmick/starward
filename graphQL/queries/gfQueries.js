@@ -1,11 +1,6 @@
 import axios from 'axios';
-import { WP_API, WP_AUTH } from '../../server/config/app';
-
-/* ----------- Basic auth required for Gravity Forms ----------- */
-const auth = { Authorization: `Basic ${WP_AUTH}` };
-
-/* ----------- WP REST API v2 endpoints ----------- */
-const gravityFormApi = `${WP_API}/gf/v2/forms`;
+import { WP_URL, GRAVITY_PUBLIC } from '../../server/config/app';
+import { calculateSignature, calcurateUnixExpiry } from '../util/gravityForms';
 
 const gfQueries = {
   /* ----------- Fetch data for Schema ----------- */
@@ -30,12 +25,23 @@ const gfQueries = {
   },
   Query: {
     form(id, args) {
-      const formApiURL = `${gravityFormApi}/${args.id}`;
-      return axios.get(formApiURL, {headers: auth})
-      .then(res => {
-        return res.data;
-      })
-      .catch(error => console.log('GF Error', error));
+      const { id: formId } = args;
+
+      const route = `forms/${formId}`;
+      const unixExpiry = calcurateUnixExpiry(new Date());
+      const signature = calculateSignature(unixExpiry, 'GET', route);
+
+      const url = `${WP_URL}/gravityformsapi/${route}?api_key=${GRAVITY_PUBLIC}&signature=${signature}&expires=${unixExpiry}`;
+
+      return axios.get(url)
+        .then(res => {
+          const data = res.data;
+          if (data.status !== 200) {
+            throw new Error(`GF Error: status: ${data.status}`);
+          }
+          return data.response;
+        })
+        .catch(error => console.log('GF Error', error));
     }
   }
 };
