@@ -97,19 +97,20 @@ const mapStateToProps = ({gravityforms}) => {
 // see doco on how this works here: https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
 // basically if you don't have this by default: {...ownProps, ...stateProps, ...dispatchProps} // which causes dispatch to override state and state to override props
 //
-// currySubmit will call your submitForm with the GravityForms one, this way after intercepting the form post, you can still submit after your custom code!!
+// submitForm passed to GravityForms must curry some config in first submitForm(options)(...formSubmitArgs)
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const { submitForm: submitFormProps, currySubmit, ...otherOwnProps } = ownProps;
+  const { submitForm: submitFormProps, formId } = ownProps;
+  const { gravityforms } = stateProps;
   const { submitForm: dispatchSubmitForm } = dispatchProps;
 
   if (typeof submitFormProps !== 'undefined') {
-    // if the submit form func provided by props wants to get access to the gravity forms submit function, otherwise just pass the func allong.
-    // i.e.: <GravityForm formId={1} currySubmit submitForm={(gravitySubmit) => (formId, formValues) => { console.log(formId); gravitySubmit(formId, formValues); };
-    // the above would be the exact same as GravityForm but it would also log each form id before sending it.
-    const submitFormOverride = currySubmit ? submitFormProps(dispatchSubmitForm) : submitFormProps;
-    return { ...otherOwnProps, ...stateProps, ...dispatchProps, submitForm: submitFormOverride };
+    const submitFormOverride = submitFormProps({
+      submitForm: dispatchSubmitForm,
+      gravityForm: gravityforms[formId],
+    });
+    return { ...ownProps, ...stateProps, ...dispatchProps, submitForm: submitFormOverride };
   }
-  return { ...otherOwnProps, ...stateProps, ...dispatchProps };
+  return { ...ownProps, ...stateProps, ...dispatchProps };
 };
 
 export default connect(mapStateToProps, { getForm, updateForm, submitForm }, mergeProps)(GravityForm);

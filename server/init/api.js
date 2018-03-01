@@ -3,6 +3,7 @@ import { appSettings, gravityForms, wp } from '../../graphQL';
 import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX } from '../config/app';
 import { createRedisClient } from '../redis';
 import { submitForm } from './gravitySubmit';
+import { loginUser } from '../wpJwt';
 
 /* ----------- App API Helpers ----------- */
 const client = createRedisClient(REDIS_PREFIX);
@@ -321,7 +322,8 @@ export default(app) => {
             required: isRequired,
             prePopulated,
             prePopulatedParam,
-            choices
+            choices,
+            enablePasswordInput,
           }
         }
       }`, {id: req.query.id})
@@ -340,5 +342,8 @@ export default(app) => {
       if (err) return res.json({error: err});
       return res.json({success: true});
     });
+  });
+  app.post('/api/login', (req, res) => {
+    return loginUser(req, res);
   });
 };

@@ -20,7 +20,8 @@ const gfSchema = `
     isRequired: Boolean,
     prePopulated: Boolean,
     prePopulatedParam: String,
-    choices: JSON
+    choices: JSON,
+    enablePasswordInput: Boolean,
   }
 
   type Query {

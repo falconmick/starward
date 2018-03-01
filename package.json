@@ -32,7 +32,7 @@
     "webpack-bundle-analyzer": "^2.8.3"
   },
   "engines": {
-     "node": "4.x || 5.x || 6.x || 7.x || 8.x || 9.x"
+    "node": "4.x || 5.x || 6.x || 7.x || 8.x || 9.x"
   },
   "dependencies": {
     "autoprefixer": "^6.7.0",
@@ -72,6 +72,7 @@
     "node-sass": "^4.3.0",
     "postcss-loader": "^1.2.2",
     "precss": "^1.4.0",
+    "prop-types": "^15.6.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-helmet": "^3.2.2",
