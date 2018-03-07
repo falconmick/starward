@@ -77,9 +77,13 @@ const wpSchema = `
     next: Post,
     previous: Post
   }
+  
+  type UserToken {
+  
+  }
 
   type Query {
-    page (slug: String, preview: Int): Page
+    page (slug: String, preview: Int, user: UserToken): Page
     posts (page: Int, perPage: Int): Posts
     category (slug: String, page: Int): Category
     author (name: String, page: Int): Author

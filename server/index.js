@@ -1,12 +1,17 @@
 import express from 'express';
 import webpack from 'webpack';
+import cookieParser from 'cookie-parser';
 import { isDebug } from '../app/config/app';
+import { COOKIE_SIGNATURE } from './config/app';
 import initExpress from './init/express';
 import initStarwardRoutes from './init/api';
-import initRoutes from './init/routes';
 import renderMiddleware from './render/middleware';
 
 const app = express();
+
+
+// setup cookies for jwt auth and SSR of logged in areas!!
+app.use(cookieParser(COOKIE_SIGNATURE));
 
 if (isDebug) {
   const webpackDevConfig = require('../webpack/webpack.config.dev-client');

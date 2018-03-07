@@ -1,5 +1,18 @@
 import axios from 'axios';
-import { WP_API} from '../config/app';
+import { WP_API, COOKIE_EXPIRE_AFTER } from '../config/app';
+import { isDebug } from '../../app/config/app';
+
+const createJwtCookie = ({res, token}) => {
+  const options = {
+    maxAge: COOKIE_EXPIRE_AFTER,
+    httpOnly: true, // The cookie only accessible by the web server
+    signed: true // Indicates if the cookie should be signed
+  };
+
+  const securePrefix = isDebug ? '' : '__Secure-'; // add secure flag if not debug
+  // Set cookie
+  res.cookie(`${securePrefix}jwt_token`, token, options);
+};
 
 export const loginUser = (req, res) => {
   const { username, password } = req.body;
@@ -13,6 +26,7 @@ export const loginUser = (req, res) => {
     .then((serverRes) => {
       const { data } = serverRes;
       const { token } = data;
+      createJwtCookie({res, token});
       return res.json({success: true, token});
     })
     .catch(() => {

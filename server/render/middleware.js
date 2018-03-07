@@ -3,7 +3,7 @@ import { createMemoryHistory, match } from 'react-router';
 import createRoutes from '../../app/routes';
 import configureStore from '../../app/utils/configureStore';
 import * as types from '../../app/actions/types';
-import { baseURL } from '../../app/config/app';
+import { baseURL, isDebug } from '../../app/config/app';
 import { REDIS_PREFIX } from '../config/app';
 import pageRenderer from './pageRenderer';
 import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
@@ -30,6 +30,13 @@ export default function render(req, res) {
   const history = createMemoryHistory();
   const store = configureStore({}, history);
   const routes = createRoutes(store);
+
+
+  const jwtToken = isDebug ? req.signedCookies['jwt_token'] : req.signedCookies['__Secure-jwt_token'];
+  if (jwtToken && jwtToken !== '') {
+    // validate JWT token first to help reduce confusion when it expires
+    store.dispatch({ type: types.LOGIN_COOKIE_SET, token: jwtToken }); // if prod we require HTTPS because of __Secure- therefore having this come down in the HTML of the page is ok!
+  }
 
   /*
    * From the react-router docs:
