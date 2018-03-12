@@ -11,6 +11,7 @@ const formBody = (config, field) => {
     });
   }
   const formData = configData[`input_${field.id}`] = field.value;
+  console.log('field: ', field);
   return formData;
 };
 

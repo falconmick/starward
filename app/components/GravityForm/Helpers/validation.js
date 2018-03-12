@@ -21,6 +21,11 @@ const isEmpty = (required, value) => {
 export const textValdation = (required, value) => {
   return isEmpty(required, value) ? false : true;
 };
+export const passwordValdation = (required, value, confirmValue) => {
+  const requiredPass = isEmpty(required, value) ? false : true;
+  const confirmMatch = value === confirmValue;
+  return requiredPass && confirmMatch;
+};
 export const selectValidation = (required, value, placeholder) => {
   return value === placeholder && required ? false : true;
 };

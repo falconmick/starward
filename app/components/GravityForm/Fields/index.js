@@ -6,5 +6,6 @@ export Radio from "./Radio";
 export Select from './Select';
 export Text from './Text';
 export Textarea from './Textarea';
+export Password from './Password';
 export Website from './Website';
 export Hidden from './Hidden';

@@ -81,8 +81,10 @@ export default(app) => {
   /* Get Page */
   /* Expects query param ?slug= */
   app.get('/api/page', (req, res) => {
+    const authorizationHeader = req.get('Authorization');
+    console.log('authorizationHeader: ', authorizationHeader); // todo: add token to each request via axios config
     wp(`
-      query get_page($slug: String, $preview: Int, $user: UserToken) {
+      query get_page($slug: String, $preview: Int) {
         active_page: page(slug: $slug, preview: $preview) {
           title,
           content,
