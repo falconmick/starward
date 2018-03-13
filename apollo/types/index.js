@@ -1,4 +1,4 @@
-import Acf from './Acf';
+import Acf, { resolvers as acfResolvers } from './Acf';
 import BetterFeaturedImage from './BetterFeaturedImage';
 import Category, { resolvers as categoryResolvers } from './Category';
 import Form, { resolvers as formResolvers } from './Form';
@@ -14,7 +14,7 @@ import Yoast from './Yoast';
 import { apolloModule } from '../utils/apolloModule';
 import { apolloBundle} from '../utils/apolloBundle';
 
-const AcfBundle = apolloBundle({type: Acf});
+const AcfBundle = apolloBundle({type: Acf, resolvers: acfResolvers});
 const BetterFeaturedImageBundle = apolloBundle({type: BetterFeaturedImage});
 const CategoryBundle = apolloBundle({type: Category, resolvers: categoryResolvers});
 const FormBundle = apolloBundle({type: Form, resolvers: formResolvers});

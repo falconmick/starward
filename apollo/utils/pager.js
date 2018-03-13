@@ -21,6 +21,10 @@ export const createIdFromArgs = (...args) => {
   return md5(csl).toString();
 };
 
+export const createPostPagerKey = ({page = '', perPage = '', query = ''}) => {
+  return `page:${page}:perPage:${perPage}:query:${query}`;
+};
+
 // wraps the data inside of a pagination based schema. the id
 // you pass down should be a combination of pagination data +
 // any query params used to get that data. The id must be unique

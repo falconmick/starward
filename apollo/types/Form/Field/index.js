@@ -12,7 +12,7 @@ import Choice from './Choice/index';
  */
 const Field = `
 type Field {
-  id: ID!
+  id: Int!
   label: String!
   type: String!
   isRequired: Boolean!

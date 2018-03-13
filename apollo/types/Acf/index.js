@@ -1,7 +1,10 @@
+import FlexibleContent from './FlexibleContent';
+
 const Acf = `
 type Acf {
-  layout: RawJson
+  layout: [FlexibleContent]!
 }
 `;
 
-export default () => [Acf];
+export default () => [Acf, FlexibleContent];
+export { resolvers } from './FlexibleContent';

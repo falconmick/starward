@@ -33,49 +33,19 @@ const pageQuery = gql`
     ${pageFragment.page}
 `;
 
-export const createCustomPage = ({gqlQueries = []}) => {
-  const queries = [];
-  // regular fetch
-  queries.push(
-    graphql(pageQuery, {
-      options: (props) => ({
-        variables: {splat: props.location.pathname},
-      }),
-      props: (props) => {
-        const { data, pageIsLoading } = props;
-        // if the network status is < 7 it means we are loading
-        const { networkStatus } = data;
-        const queryIsLoading = networkStatus < 7;
-        return {
-          ...props,
-          // if any past query or this query is loading, page is loading
-          pageIsLoading: pageIsLoading || queryIsLoading
-        };
-      }
-    })
-  );
-  // prefetch
-  gqlQueries.forEach(gqlQuery => {
-    const { query, getVariables } = gqlQuery;
-    queries.push(
-      graphql(query, {
-        options: (props) => ({
-          variables: getVariables(props),
-        }),
-        props: (props) => {
-          const { data, pageIsLoading } = props;
-          // if the network status is < 7 it means we are loading
-          const { networkStatus } = data;
-          const queryIsLoading = networkStatus < 7;
-          return {
-            // if any past query or this query is loading, page is loading
-            pageIsLoading: pageIsLoading || queryIsLoading
-          };
-        }
-      })
-    );
-  });
-  return compose(...queries)(Page);
-};
-
-export default createCustomPage({});
+export default graphql(pageQuery, {
+  options: (props) => ({
+    variables: {splat: props.location.pathname},
+  }),
+  props: (props) => {
+    const { data, pageIsLoading } = props;
+    // if the network status is < 7 it means we are loading
+    const { networkStatus } = data;
+    const queryIsLoading = networkStatus < 7;
+    return {
+      ...props,
+      // if any past query or this query is loading, page is loading
+      pageIsLoading: pageIsLoading || queryIsLoading
+    };
+  }
+})(Page);

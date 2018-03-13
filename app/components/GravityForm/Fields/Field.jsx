@@ -18,7 +18,7 @@ export const Field = props => {
 };
 
 Field.propTypes = {
-  htmlFor: PropTypes.string,
+  htmlFor: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   label: PropTypes.string.isRequired,
   isRequired: PropTypes.bool,
   children: PropTypes.node

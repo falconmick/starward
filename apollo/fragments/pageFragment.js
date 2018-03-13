@@ -1,11 +1,23 @@
 import gql from 'graphql-tag';
+import { formFragment } from './formFragment';
 
 export const pageFragment = {
   page: gql`
       fragment defaultPage on Page {
           title
           acf {
-              layout
+              layout {
+                  autoFields
+                  queryable {
+                      ... on FormSection {
+                          form {
+                              ...defaultForm
+                          }
+                          showDescription
+                          showTitle
+                      }
+                  }
+              }
           }
           yoast {
               focuskw
@@ -17,5 +29,6 @@ export const pageFragment = {
               redirect
           }
       }
+      ${formFragment.form}
   `,
 };

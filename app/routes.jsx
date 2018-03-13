@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 // Global URLs determined in app.js configuration
-import { BLOG_SLUG, CATEGORY_SLUG, AUTHOR_SLUG, SEARCH_SLUG } from './config/app';
+import { BLOG_SLUG, CATEGORY_SLUG, AUTHOR_SLUG } from './config/app';
 // Import containers used for below routes
 import App from './containers/App';
 import Page from './containers/Page';
@@ -9,10 +9,6 @@ import Blog from './containers/Blog';
 import BlogPost from './containers/BlogPost';
 import Category from './containers/Category';
 import Author from './containers/Author';
-// fetchWPData contains switch statement based on route name.
-// It determines which data to load for route on the server
-import { fetchWPData } from './fetch-data';
-import { FormPage } from './containers/FormPage';
 // Map paths to components
 // Dynamic params declared using :
 // Use name={} for switch statement in fetchData function
@@ -28,7 +24,6 @@ export default () => {
       <Route path={`/${CATEGORY_SLUG}/:slug/page/:page`} component={Category} name="Category" />
       <Route path={`/${AUTHOR_SLUG}/:name`} component={Author} name="Author" />
       <Route path={`/${AUTHOR_SLUG}/:name/page/:page`} component={Author} name="Author" />
-      <Route path="/preload-form" component={FormPage} formId="1" name="Page" />
       <Route path="*" component={Page} name="Page" />
     </Route>
   );

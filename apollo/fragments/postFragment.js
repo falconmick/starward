@@ -4,10 +4,12 @@ import { yoastFragment } from './yoastFragment';
 export const postFragment = {
   archives: gql`
       fragment archivePost on PostPager {
+          id
           page
           totalItems
           totalPages
           pageData {
+              id
               slug
               title
               excerpt

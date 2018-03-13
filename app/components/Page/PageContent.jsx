@@ -6,9 +6,13 @@ import { Title } from '../Content/Title';
 import { RenderContent } from '../Content/RenderContent';
 
 export const PageContent = props => {
-  const getComponent = (item, key) => {
-    const ComponentName = Layout[item.acf_fc_layout];
-    return <ComponentName key={key} {...item} />;
+  const getComponent = (layoutItem, key) => {
+    const { autoFields, queryable } = layoutItem;
+    const field = autoFields || queryable;
+    const { acf_fc_layout: acfLayout, __typename } = field;
+    const acfLayoutType = acfLayout || __typename;
+    const ComponentName = Layout[acfLayoutType];
+    return <ComponentName key={key} acfField={acfLayoutType} {...field} />;
   };
   const { acf, content, title, yoast, siteName } = props;
   if (!acf.layout && !content) return <FourOhFour />;

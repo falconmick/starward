@@ -1,7 +1,7 @@
 import { getCategories, getCategory } from './categoryQueries';
 import { resolveDashCase } from '../../utils/resolverTools';
 
-export const resolvers = {
+export const acfResolversresolvers = {
   RootQuery: {
     categories: getCategories,
     category: getCategory

@@ -1,6 +1,6 @@
 import { WP_URL, HOME_SLUG, WP_API } from '../../../app/config/app';
 import { getSlug, createWordpressGraphqlProxy, curryFindForSplat } from '../../utils/queryTools';
-import { createIdFromArgs, createPaginationCallback } from '../../utils/pager';
+import { createPostPagerKey, createPaginationCallback } from '../../utils/pager';
 import { cacheResolver } from '../../utils/redis';
 
 const wpPageProxy = createWordpressGraphqlProxy('wp/v2/pages');
@@ -26,7 +26,7 @@ export const pageSearchQuery = cacheResolver('pageSearchQuery')((obj, args) => {
   if (!query) {
     queryArgs = {};
   }
-  const id = createIdFromArgs(page, perPage, query);
+  const id = createPostPagerKey({page, perPage, query});
   const paginationCallback = createPaginationCallback(page, perPage, id);
   return wpPageProxy.selectPage({ dataCallback: paginationCallback, page, perPage, queryArgs });
 });

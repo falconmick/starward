@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+// make sure to include id from fields as it's required for form submtion currently
 export const formFragment = {
   form: gql`
       fragment defaultForm on Form {

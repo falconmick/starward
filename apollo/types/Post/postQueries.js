@@ -1,5 +1,5 @@
 import { createWordpressGraphqlProxy, resultArrayToSingle } from '../../utils/queryTools';
-import { createPaginationCallback, createIdFromArgs } from '../../utils/pager';
+import { createPaginationCallback, createPostPagerKey } from '../../utils/pager';
 import { cacheResolver } from '../../utils/redis';
 
 const wpPostProxy = createWordpressGraphqlProxy('wp/v2/posts');
@@ -12,7 +12,7 @@ export const getPosts = cacheResolver('getPosts')((obj, args) => {
   if (!query) {
     queryArgs = {};
   }
-  const id = createIdFromArgs(page, perPage, query);
+  const id = createPostPagerKey({page, perPage, query});
   const paginationCallback = createPaginationCallback(page, perPage, id);
   return wpPostProxy.selectPage({ dataCallback: paginationCallback, page, perPage, queryArgs });
 });
