@@ -36,9 +36,6 @@ export function submitForm(id, fields) {
     .then(({data}) => {
       if (data.success) dispatch({type: SUBMIT_FORM_SUCCESS, key: id });
     })
-    .catch(err => {
-      console.log(err);
-      dispatch({type: SUBMIT_FORM_FAILURE, key: id});
-    });
+    .catch(() => dispatch({type: SUBMIT_FORM_FAILURE, key: id}));
   };
 }

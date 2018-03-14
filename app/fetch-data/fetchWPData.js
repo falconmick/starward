@@ -39,7 +39,7 @@ const fetchWPData = (params, routeName, location) => {
     // Home container data
     case 'Home': {
       return getPage(HOME_SLUG, location.query)
-      .then((response) => ({ page: response.data.data.active_page }))
+      .then(({data}) => ({ page: data.data.active_page }))
       .catch(error => console.log('error', error));
     }
     // Page container data
