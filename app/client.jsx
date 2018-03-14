@@ -9,6 +9,7 @@ import configureStore from './utils/configureStore';
 import fetchDataForRoute from './utils/fetchDataForRoute';
 import fetchDataForApp from './utils/fetchDataForApp';
 import styles from '../public/assets/sass/styles.scss';
+import { jwtStoreListener } from './auth';
 
 // Grab the state from a global injected into
 // server-generated HTML
@@ -17,6 +18,9 @@ const initialState = window.__INITIAL_STATE__;
 const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 const routes = createRoutes(store);
+
+
+jwtStoreListener(store);
 
 function requestSuccess(state, appData) {
   fetchDataForRoute(state)

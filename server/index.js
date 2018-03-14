@@ -6,6 +6,7 @@ import { COOKIE_SIGNATURE } from './config/app';
 import initExpress from './init/express';
 import initStarwardRoutes from './init/api';
 import renderMiddleware from './render/middleware';
+import { authenticateBearerUser, initPassport, mustLoginXhrMiddleware } from './init/passport';
 
 const app = express();
 
@@ -24,6 +25,14 @@ if (isDebug) {
 
   app.use(require('webpack-hot-middleware')(compiler));
 }
+
+/*
+ * Setup JWT token validation
+ */
+// todo: add Cookie Strategy and remove custom JWT extraction from middleware.js
+initPassport();
+// all requests to /api/* must first authenticate (authenticateBearerUser), then must be authorised (mustLoginXhrMiddleware)
+app.all('/api/*', authenticateBearerUser, mustLoginXhrMiddleware);
 
 /*
  * Bootstrap application settings
@@ -49,6 +58,9 @@ initStarwardRoutes(app);
  * renderMiddleware matches the URL with react-router and renders the app into
  * HTML
  */
+// todo: create app.get('/login') to allow un-authorised users to login
+// todo: create authenticateCookieUser and mustLoginRequestHttpMiddleware to be used like app.all('/api/*
+// todo: mustLoginRequestHttpMiddleware will redirect all un-auth trafic to /login
 app.get('*', renderMiddleware);
 
 app.listen(app.get('port'));

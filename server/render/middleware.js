@@ -33,9 +33,15 @@ export default function render(req, res) {
 
 
   const jwtToken = isDebug ? req.signedCookies['jwt_token'] : req.signedCookies['__Secure-jwt_token'];
+  let axiosInstance;
   if (jwtToken && jwtToken !== '') {
     // validate JWT token first to help reduce confusion when it expires
     store.dispatch({ type: types.LOGIN_COOKIE_SET, token: jwtToken }); // if prod we require HTTPS because of __Secure- therefore having this come down in the HTML of the page is ok!
+    axiosInstance = axios.create({
+      headers: { common: { Authorization: `Bearer ${jwtToken}`} },
+    });
+  } else {
+    axiosInstance = axios.create();
   }
 
   /*
@@ -62,7 +68,7 @@ export default function render(req, res) {
 
   function requestSuccess(props, appData) {
     store.dispatch({ type: types.CREATE_REQUEST });
-    fetchDataForRoute(props)
+    fetchDataForRoute(props, axiosInstance)
       .then(data => {
         const status = data && data.handle404 ? 404 : 200;
         store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} });
@@ -88,7 +94,7 @@ export default function render(req, res) {
         if (result) {
           res.status(200).send(result);
         } else if (props.routes[0].name === 'App') {
-          fetchDataForApp(props)
+          fetchDataForApp(props, axiosInstance)
             .then(settings => {
               requestSuccess(props, settings);
             });

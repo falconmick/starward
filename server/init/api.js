@@ -82,7 +82,7 @@ export default(app) => {
   /* Expects query param ?slug= */
   app.get('/api/page', (req, res) => {
     wp(`
-      query get_page($slug: String, $preview: Int, $user: UserToken) {
+      query get_page($slug: String, $preview: Int) {
         active_page: page(slug: $slug, preview: $preview) {
           title,
           content,

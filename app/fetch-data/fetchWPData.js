@@ -2,21 +2,21 @@ import axios from 'axios';
 import { wpService } from './services';
 import { SITE_NAME, HOME_SLUG, BLOG_SLUG, POSTS_PER_PAGE } from '../config/app';
 
-// GraphQL WP API Services using axios.get() https://github.com/mzabriskie/axios#example
-const {
-  getSettings,
-  getMenu,
-  getPage,
-  getPosts,
-  getPost,
-  getCategory,
-  getAuthor,
-  getSearchResults
-} = wpService;
 
 const handle404 = () => ({handle404: true});
 
-const fetchWPData = (params, routeName, location) => {
+const fetchWPData = (params, routeName, location, axiosInstance = axios.create()) => {
+// GraphQL WP API Services using axios.get() https://github.com/mzabriskie/axios#example
+  const {
+    getSettings,
+    getMenu,
+    getPage,
+    getPosts,
+    getPost,
+    getCategory,
+    getAuthor,
+    getSearchResults
+  } = wpService(axiosInstance);
   // Switch statement on routeName from routes.jsx
   switch (routeName) {
     // App component data using axios.all() https://github.com/mzabriskie/axios#example
