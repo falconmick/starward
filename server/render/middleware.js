@@ -31,14 +31,17 @@ export default function render(req, res) {
   const store = configureStore({}, history);
   const routes = createRoutes(store);
 
-
-  const jwtToken = isDebug ? req.signedCookies['jwt_token'] : req.signedCookies['__Secure-jwt_token'];
+  const { user, cookieAuthenticated } = req;
   let axiosInstance;
-  if (jwtToken && jwtToken !== '') {
-    // validate JWT token first to help reduce confusion when it expires
-    store.dispatch({ type: types.LOGIN_COOKIE_SET, token: jwtToken }); // if prod we require HTTPS because of __Secure- therefore having this come down in the HTML of the page is ok!
+
+  // if the user is authenticated via cookies, copy that JWT token to the redux store so that
+  // the user may use this cookie when they make XHR requests
+  // also creae an axiosInstance which uses their auth on their behalf when SSR pages
+  if (cookieAuthenticated) {
+    const { jwt } = user;
+    store.dispatch({ type: types.LOGIN_COOKIE_SET, token: jwt }); // if prod we require HTTPS because of __Secure- therefore having this come down in the HTML of the page is ok!
     axiosInstance = axios.create({
-      headers: { common: { Authorization: `Bearer ${jwtToken}`} },
+      headers: { common: { Authorization: `Bearer ${jwt}`} },
     });
   } else {
     axiosInstance = axios.create();

@@ -1,17 +1,22 @@
 import axios from 'axios';
 import { WP_API, COOKIE_EXPIRE_AFTER } from '../config/app';
 import { isDebug } from '../../app/config/app';
+import { extractUser } from './extractUser';
 
 const createJwtCookie = ({res, token}) => {
-  const options = {
-    maxAge: COOKIE_EXPIRE_AFTER,
-    httpOnly: true, // The cookie only accessible by the web server
-    signed: true // Indicates if the cookie should be signed
-  };
+  return extractUser(token)
+    .then(user => {
+      const { exp } = user;
+      const options = {
+        expires: new Date(exp * 1000), // expire the cookie once the token is expired
+        httpOnly: true, // The cookie only accessible by the web server
+        signed: true // Indicates if the cookie should be signed
+      };
 
-  const securePrefix = isDebug ? '' : '__Secure-'; // add secure flag if not debug
-  // Set cookie
-  res.cookie(`${securePrefix}jwt_token`, token, options);
+      const securePrefix = isDebug ? '' : '__Secure-'; // add secure flag if not debug
+      // Set cookie
+      res.cookie(`${securePrefix}jwt_token`, token, options);
+    });
 };
 
 export const loginUser = (req, res) => {
@@ -26,8 +31,10 @@ export const loginUser = (req, res) => {
     .then((serverRes) => {
       const { data } = serverRes;
       const { token } = data;
-      createJwtCookie({res, token});
-      return res.json({success: true, token});
+      createJwtCookie({res, token})
+        .then(() => {
+          return res.json({success: true, token});
+        });
     })
     .catch(() => {
       res.status(401);

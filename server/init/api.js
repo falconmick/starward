@@ -4,6 +4,8 @@ import { serversideStateCharacterBlacklistRegex, WP_URL, REDIS_PREFIX } from '..
 import { createRedisClient } from '../redis';
 import { submitForm } from './gravitySubmit';
 import { loginUser } from '../wpJwt';
+import { authenticateBearerUser } from './passport';
+import { mustLoginXhrMiddleware } from '../utility/auth';
 
 /* ----------- App API Helpers ----------- */
 const client = createRedisClient(REDIS_PREFIX);
@@ -23,16 +25,39 @@ const sanitizeJSON = (json) => {
 };
 /* Handle success and sanitize JSON response */
 const handleSuccess = (res) => {
-  return (data) => res.json(sanitizeJSON(data));
+  return (data) => {
+    return res.json(sanitizeJSON(data));
+  };
 };
 /* Handle error */
 const handleError = (res) => {
-  return (error) => res.json(error);
+  return (error) => {
+    return res.json(error);
+  };
 };
 
+// How to add per page/post Authorisation
+//
+// if you wish to make per-page Authorisation requirements, I would recomend that you
+// create another acf field called authorisation in which you can let the page/post
+// returning data also return any claim/authorisation requirements. the graphQLfunc that
+// we currently have down here would need to use a modified handleSuccess that instead
+// of calling res.json, saves the result to req.queryResult and then graphQlAuthorise
+// would look for any authorisation requirements inside of req.queryResult, calling
+// res.json(req.queryResult) if Authorisation didn't exist for page OR requirements were met
+// and it would return a 403 if logged in, but not enough permisions or 401 (with WWW-Authenticate) if they're not logged
+// in and they should!
+//
+// for example: app.get('/api/page', graphQLfunc, graphQlAuthorise);
+//
 /* ----------- Express ----------- */
-
 export default(app) => {
+  // login is excluded from the '/api/*' clause because the user can't login if it's not authorised to view this route
+  app.post('/api/login', (req, res) => loginUser(req, res));
+  // all requests to /api/* must first authenticate (authenticateBearerUser), then must be authorised (mustLoginXhrMiddleware)
+  // to allow for people to view parts of the site not logged in you must remove mustLoginXhrMiddleware and implement the above
+  // app.all('/api/*', authenticateBearerUser, mustLoginXhrMiddleware);
+
   /* ----------- App API Routes ----------- */
   /* Get Site Name and Description */
   /* Does not require a query param */
@@ -342,8 +367,5 @@ export default(app) => {
       if (err) return res.json({error: err});
       return res.json({success: true});
     });
-  });
-  app.post('/api/login', (req, res) => {
-    return loginUser(req, res);
   });
 };
