@@ -5,13 +5,17 @@ import {
   UPDATE_FORM,
   SUBMIT_FORM,
   SUBMIT_FORM_SUCCESS,
-  SUBMIT_FORM_FAILURE
+  SUBMIT_FORM_FAILURE,
+  REQUEST_SUCCESS
 } from '../actions/types/';
 
 const INITIAL_STATE = {};
 
 const isValid = (fields) => {
-  if (fields.length > 0) return Object.keys(fields).every(key => fields[key].valid);
+  const nonNullFields = fields.filter(field => field);
+  if (fields.length > 0) {
+    return Object.keys(nonNullFields).every(key => nonNullFields[key].valid);
+  }
   return false;
 };
 
@@ -35,6 +39,22 @@ export default function (state = INITIAL_STATE, action) {
         formValues: []
       }
     };
+  case REQUEST_SUCCESS: {
+    const { gravityForm } = action.payload;
+
+    if (!gravityForm) {
+      return state;
+    }
+    return {
+      ...state,
+      [gravityForm.key]: {
+        activeForm: gravityForm.payload,
+        submitSuccess: false,
+        loading: false,
+        formValues: []
+      }
+    };
+  }
   case GET_FORM_FAILURE:
     return {
       ...state,

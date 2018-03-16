@@ -32,7 +32,7 @@
     "webpack-bundle-analyzer": "^2.8.3"
   },
   "engines": {
-     "node": "4.x || 5.x || 6.x || 7.x || 8.x || 9.x"
+    "node": "4.x || 5.x || 6.x || 7.x || 8.x || 9.x"
   },
   "dependencies": {
     "autoprefixer": "^6.7.0",
@@ -54,7 +54,9 @@
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.0",
     "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
     "cross-env": "^2.0.1",
+    "crypto-js": "^3.1.9-1",
     "css-loader": "^0.26.1",
     "es6-promise": "^3.1.2",
     "express": "^4.13.4",
@@ -65,12 +67,16 @@
     "graphql_json": "^1.0.0",
     "helmet": "^2.1.2",
     "json-loader": "^0.5.4",
+    "jsonwebtoken": "^8.2.0",
     "method-override": "^2.3.5",
     "moment": "^2.17.1",
     "node-neat": "^1.7.2",
     "node-sass": "^4.3.0",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
     "postcss-loader": "^1.2.2",
     "precss": "^1.4.0",
+    "prop-types": "^15.6.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-helmet": "^3.2.2",

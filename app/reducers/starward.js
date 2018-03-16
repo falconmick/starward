@@ -18,8 +18,12 @@ export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
   case RESET_404:
     return { ...state, handle404: false };
-  case REQUEST_SUCCESS:
-    return { ...state, ...action.payload };
+  case REQUEST_SUCCESS: {
+    // remove fields that are not resolved into the starward
+    // chunk, for example forms!
+    const { gravityForm, ...restPayload } = action.payload;
+    return { ...state, ...restPayload };
+  }
   case UPDATE_STARWARD_STATE:
     return { ...state, starwardUpdating: true };
   case UPDATE_STARWARD_STATE_SUCCESS:

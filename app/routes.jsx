@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 // Global URLs determined in app.js configuration
-import { BLOG_SLUG, CATEGORY_SLUG, AUTHOR_SLUG, SEARCH_SLUG } from './config/app';
+import { BLOG_SLUG, CATEGORY_SLUG, AUTHOR_SLUG, SEARCH_SLUG, LOGIN_SLUG, LOGIN_FORM_ID } from './config/app';
 // Import containers used for below routes
 import App from './containers/App';
 import Page from './containers/Page';
@@ -29,6 +29,7 @@ export default () => {
       <Route path={`/${AUTHOR_SLUG}/:name`} component={Author} name="Author" fetchData={fetchWPData} />
       <Route path={`/${AUTHOR_SLUG}/:name/page/:page`} component={Author} name="Author" fetchData={fetchWPData} />
       <Route path={`/${SEARCH_SLUG}`} component={Search} name="Search" fetchData={fetchWPData} />
+      <Route path={`/${LOGIN_SLUG}`} component={Page} loginFormId={LOGIN_FORM_ID} name="Login" fetchData={fetchWPData} />
       <Route path="*" component={Page} name="Page" fetchData={fetchWPData} />
     </Route>
   );

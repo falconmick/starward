@@ -27,7 +27,9 @@ class GravityForm extends Component {
     return 'active';
   }
   updateFormHandler(value, field, valid) {
-    this.props.updateForm(value, field, valid, this.props.formId);
+    if (value !== null) {
+      this.props.updateForm(value, field, valid, this.props.formId);
+    }
   }
   submit(event) {
     event.preventDefault();
@@ -92,4 +94,26 @@ const mapStateToProps = ({gravityforms}) => {
   };
 };
 
-export default connect(mapStateToProps, { getForm, updateForm, submitForm })(GravityForm);
+// lets us control how the state, dispatch and props passed to this HOC merge
+// if the user submits a stateProps this lets us override the one that dispatchProps creates
+// see doco on how this works here: https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
+// basically if you don't have this by default: {...ownProps, ...stateProps, ...dispatchProps} // which causes dispatch to override state and state to override props
+//
+// submitForm passed to GravityForms must curry some config in first submitForm(options)(...formSubmitArgs)
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  const { submitForm: submitFormProps, formId } = ownProps;
+  const { gravityforms } = stateProps;
+  const { submitForm: dispatchSubmitForm } = dispatchProps;
+
+  if (typeof submitFormProps !== 'undefined') {
+    const submitFormOverride = submitFormProps({
+      submitForm: dispatchSubmitForm,
+      gravityForm: gravityforms[formId],
+    });
+    return { ...ownProps, ...stateProps, ...dispatchProps, submitForm: submitFormOverride };
+  }
+  return { ...ownProps, ...stateProps, ...dispatchProps };
+};
+
+export default connect(mapStateToProps, { getForm, updateForm, submitForm }, mergeProps)(GravityForm);
+

@@ -8,6 +8,8 @@ export const BLOG_SLUG = 'blog';
 export const CATEGORY_SLUG = 'category';
 export const AUTHOR_SLUG = 'author';
 export const SEARCH_SLUG = 'search';
+export const LOGIN_SLUG = 'login';
+export const LOGIN_FORM_ID = '1';
 
 // Starward
 export const baseURL = `http://${HOST}:${PORT}`;

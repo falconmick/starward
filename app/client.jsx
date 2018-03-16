@@ -9,6 +9,8 @@ import configureStore from './utils/configureStore';
 import fetchDataForRoute from './utils/fetchDataForRoute';
 import fetchDataForApp from './utils/fetchDataForApp';
 import styles from '../public/assets/sass/styles.scss';
+import { jwtStoreListener } from './auth';
+import { LOGIN_SLUG } from './config/app';
 
 // Grab the state from a global injected into
 // server-generated HTML
@@ -18,9 +20,21 @@ const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 const routes = createRoutes(store);
 
+
+jwtStoreListener(store);
+
 function requestSuccess(state, appData) {
   fetchDataForRoute(state)
-  .then(data => store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} }));
+  .then(data => store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} }))
+  .catch(err => {
+    const { response } = err || {};
+    const { headers } = response || {};
+    const wwwAuthenticate = headers['www-authenticate'];
+
+    if (wwwAuthenticate) { // if we are told to authenticate, i.e. we got a 401
+      window.location.href = `/${LOGIN_SLUG}`;
+    }
+  });
 }
 
 /**
@@ -46,6 +60,9 @@ function onUpdate() {
     fetchDataForApp(this.state)
     .then(settings => {
       requestSuccess(this.state, settings);
+    })
+    .catch(err => {
+      console.log(err);
     });
   } else {
     requestSuccess(this.state);

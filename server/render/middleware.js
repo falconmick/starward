@@ -3,7 +3,7 @@ import { createMemoryHistory, match } from 'react-router';
 import createRoutes from '../../app/routes';
 import configureStore from '../../app/utils/configureStore';
 import * as types from '../../app/actions/types';
-import { baseURL } from '../../app/config/app';
+import { baseURL, LOGIN_SLUG } from '../../app/config/app';
 import { REDIS_PREFIX } from '../config/app';
 import pageRenderer from './pageRenderer';
 import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
@@ -31,6 +31,22 @@ export default function render(req, res) {
   const store = configureStore({}, history);
   const routes = createRoutes(store);
 
+  const { user, cookieAuthenticated } = req;
+  let axiosInstance;
+
+  // if the user is authenticated via cookies, copy that JWT token to the redux store so that
+  // the user may use this cookie when they make XHR requests
+  // also creae an axiosInstance which uses their auth on their behalf when SSR pages
+  if (cookieAuthenticated) {
+    const { jwt } = user;
+    store.dispatch({ type: types.LOGIN_COOKIE_SET, token: jwt }); // if prod we require HTTPS because of __Secure- therefore having this come down in the HTML of the page is ok!
+    axiosInstance = axios.create({
+      headers: { common: { Authorization: `Bearer ${jwt}`} },
+    });
+  } else {
+    axiosInstance = axios.create();
+  }
+
   /*
    * From the react-router docs:
    *
@@ -55,7 +71,7 @@ export default function render(req, res) {
 
   function requestSuccess(props, appData) {
     store.dispatch({ type: types.CREATE_REQUEST });
-    fetchDataForRoute(props)
+    fetchDataForRoute(props, axiosInstance)
       .then(data => {
         const status = data && data.handle404 ? 404 : 200;
         store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} });
@@ -67,8 +83,20 @@ export default function render(req, res) {
         if (!isPreview) redisClient.setex(redisKey, redisConfig.redisLongExpiry, html);
       })
       .catch(err => {
-        console.error(err);
-        res.status(500).json(err);
+        // if(err.statuscode) {
+        //
+        // }
+        const { response } = err || {};
+        const { headers } = response || {};
+        const wwwAuthenticate = headers['www-authenticate'];
+
+        // if the request was un-authorised due to the page XHR request returning 401
+        if (wwwAuthenticate === 'Bearer realm="page"') {
+          res.status(401).redirect(`/${LOGIN_SLUG}`);
+        } else {
+          console.error(err);
+          res.status(500).json(err);
+        }
       });
   }
   match({routes, location: req.url}, (err, redirect, props) => {
@@ -81,7 +109,7 @@ export default function render(req, res) {
         if (result) {
           res.status(200).send(result);
         } else if (props.routes[0].name === 'App') {
-          fetchDataForApp(props)
+          fetchDataForApp(props, axiosInstance)
             .then(settings => {
               requestSuccess(props, settings);
             });

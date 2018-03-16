@@ -18,7 +18,7 @@ export default class Text extends Component {
   }
   render() {
     const { field, value, submitFailed, isValid } = this.props;
-    const { id, type, label, classes, placeholder, required, maxLength } = field;
+    const { id, type, label, classes, placeholder, required, maxLength, enablePasswordInput } = field;
     return (
       <div className={!isValid && submitFailed ? `field error ${classes}` : `field ${classes}`}>
         <div className="text">
@@ -26,7 +26,7 @@ export default class Text extends Component {
             {label}{required ? <abbr>*</abbr> : null}
             <input
               name={id}
-              type={type}
+              type={enablePasswordInput ? 'password' : type}
               value={!value ? '' : value}
               placeholder={placeholder}
               maxLength={maxLength}
