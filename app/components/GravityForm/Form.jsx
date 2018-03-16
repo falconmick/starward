@@ -27,7 +27,9 @@ class GravityForm extends Component {
     return 'active';
   }
   updateFormHandler(value, field, valid) {
-    this.props.updateForm(value, field, valid, this.props.formId);
+    if (value !== null) {
+      this.props.updateForm(value, field, valid, this.props.formId);
+    }
   }
   submit(event) {
     event.preventDefault();

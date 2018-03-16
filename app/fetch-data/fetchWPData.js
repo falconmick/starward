@@ -1,11 +1,16 @@
 import axios from 'axios';
 import { wpService } from './services';
-import { SITE_NAME, HOME_SLUG, BLOG_SLUG, POSTS_PER_PAGE } from '../config/app';
+import { SITE_NAME, HOME_SLUG, BLOG_SLUG, POSTS_PER_PAGE, LOGIN_SLUG } from '../config/app';
 
 
 const handle404 = () => ({handle404: true});
 
-const fetchWPData = (params, routeName, location, axiosInstance = axios.create()) => {
+const requestError = (err) => {
+  console.log('err: ', err);
+  throw err;
+};
+
+const fetchWPData = (params, routeName, location, axiosInstance = axios.create(), routeProps) => {
 // GraphQL WP API Services using axios.get() https://github.com/mzabriskie/axios#example
   const {
     getSettings,
@@ -15,7 +20,8 @@ const fetchWPData = (params, routeName, location, axiosInstance = axios.create()
     getPost,
     getCategory,
     getAuthor,
-    getSearchResults
+    getSearchResults,
+    getForm
   } = wpService(axiosInstance);
   // Switch statement on routeName from routes.jsx
   switch (routeName) {
@@ -34,13 +40,15 @@ const fetchWPData = (params, routeName, location, axiosInstance = axios.create()
         settings: !settings.data.data.settings ? { name: SITE_NAME } : settings.data.data.settings,
         headerMenu: headerMenu.data.data.menu
       }))
-      .catch(error => console.log('error', error));
+      .catch(requestError);
     }
     // Home container data
     case 'Home': {
       return getPage(HOME_SLUG, location.query)
-      .then(({data}) => ({ page: data.data.active_page }))
-      .catch(error => console.log('error', error));
+      .then(({data}) => {
+        return { page: data.data.active_page };
+      })
+      .catch(requestError);
     }
     // Page container data
     case 'Page': {
@@ -55,7 +63,32 @@ const fetchWPData = (params, routeName, location, axiosInstance = axios.create()
         // Return page data
         return ({ page: data.data.active_page });
       })
-      .catch(error => console.log('error', error));
+      .catch(requestError);
+    }
+    // Page container data
+    case 'Login': {
+      const { loginFormId } = routeProps;
+      const splat = LOGIN_SLUG;
+      const pathArray = splat.split('/');
+      const slug = pathArray[pathArray.length - 1];
+      return axios.all([
+        getPage(slug, location.query),
+        getForm(loginFormId),
+      ])
+      .then(([
+         page,
+         form
+      ]) => {
+        // Check that WP splat and Starward splat match else handle 404
+        const starwardSplat = `/${splat}/`;
+        const wpSplat = page.data.data.active_page ? page.data.data.active_page.link : '/';
+        if (wpSplat !== starwardSplat) return handle404();
+
+        const gravityForm = {payload: form.data.data.form, key: loginFormId };
+        // Return page data
+        return ({ page: page.data.data.active_page, gravityForm });
+      })
+      .catch(requestError);
     }
     // Blog container data
     case 'Blog': {
@@ -72,7 +105,7 @@ const fetchWPData = (params, routeName, location, axiosInstance = axios.create()
         page: page.data.data.active_page,
         posts: posts.data.data.posts
       }))
-      .catch(error => console.log('error', error));
+      .catch(requestError);
     }
     // BlogPost container data
     case 'BlogPost': {
@@ -80,7 +113,7 @@ const fetchWPData = (params, routeName, location, axiosInstance = axios.create()
       .then(({data}) => {
         return { activePost: data.data.activePost };
       })
-      .catch(error => console.log('error', error));
+      .catch(requestError);
     }
     // Category container data
     case 'Category': {
@@ -89,7 +122,7 @@ const fetchWPData = (params, routeName, location, axiosInstance = axios.create()
       .then(res => {
         return res.data.data;
       })
-      .catch(error => console.log('error', error));
+      .catch(requestError);
     }
     // Author container data
     case 'Author': {
@@ -98,7 +131,7 @@ const fetchWPData = (params, routeName, location, axiosInstance = axios.create()
       .then(res => {
         return res.data.data;
       })
-      .catch(error => console.log('error', error));
+      .catch(requestError);
     }
     // Search container data
     case 'Search': {
@@ -107,7 +140,8 @@ const fetchWPData = (params, routeName, location, axiosInstance = axios.create()
         return {
           search: res.data.data.search
         };
-      });
+      })
+      .catch(requestError);
     }
     default:
       return ({handleNotFound: '404'});

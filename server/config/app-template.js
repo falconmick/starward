@@ -11,3 +11,4 @@ export const REDIS_PREFIX = null; // change me to your project name, for example
 
 // General
 export const serversideStateCharacterBlacklistRegex = /\u2028/g;
+export const ENABLE_AUTH = true;

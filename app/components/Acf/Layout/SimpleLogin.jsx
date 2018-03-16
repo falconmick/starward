@@ -1,11 +1,11 @@
 import React from 'react';
 import { LoginPrompt } from '../../Common/LoginPrompt';
+import { LOGIN_FORM_ID } from '../../../config/app';
 
-export const SimpleLogin = props => {
-  const { loginFormId } = props;
+export const SimpleLogin = () => {
   return (
     <section className="about_us">
-      <LoginPrompt formId={loginFormId} />
+      <LoginPrompt formId={LOGIN_FORM_ID} />
     </section>
   );
 };

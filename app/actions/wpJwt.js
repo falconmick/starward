@@ -25,6 +25,7 @@ export const login = ({fields, formId}) => {
           if (submitGravityActions) {
             dispatch({type: SUBMIT_FORM_SUCCESS, key: formId });
           }
+          window.location.href = '/';
         }
       })
       .catch(() => {

@@ -3,7 +3,7 @@ import { createMemoryHistory, match } from 'react-router';
 import createRoutes from '../../app/routes';
 import configureStore from '../../app/utils/configureStore';
 import * as types from '../../app/actions/types';
-import { baseURL, isDebug } from '../../app/config/app';
+import { baseURL, LOGIN_SLUG } from '../../app/config/app';
 import { REDIS_PREFIX } from '../config/app';
 import pageRenderer from './pageRenderer';
 import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
@@ -83,8 +83,20 @@ export default function render(req, res) {
         if (!isPreview) redisClient.setex(redisKey, redisConfig.redisLongExpiry, html);
       })
       .catch(err => {
-        console.error(err);
-        res.status(500).json(err);
+        // if(err.statuscode) {
+        //
+        // }
+        const { response } = err || {};
+        const { headers } = response || {};
+        const wwwAuthenticate = headers['www-authenticate'];
+
+        // if the request was un-authorised due to the page XHR request returning 401
+        if (wwwAuthenticate === 'Bearer realm="page"') {
+          res.status(401).redirect(`/${LOGIN_SLUG}`);
+        } else {
+          console.error(err);
+          res.status(500).json(err);
+        }
       });
   }
   match({routes, location: req.url}, (err, redirect, props) => {

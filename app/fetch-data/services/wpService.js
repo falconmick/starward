@@ -5,6 +5,7 @@ const wpService = axios => {
   // List of GraphQL API endpoints and axios.get() requests - https://github.com/mzabriskie/axios#example
   const settingsApi = axios.get(`${ROOT_API}/settings/`);
   const menuApi = (name) => axios.get(`${ROOT_API}/menu?name=${name}`);
+  const formApi = (formId) => axios.get(`${ROOT_API}/gravityforms?id=${formId}`);
   const pageApi = (slug, queries) => {
     if (queries.preview_id) {
       return axios.get(`${ROOT_API}/page?slug=${slug}&preview=${queries.preview_id}`);
@@ -25,6 +26,7 @@ const wpService = axios => {
   return {
     getSettings: () => settingsApi,
     getMenu: (name) => menuApi(name),
+    getForm: (formId) => formApi(formId),
     getPage: (slug, queries) => pageApi(slug, queries),
     getPosts: (page, perPage) => postsApi(page, perPage),
     getPost: (slug, queries) => postApi(slug, queries),
