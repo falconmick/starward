@@ -77,10 +77,6 @@ export default function render(req, res) {
         store.dispatch({ type: types.REQUEST_SUCCESS, payload: {...data, ...appData} });
         const html = pageRenderer(store, props);
         res.status(status).send(html);
-        const redisKey = props.location.pathname;
-        const isPreview = props.location.query.preview;
-        // update cache with html after returning it to the client so they don't need to wait
-        if (!isPreview) redisClient.setex(redisKey, redisConfig.redisLongExpiry, html);
       })
       .catch(err => {
         // if(err.statuscode) {
@@ -105,18 +101,14 @@ export default function render(req, res) {
     } else if (redirect) {
       res.redirect(302, redirect.pathname + redirect.search);
     } else if (props) {
-      redisClient.get(props.location.pathname, (error, result) => {
-        if (result) {
-          res.status(200).send(result);
-        } else if (props.routes[0].name === 'App') {
-          fetchDataForApp(props, axiosInstance)
-            .then(settings => {
-              requestSuccess(props, settings);
-            });
-        } else {
-          requestSuccess(props);
-        }
-      });
+      if (props.routes[0].name === 'App') {
+        fetchDataForApp(props, axiosInstance)
+          .then(settings => {
+            requestSuccess(props, settings);
+          });
+      } else {
+        requestSuccess(props);
+      }
     } else {
       res.sendStatus(404);
     }
