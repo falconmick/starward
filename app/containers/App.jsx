@@ -45,7 +45,7 @@ const menuQuery = gql`
 
   query headerMenu($slug:String!)
   {
-    headerMenu: menuItems(slug: $slug) {
+    headerMenu: menuItem(slug: $slug) {
       ...menuFragment
       children {
         ...menuFragment

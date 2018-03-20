@@ -10,7 +10,7 @@
   }
 
  {
-   headerMenu: menuItems(slug:"primary_navigation") {
+   headerMenu: menuItem(slug:"primary_navigation") {
      ...menuFragment
      children {
        ...menuFragment

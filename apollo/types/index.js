@@ -32,7 +32,7 @@ const rootQuery = `
   settings: Settings
   page(splat: String): Page
   pages(query: String, page: Int, perPage: Int): PagePager
-  menuItems(slug: String): [MenuItem]
+  menuItem(slug: String): [MenuItem]
   categories(listOfIds:[Int!]): [Category]
   category(id: Int!): Category
   post(slug: String!): Post
@@ -50,5 +50,5 @@ const rootMutation = `
 `;
 
 export const inbuiltModule = apolloModule(AcfBundle, BetterFeaturedImageBundle, CategoryBundle, FormBundle, MediaBundle,
-  MenuItemBundle, PageBundle, PostBundle, SettingsBundle, SubmittedFormBundle, TagBundle, UserBundle, YoastBundle)(rootQuery)(rootMutation);
+  MenuItemBundle, PageBundle, PostBundle, SettingsBundle, SubmittedFormBundle, TagBundle, UserBundle, YoastBundle)({rootQuery, rootMutation});
 

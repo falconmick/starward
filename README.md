@@ -7,7 +7,6 @@
 ## Features:
 - [**ReactJS**](https://facebook.github.io/react/)
 - [**Universal**](https://medium.com/@ghengeveld/isomorphism-vs-universal-javascript-4b47fb481beb#.4x2t3jlmx) rendering :earth_asia:
-- [**GraphQL**](http://graphql.org/learn/)
 - [**Redis**](https://redis.io/) page caching
 - [**WP REST API v2**](http://v2.wp-api.org/)
 - [**Redux**](https://github.com/reactjs/redux)
@@ -17,6 +16,7 @@
 - [**Redux-Devtools Chrome Extension**](https://github.com/zalmoxisus/redux-devtools-extension)
 - [**Webpack**](https://github.com/webpack/webpack)
 - [**Express 4.x**](https://expressjs.com/en/api.html) server
+- [**Apollo GraphQL**](http://apollodata.com)
 
 ## Wordpress Dependencies
 Requires a Wordpress setup using the following plugins:
@@ -43,19 +43,22 @@ Optional supported plugins
 Rename `/app/config/app-template.js` to `/app/config/app.js`
 
 - `SITE_NAME` fallback site name if ACF options page is unavailable
+- `WP_URL` root URL of Wordpress installation
+- `WP_API` root of WP API *(does not require changing from default)*
 - `POSTS_PER_PAGE` number of posts to be shown on blog, category and author listing pages, default **10**
 - `HOME_SLUG` WP slug for front page, default **homepage**
 - `BLOG_SLUG` WP slug for posts page, default **blog**
 - `CATEGORY_SLUG` desired root slug for category pages, default **category**
 - `AUTHOR_SLUG` desired root slug for author pages, default **author**
-- `ROOT_API` GraphQL root URL *(does not require changing from default)*
+- `baseURL` Starward hostname
+- `ROOT_API` API endpoint for non GraphQL queries
+- `GRAPHQL_ENDPOINT` All GraphQL queries are sent here
+
 
 #### Server Config (contains secrets, don't include inside client/front end code)
 Rename `/server/config/app-template.js` to `/server/config/app.js`
-- `WP_URL` root URL of Wordpress installation
-- `WP_API` root of WP API *(does not require changing from default)*
-- `WP_AUTH` Basic auth details for API/developer user, used for submissions of Gravity Forms - **Don't expose to front end**
 - `REDIS_PREFIX` Prefix for redis keys to avoid key clashes during development (required in production unless you disable redis via ENV variables)
+- `GRAVITY_PUBLIC/GRAVITY_PRIVATE` keys used to sign all calls to Gravity Forms API, find these in Gravity Forms API settings (you must enable API)
 
 ### Redis Setup
 
@@ -124,48 +127,6 @@ Adheres to the same name spacing as the core app/containers folders, each partia
 
 Contains Bourbon and Bourbon Neat and any other vendor specific styling
 
-### GraphQL
-
-All data from WP-API is consumed in GraphQL with the help of Graph.ql (https://github.com/matthewmueller/graph.ql), which returns a smaller, more succinct response using Express. The purpose is to reduce the amount of JSON contained within the initial state that gets supplied to the document by the server when running universally.
-
-The GraphQL schemas and queries are located within `/graphQL`
-
-The GraphQL API endpoints are defined within `server/init/api.js`
-
-Out of the box the following API requests can be made to the API server `localhost:3000/api` and can be extended by adding additional GraphQL schema within `/graphQL`:
-
 #### Get site settings from ACF PRO options page
 
 Pulls data from a [custom option page](https://www.advancedcustomfields.com/resources/options-page/) containing the following ACF fields `/wp/ACF/settings_option_page.json`
-
-`GET: api/settings`
-
-#### Get a page
-
-`GET: api/page?slug=*`
-
-#### Get a post
-
-`GET: api/post?slug=*`
-
-#### Get collection of posts
-
-`GET: api/posts?page=*`
-
-#### Get a category and list of posts
-
-`GET: api/category?slug=*&page=*`
-
-#### Get an author and list of posts
-
-`GET: api/author?name=*&page=*`
-
-#### Get results from a search request
-
-`GET: api/search?term=SEARCH_TERM&type=posts&page=1&perPage=10`
-
-#### Get a Gravity Form
-
-`GET: api/gravityforms?id=*`
-
-*Please note submitting the Gravity Form is handled by a direct API post request to the WP GF API v2 service inside an action, please view app/actions/gravityforms.js*

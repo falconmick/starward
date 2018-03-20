@@ -1,4 +1,4 @@
-import { getForm } from '../../../Form/formQueries';
+import { getForm } from '../../../../../apollo/types/Form/formQueries';
 
 export const resolvers = {
   FormSection: {

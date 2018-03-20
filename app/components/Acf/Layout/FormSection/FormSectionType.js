@@ -1,5 +1,3 @@
-import Form from '../../../Form';
-
 const FormSection = `
 type FormSection {
   form: Form
@@ -9,5 +7,5 @@ type FormSection {
 `;
 
 
-export default () => [FormSection, Form];
+export default () => [FormSection];
 export { resolvers } from './formSectionResolvers';

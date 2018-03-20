@@ -1,6 +1,4 @@
 import { merge } from 'lodash';
-import FlexibleContentUnion, { resolvers as layoutResolvers } from '../Layout';
-import { resolvers as flexibleContentResolver } from './flexibleContentResolvers';
 
 
 const FlexibleContent = `
@@ -10,5 +8,5 @@ type FlexibleContent {
 }
 `;
 
-export default () => [FlexibleContent, FlexibleContentUnion];
-export const resolvers = merge(layoutResolvers, flexibleContentResolver);
+export default () => [FlexibleContent];
+export { resolvers } from './flexibleContentResolvers';

@@ -1,7 +1,7 @@
-import { getMedia } from './menuItemQueries';
+import { getMenuItem } from './menuItemQueries';
 
 export const resolvers = {
   RootQuery: {
-    menuItems: getMedia,
+    menuItem: getMenuItem,
   }
 };
