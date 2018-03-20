@@ -143,6 +143,8 @@ the title, image, descr, link for each of the items rather than manual entry of 
 
 ## FlexibleContentUnion and how to write awesome ACF Layouts
 
+#### 100% optional, if you don't need to optimise your query, just do it as you always have, i.e. app/components/Acf/Layout/Services.jsx
+
 Prior to adding Apollo GraphQL you would need to write custom code to prefetch data like a form on a per-page basis.
 If you did not, the page would load and then after showing the client the awesome SSR, it would flash the form in afterwards
 :( Thanks to resolvers in GraphQL we can now fix that!!
@@ -161,6 +163,13 @@ app/components/acf/FlexibleContentUnion/index.js and adding our type to the Flex
 We do this because all we are doing with this code is defining a list of Types to resolve sub-queries from other
 queries that utilise ACF.
 
+Whenever you create a new FlexibleContentUnion resolver type (above) you must also:
+
+1. Create a bundle for that Type inside of app/components/Acf/Layouts/index.js and add it to the flexibleContentBundles array
+2. Add your type to the FlexibleContentUnion definition inside of app/component/Acf/FlexibleContentUnion/index.js
+3. Add to the acf fragment your type and it's query (for example, if your using ACF in the Page query, you would add to: app/apollo/fragments/pageFragment.js, see FormSection under queryable)
+4. Prepend your Query inside of WP ACF with: `__queryable__` i.e. __queryable__FormSection
+
 ## Type Module System
 
 A late inclusion into Apollo GraphQL for Starward is the idea of modules. Previously all types and their resolvers were hooked up into
@@ -170,7 +179,7 @@ us the ability to get a list of modules and merge them!!
 
 If you wish to add new Types and resolvers (say for an Instagram endpoint) simply build the Types and Resolvers wherever
 you want (i.e. inside of app/components or a npm package for awesome re-usability!!) and then make a module from them and export
-that modules from app/init/apolloModules.js (see the file for more info!).
+that modules from app/apollo/apolloModules.js (see the file for more info!).
 
 
 

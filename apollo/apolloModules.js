@@ -1,5 +1,5 @@
 import { inbuiltModule } from './types';
-import * as addonModules from '../app/init/addonApolloModules';
+import * as addonModules from '../app/apollo/addonApolloModules';
 import { combineModules } from './utils/apolloModule';
 
 // place your modules into combineModules (i.e. combineModules(inbuiltModule, yourModule, customExtensionModule)

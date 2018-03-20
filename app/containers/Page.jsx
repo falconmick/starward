@@ -7,7 +7,7 @@ import {
 import { Loading } from '../components/Content/Loading';
 import { FourOhFour } from '../components/Content/FourOhFour';
 import { PageContent } from '../components/Page/PageContent';
-import { pageFragment } from '../../apollo/fragments';
+import { pageFragment } from '../apollo/fragments';
 
 class Page extends Component {
   render() {
