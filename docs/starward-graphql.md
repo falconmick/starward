@@ -165,10 +165,44 @@ queries that utilise ACF.
 
 Whenever you create a new FlexibleContentUnion resolver type (above) you must also:
 
-1. Create a bundle for that Type inside of app/components/Acf/Layouts/index.js and add it to the flexibleContentBundles array
+1. Create a bundle for that Type inside of app/apollo/acfLayoutModules.js and add it to the apolloModule function
 2. Add your type to the FlexibleContentUnion definition inside of app/component/Acf/FlexibleContentUnion/index.js
 3. Add to the acf fragment your type and it's query (for example, if your using ACF in the Page query, you would add to: app/apollo/fragments/pageFragment.js, see FormSection under queryable)
 4. Prepend your Query inside of WP ACF with: `__queryable__` i.e. __queryable__FormSection
+
+:scream::scream::scream:
+DANGER: do not import a GraphQL resolver into any code located inside of app/
+All Server based code is located outside of app/ to avoid really weird node only dependancies being missing. For example:
+
+```
+ERROR in ./~/redis/index.js
+Module not found: Error: Cannot resolve module 'net' in     C:\NodeServer\AppInTheWild\node_modules\redis
+ @ ./~/redis/index.js 3:10-24
+
+ERROR in ./~/redis/lib/parser/hiredis.js
+Module not found: Error: Cannot resolve module 'hiredis' in C:\NodeServer\AppInTheWild\node_modules\redis\lib\parser
+ @ ./~/redis/lib/parser/hiredis.js 3:14-32
+```
+
+if you see this happening it's probably because you imported a resolver that's used inside of the Acf field pre-fetching that
+we described above. All files inside of app/ that you CANNOT import whilest you'r in app/ as it will cause node only deps
+to leak in:
+
+* app/apollo/acfLayoutModule
+* app/apollo/addonApolloModules
+* app/components/Acf/Layout/FormSections/formSectionsResolvers
+* app/components/Acf/Layout/FormSections/formSectionsType
+
+currently the only Server based code that's located inside of app/ is relating to the code which lets us define Acf fields 
+so that we may pre-fetch (above) the code originally was located inside of apollo/types/Acf/Fields however this meant
+that you needed to fly all the way out of your component's directory into apollo/ to do these changes
+Of which you still need to move out of the directory to add the item to the FlexibleContentUnion and acfApolloModules, so
+perhapse this should move back into apollo/ or maybe even apollo-custom/ so that we can still treat the ACF field
+pre-fetching as a seperation from apollo/ as currently thanks to modules dev's shouldn't need to touch apollo/ to add
+graphQL shcema
+TODO: talk with Sam/Allen about what's more important. Having files close, or Server stuff not in app/
+
+:scream::scream::scream:
 
 ## Type Module System
 
