@@ -1,5 +1,8 @@
 # Adding Post Types
 
+TODO: update to new version /w modules and create this post type inside of apollo-custom/post-types
+TODO: then make apollo module bundler look into apollo-custom/index.js for a list of all custom Bundles
+
 The process of adding a custom post type follows the same steps as extending-graphql.md
 
 The differences are:
@@ -28,3 +31,6 @@ custom post type!!
 We need to make a new Type for each post type as post types can have different supports, however the Query file is 
 going to be 100% the same each time, so perhapse we should wrap this into a factory/curry function that lets us 
 pass in the api endpoint and do the rest without the copy pasta. Feel free anyone!
+
+todo: create factory for custom post types that lets the user define taxonomies, supports and other basic stuff that needs to
+be configurable.
