@@ -1,6 +1,3 @@
-import { merge } from 'lodash';
-
-
 const FlexibleContent = `
 type FlexibleContent {
   autoFields: RawJson
