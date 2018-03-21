@@ -1,0 +1,1 @@
+export { createPostType } from './factory';

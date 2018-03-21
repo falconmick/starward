@@ -8,3 +8,4 @@
 // into a module by apolloModule
 
 export { layoutModules } from './acfLayoutModule';
+export { examplePostTypeModule } from './examplePostTypeModule';

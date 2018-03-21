@@ -29,6 +29,9 @@ const pageQuery = gql`
         settings {
             name
         }
+        categories {
+            count
+        }
     }
     ${pageFragment.page}
 `;
