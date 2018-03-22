@@ -1,0 +1,1 @@
+// move the logic for post type queries into here and make the api endpoint configurable via this factory method. Post should now also use this factory
