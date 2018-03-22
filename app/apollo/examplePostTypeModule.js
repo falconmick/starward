@@ -7,6 +7,9 @@ import { taxonomyFactory } from '../../apollo/factory/taxonomy';
 const { bundle: genreBundle, rootQuery: genreRootQuery, addToPostTypeArgs: addGenresArgs } = taxonomyFactory({typeName: 'Genre', apiEndpoint: 'genre'});
 
 // create the post type and pass the taxonomies it has in
+// note: you can create a custom ACF flexible content by copying apollo/types/acf
+// from there pass in it's Type and Type name via the acf named argument of postTypeFactory
+// it's on my todo: list to make an ACF factory. From there it would return a bundle and a addAcfArgs like taxonomyFactory
 const { bundle: bookBundle, rootQuery: bookRootQuery } = postTypeFactory({typeName: 'Book', apiEndpoint: 'books-api', taxonomies: [addGenresArgs]});
 
 const rootQuery = joinQueryDefinitionString([genreRootQuery, bookRootQuery]);

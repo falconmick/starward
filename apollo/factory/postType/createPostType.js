@@ -4,9 +4,9 @@ const mapTaxonomyIntoTypeField = taxomony => {
   return `${archiveTaxonomyQueryName}: [${taxonomyTypeName}!]\n`;
 };
 
-export const createType = ({typeName, taxonomies}) => {
-
-  return `
+export const createType = ({typeName, taxonomies, acfTypeName}) => {
+  const acfType = acfTypeName || 'Acf'; // if the acf that is given to a page !== whats given to this post
+  return `                              // (the flexible content layout) we can use the correct type here
   type ${typeName} implements PostType {
       id: ID!
       # in UTC time
@@ -33,7 +33,7 @@ export const createType = ({typeName, taxonomies}) => {
       tags: [Tag]!
       better_featured_image: BetterFeaturedImage
       yoast: Yoast!
-      acf: Acf!
+      acf: ${acfType}!
       ${taxonomies.map(mapTaxonomyIntoTypeField)}
   }
 `;
