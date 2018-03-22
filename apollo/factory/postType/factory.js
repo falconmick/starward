@@ -20,7 +20,8 @@ export const postTypeFactory = ({typeName, queryName, apiEndpoint, taxonomies = 
 
   const taxonomyTypeArray = taxonomies.map(({taxonomyType}) => taxonomyType);
 
-  const { acfType, acfTypeName } = acf;
+  // if no type, an empty array is fine!!
+  const { acfType = () => [], acfTypeName } = acf;
 
   const { single, archive } = queryName || {};
   const typeNameCamelCase = typeName[0].toLowerCase() + typeName.slice(1);

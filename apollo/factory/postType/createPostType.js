@@ -6,7 +6,8 @@ const mapTaxonomyIntoTypeField = taxomony => {
 
 export const createType = ({typeName, taxonomies, acfTypeName}) => {
   const acfType = acfTypeName || 'Acf'; // if the acf that is given to a page !== whats given to this post
-  return `                              // (the flexible content layout) we can use the correct type here
+  //                                    (the flexible content layout) we can use the correct type here
+  return `                              
   type ${typeName} implements PostType {
       id: ID!
       # in UTC time

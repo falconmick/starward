@@ -35,6 +35,11 @@ query books {
         name
         id
       }
+      acf {
+        layout {
+          autoFields
+        }
+      }
     }
   }
   book(slug:"book-5") {
