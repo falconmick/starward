@@ -4,7 +4,7 @@ import { createType } from './createPostType';
 import { createRootQuery } from './createPostRootQuery';
 import { createResolver } from './createPostResolver';
 
-export const postTypeFactory = ({typeName, queryName, apiEndpoint, taxonomies} = {}) => {
+export const postTypeFactory = ({typeName, queryName, apiEndpoint, taxonomies = []} = {}) => {
   if (!typeName) {
     console.error('typeName is a required argument of createPostTypeType');
   }
