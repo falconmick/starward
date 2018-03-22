@@ -1,7 +1,7 @@
 import { getCategories } from '../Category/categoryQueries';
 import { getTags } from '../Tag/tagQueries';
 import { basePostTypeResolvers, excerptResolvers, featuredMediaResolvers, authorResolvers } from '../../utils/postTypeResolver';
-import { postQueryFactory } from '../../factory/postType/postQueryFactory';
+import { postQueryFactory } from '../../utils/postQueryFactory';
 
 const { getPost, getPosts } = postQueryFactory({apiEndpoint: 'posts'});
 

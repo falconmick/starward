@@ -1,4 +1,12 @@
-export const createType = ({typeName}) => (`
+const mapTaxonomyIntoTypeField = taxomony => {
+  const { archiveTaxonomyQueryName, taxonomyTypeName } = taxomony;
+
+  return `${archiveTaxonomyQueryName}: [${taxonomyTypeName}!]\n`;
+};
+
+export const createType = ({typeName, taxonomies}) => {
+
+  return `
   type ${typeName} implements PostType {
       id: ID!
       # in UTC time
@@ -26,5 +34,7 @@ export const createType = ({typeName}) => (`
       better_featured_image: BetterFeaturedImage
       yoast: Yoast!
       acf: Acf!
+      ${taxonomies.map(mapTaxonomyIntoTypeField)}
   }
-`);
+`;
+};

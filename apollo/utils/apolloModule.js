@@ -1,4 +1,5 @@
 import { merge } from 'lodash';
+import { joinQueryDefinitionString } from './helpers';
 
 const flatten2dModule = (accumulator, module) => {
   return [...accumulator, ...module.type];
@@ -25,12 +26,12 @@ export const combineModules = (...apolloModules) => {
   const validModules = apolloModules.filter(bundle => bundle.__registered_with_apollo_module__);
   const rootQueryType = `
     type RootQuery {
-      ${validModules.map(module => module.rootQuery).filter(nonFalsyString => nonFalsyString).join('\n')}
+      ${joinQueryDefinitionString(validModules.map(module => module.rootQuery))}
     }
   `;
   const rootMutationType = `
     type RootMutation {
-      ${validModules.map(module => module.rootMutation).filter(nonFalsyString => nonFalsyString).join('\n')}
+      ${joinQueryDefinitionString(validModules.map(module => module.rootMutation))}
     }
   `;
 

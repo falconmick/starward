@@ -1,14 +1,6 @@
-import { createWordpressGraphqlProxy } from '../../utils/queryTools';
-import { cacheResolver } from '../../utils/redis';
+import { taxonomyQueryFactory } from '../../utils/taxonomyQueryFactory';
 
-const wpCategoryProxy = createWordpressGraphqlProxy('wp/v2/categories');
+const { getTaxonomies, getTaxonomy } = taxonomyQueryFactory({apiEndpoint: 'categories'});
 
-export const getCategories = cacheResolver('getCategories')((obj, args) => {
-  const { listOfIds } = args;
-  return wpCategoryProxy.selectWithIdList(listOfIds);
-});
-
-export const getCategory = cacheResolver('getCategory')((obj, args) => {
-  const { id } = args;
-  return wpCategoryProxy.select(id);
-});
+export const getCategories = getTaxonomies;
+export const getCategory = getTaxonomy;
