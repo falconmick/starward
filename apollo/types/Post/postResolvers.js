@@ -1,7 +1,9 @@
-import { getPost, getPosts } from './postQueries';
 import { getCategories } from '../Category/categoryQueries';
 import { getTags } from '../Tag/tagQueries';
 import { basePostTypeResolvers, excerptResolvers, featuredMediaResolvers, authorResolvers } from '../../utils/postTypeResolver';
+import { postQueryFactory } from '../../utils/postType/postQueryFactory';
+
+const { getPost, getPosts } = postQueryFactory({apiEndpoint: 'posts'});
 
 export const resolvers = {
   RootQuery: {

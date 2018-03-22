@@ -1,1 +1,1 @@
-export { createPostType } from './factory';
+export { postTypeFactory } from './factory';

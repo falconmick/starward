@@ -4,13 +4,14 @@ import { createType } from './createPostType';
 import { createResolver } from './createPostResolver';
 import { createRootQuery } from './createPostRootQuery';
 
-export const createPostType = ({typeName, queryName} = {}) => {
+export const postTypeFactory = ({typeName, queryName, apiEndpoint} = {}) => {
   if (!typeName) {
     console.error('typeName is a required argument of createPostTypeType');
   }
 
   const { single, archive } = queryName || {};
-  const singleQueryName = single || typeName[0].toLowerCase() + typeName.slice(1);
+  const typeNameCamelCase = typeName[0].toLowerCase() + typeName.slice(1);
+  const singleQueryName = single || typeNameCamelCase;
   const archiveQueryName = archive || singleQueryName + 's';
 
   // create the post and archive GraphQL Types
@@ -19,7 +20,7 @@ export const createPostType = ({typeName, queryName} = {}) => {
   const type = () => [postTypeString, paginatedTypeString];
 
   // create the post and archive resolvers
-  const resolvers = createResolver({typeName, singleQueryName, archiveQueryName});
+  const resolvers = createResolver({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint});
 
   // generate the string for the Root Query
   const rootQuery = createRootQuery({archiveQueryName, singleQueryName, typeName});

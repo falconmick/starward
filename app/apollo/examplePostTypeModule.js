@@ -1,6 +1,6 @@
-import { createPostType } from '../../apollo/utils/postType';
+import { postTypeFactory } from '../../apollo/utils/postType';
 import { apolloModule } from '../../apollo/utils/apolloModule';
 
-const { bundle: bookBundle, rootQuery: bookRootQuery } = createPostType({typeName: 'Book'});
+const { bundle: bookBundle, rootQuery: bookRootQuery } = postTypeFactory({typeName: 'Book', apiEndpoint: 'books-api'});
 
 export const examplePostTypeModule = apolloModule(bookBundle)({rootQuery: bookRootQuery});
