@@ -1,6 +1,6 @@
-import { createWordpressGraphqlProxy, resultArrayToSingle } from '../queryTools';
-import { createPaginationCallback, createPostPagerKey } from '../pager';
-import { cacheResolver } from '../redis';
+import { createWordpressGraphqlProxy, resultArrayToSingle } from '../../utils/queryTools';
+import { createPaginationCallback, createPostPagerKey } from '../../utils/pager';
+import { cacheResolver } from '../../utils/redis';
 
 export const postQueryFactory = ({typeNameCamelCase, apiEndpoint}) => {
   const typeNameCamelCasePlural = typeNameCamelCase + 's';

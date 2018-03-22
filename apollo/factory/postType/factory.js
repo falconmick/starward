@@ -1,5 +1,5 @@
-import { apolloBundle } from '../apolloBundle';
-import { createPagableType } from '../pager';
+import { apolloBundle } from '../../utils/apolloBundle';
+import { createPagableType } from '../../utils/pager';
 import { createType } from './createPostType';
 import { createResolver } from './createPostResolver';
 import { createRootQuery } from './createPostRootQuery';

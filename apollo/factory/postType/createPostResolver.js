@@ -1,4 +1,4 @@
-import { authorResolvers, basePostTypeResolvers, featuredMediaResolvers, excerptResolvers } from '../postTypeResolver';
+import { authorResolvers, basePostTypeResolvers, featuredMediaResolvers, excerptResolvers } from '../../utils/postTypeResolver';
 import { postQueryFactory } from './postQueryFactory';
 
 export const createResolver = ({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint}) => {
