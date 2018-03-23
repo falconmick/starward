@@ -58,6 +58,14 @@ type Form {
     fields: [Field!]
     confirmations: [Confirmation!]
 }
+
+extend type RootQuery {
+    form(formId: Int!): Form
+}
+
+extend type RootMutation {
+    submitForm(form: SubmittedFormInput!): SubmittedForm!
+}
 `;
 
 export default () => [Form, Button, Field, Confirmation];

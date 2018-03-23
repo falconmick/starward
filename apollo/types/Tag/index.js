@@ -31,6 +31,11 @@ type Tag {
     avatar_urls: RawJson
     meta: [String]!
 }
+
+extend type RootQuery {
+    tag(id: Int!): Tag
+    tags(listOfIds:[Int!]): [Tag!]
+}
 `;
 
 export default () => [Tag];

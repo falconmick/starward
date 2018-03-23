@@ -28,6 +28,11 @@ type User {
     avatar_urls: RawJson
     meta: [String]!
 }
+
+extend type RootQuery {
+    users: [User]
+    user(id: Int!): User
+}
 `;
 
 export default () => [User];

@@ -19,7 +19,7 @@ const { bundle: genreBundle, addToPostTypeArgs: addGenresArgs } = taxonomyFactor
 // custom acf type. If in doubt message michael@birdbrain.com.au
 const bookBundle = postTypeFactory({typeName: 'Book', apiEndpoint: 'books-api', taxonomies: [addGenresArgs]});
 
-export const examplePostTypeModule = apolloModule(bookBundle, genreBundle)();
+export const examplePostTypeModule = apolloModule(bookBundle, genreBundle);
 
 // bellow is a test query that calls all root queries for taxonomies and post types + verifies that post and categories still
 // work since I made their code re-usable!

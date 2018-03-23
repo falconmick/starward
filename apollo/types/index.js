@@ -28,35 +28,6 @@ const TagBundle = apolloBundle({type: Tag, resolvers: tagResolvers});
 const UserBundle = apolloBundle({type: User, resolvers: userResolvers});
 const YoastBundle = apolloBundle({type: Yoast});
 
-// note: if we want to, we can move rootQuery and rootMutation into
-// the types folders and utilise extends to add to them, see: https://www.apollographql.com/docs/graphql-tools/generate-schema.html#extend-types
-// benefits:
-//    query is next to its type
-//    deleting a type wouldn't require modification here
-//    remove weird query merging logic from apolloModules
-// downsides:
-//    this list is kinda convenient to see an overview of types (however due to the discovery endpoint, this is kinda mute)
-const rootQuery = `
-  settings: Settings
-  page(splat: String): Page
-  pages(query: String, page: Int, perPage: Int): PagePager
-  menuItem(slug: String): [MenuItem]
-  categories(listOfIds:[Int!]): [Category]
-  category(id: Int!): Category
-  post(slug: String!): Post
-  posts(query: String, page: Int, perPage: Int): PostPager
-  users: [User]
-  user(id: Int!): User
-  media(id: Int!): Media
-  tag(id: Int!): Tag
-  tags(listOfIds:[Int!]): [Tag!]
-  form(formId: Int!): Form
-`;
-
-const rootMutation = `
-  submitForm(form: SubmittedFormInput!): SubmittedForm!
-`;
-
 export const inbuiltModule = apolloModule(AcfBundle, BetterFeaturedImageBundle, CategoryBundle, FormBundle, MediaBundle,
-  MenuItemBundle, PageBundle, PostBundle, SettingsBundle, SubmittedFormBundle, TagBundle, UserBundle, YoastBundle)({rootQuery, rootMutation});
+  MenuItemBundle, PageBundle, PostBundle, SettingsBundle, SubmittedFormBundle, TagBundle, UserBundle, YoastBundle);
 

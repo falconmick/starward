@@ -39,6 +39,10 @@ type MenuItem {
     type_label: String!
     children: [MenuItem]
 }
+
+extend type RootQuery {
+    menuItem(slug: String): [MenuItem]
+}
 `;
 
 export default () => [MenuItem];

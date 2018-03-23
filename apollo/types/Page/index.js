@@ -52,6 +52,11 @@ type Page {
     yoast: Yoast!
     acf: Acf!
 }
+
+extend type RootQuery {
+    page(splat: String): Page
+    pages(query: String, page: Int, perPage: Int): PagePager
+}
 `;
 
 const PaginatedPostType = createPagableType('Page');

@@ -59,6 +59,11 @@ type Post implements PostType {
     yoast: Yoast!
     acf: Acf!
 }
+
+extend type RootQuery {
+  post(slug: String!): Post
+  posts(query: String, page: Int, perPage: Int): PostPager
+}
 `;
 
 const PaginatedPostType = createPagableType('Post');

@@ -45,6 +45,10 @@ type Media {
     # contains original url, dimentions and thumbs
     media_details: MediaDetail!
 }
+
+extend type RootQuery {
+    media(id: Int!): Media
+}
 `;
 
 export default () => [Media, MediaDetail];

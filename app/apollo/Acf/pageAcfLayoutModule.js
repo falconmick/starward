@@ -10,4 +10,4 @@ const formSectioBundle = apolloBundle({type: FormSectionType, resolvers: formSec
 const flexibleContentUnionBundle = apolloBundle({type: FlexibleContentUnion, resolvers: flexibleContentUnionResolvers});
 
 // pass nothing to curried part (after bundles) because we are not defining any new queries or mutations
-export const layoutModules = apolloModule(flexibleContentUnionBundle, formSectioBundle)();
+export const layoutModules = apolloModule(flexibleContentUnionBundle, formSectioBundle);

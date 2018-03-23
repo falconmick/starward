@@ -26,6 +26,10 @@ type Settings {
     googleMapsApiKey: String,
     additionalScripts: String
 }
+
+extend type RootQuery {
+    settings: Settings
+}
 `;
 
 export default () => [Settings, SocialLink];

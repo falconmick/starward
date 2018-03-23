@@ -36,6 +36,11 @@ type Category implements Taxonomy {
     parent: Int!
     yoast: Yoast!
 }
+
+extend type RootQuery {
+    categories(listOfIds:[Int!]): [Category]
+    category(id: Int!): Category
+}
 `;
 
 export default () => [Category, Yoast, Taxonomy];
