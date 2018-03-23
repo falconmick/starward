@@ -4,7 +4,7 @@ const mapTaxonomyIntoTypeField = taxomony => {
   return `${archiveTaxonomyQueryName}: [${taxonomyTypeName}!]\n`;
 };
 
-export const createType = ({typeName, taxonomies, acfTypeName}) => {
+export const createType = ({typeName, taxonomies, acfTypeName, archiveQueryName, singleQueryName}) => {
   const acfType = acfTypeName || 'Acf'; // if the acf that is given to a page !== whats given to this post
   //                                    (the flexible content layout) we can use the correct type here
   return `                              
@@ -36,6 +36,11 @@ export const createType = ({typeName, taxonomies, acfTypeName}) => {
       yoast: Yoast!
       acf: ${acfType}!
       ${taxonomies.map(mapTaxonomyIntoTypeField)}
+  }
+  
+  extend type RootQuery {
+    ${singleQueryName}(slug: String!): ${typeName}
+    ${archiveQueryName}(query: String, page: Int, perPage: Int): ${typeName}Pager
   }
 `;
 };

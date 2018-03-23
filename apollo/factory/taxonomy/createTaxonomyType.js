@@ -1,4 +1,4 @@
-export const createType = ({typeName}) => (`
+export const createType = ({typeName, singleQueryName, archiveQueryName}) => (`
 type ${typeName} implements Taxonomy {
     id: ID!
     count: Int!
@@ -9,5 +9,10 @@ type ${typeName} implements Taxonomy {
     taxonomy: String!
     parent: Int!
     yoast: Yoast!
+}
+
+extend type RootQuery {
+  ${singleQueryName}(id: Int!): ${typeName}
+  ${archiveQueryName}(listOfIds: [Int!]): [${typeName}]
 }
 `);

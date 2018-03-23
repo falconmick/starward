@@ -1,7 +1,6 @@
 import { apolloBundle } from '../../utils/apolloBundle';
 import { createPagableType } from '../../utils/pager';
 import { createType } from './createPostType';
-import { createRootQuery } from './createPostRootQuery';
 import { createResolver } from './createPostResolver';
 
 /**
@@ -29,21 +28,15 @@ export const postTypeFactory = ({typeName, queryName, apiEndpoint, taxonomies = 
   const archiveQueryName = archive || singleQueryName + 's';
 
   // create the post and archive GraphQL Types
-  const postTypeString = createType({typeName, taxonomies, acfTypeName});
+  const postTypeString = createType({typeName, taxonomies, acfTypeName, archiveQueryName, singleQueryName});
   const paginatedTypeString = createPagableType(typeName);
   const type = () => [postTypeString, paginatedTypeString, acfType, ...taxonomyTypeArray];
 
   // create the post and archive resolvers
   const resolvers = createResolver({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint, taxonomies});
 
-  // generate the string for the Root Query
-  const rootQuery = createRootQuery({archiveQueryName, singleQueryName, typeName});
-
   // bundle the type and resolver
   const bundle = apolloBundle({type, resolvers});
 
-  return {
-    bundle,
-    rootQuery,
-  };
+  return bundle;
 };

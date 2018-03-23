@@ -1,7 +1,6 @@
 import { apolloBundle } from '../../utils/apolloBundle';
 import { createType } from './createTaxonomyType';
 import { createResolver } from './createTaxonomyResolver';
-import { createRootQuery } from './createTaxonomyRootQuery';
 
 export const taxonomyFactory = ({typeName, queryName, apiEndpoint}) => {
   const { single, archive } = queryName || {};
@@ -10,14 +9,11 @@ export const taxonomyFactory = ({typeName, queryName, apiEndpoint}) => {
   const archiveQueryName = archive || singleQueryName + 's';
 
   // create the taxonomy GraphQL Type
-  const taxonomyTypeString = createType({typeName});
+  const taxonomyTypeString = createType({typeName, singleQueryName, archiveQueryName});
   const type = () => [taxonomyTypeString];
 
   // create the post and archive resolvers
   const resolvers = createResolver({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint});
-
-  // generate the string for the Root Query
-  const rootQuery = createRootQuery({archiveQueryName, singleQueryName, typeName});
 
   // bundle the type and resolver
   const bundle = apolloBundle({type, resolvers});
@@ -32,7 +28,6 @@ export const taxonomyFactory = ({typeName, queryName, apiEndpoint}) => {
 
   return {
     bundle,
-    rootQuery,
     addToPostTypeArgs,
   };
 };
