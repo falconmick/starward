@@ -28,6 +28,14 @@ const TagBundle = apolloBundle({type: Tag, resolvers: tagResolvers});
 const UserBundle = apolloBundle({type: User, resolvers: userResolvers});
 const YoastBundle = apolloBundle({type: Yoast});
 
+// note: if we want to, we can move rootQuery and rootMutation into
+// the types folders and utilise extends to add to them, see: https://www.apollographql.com/docs/graphql-tools/generate-schema.html#extend-types
+// benefits:
+//    query is next to its type
+//    deleting a type wouldn't require modification here
+//    remove weird query merging logic from apolloModules
+// downsides:
+//    this list is kinda convenient to see an overview of types (however due to the discovery endpoint, this is kinda mute)
 const rootQuery = `
   settings: Settings
   page(splat: String): Page

@@ -5,7 +5,7 @@ to add to the schema a new endpoint or resource, you typically need the followin
 1. Type definition
 2. Resolver for Type's Queries
 
-The folder structure used is as follows (all placed within apollo/types):
+The folder structure used is as follows (all placed within app/apollo/types):
 
     {TypeName}/
             ---index.js             -- Type
@@ -114,3 +114,42 @@ with the types that you exported to your resolver's RootQuery and RootMutation.
 after you copy how modules are made, you should end up with a single awesome module that's all yours! your last task is to
 import then export that module in a special folder that apollo looks in for add-in modules called: app/apollo/addonApolloModules.js
 for an example of this see the file! also note that examplePostTypeModule can be removed and layoutModules is how we achieve ACF Field pre-fetching!
+
+## Tips ##
+when you are working on/modifying the GraphQL types that come inbuilt with starward, avoid editing apollo/ at all costs.
+it should be treated like a node_modle, or even better yet (as I want this to happen) a variant of create-react-app. 
+When you do edit it, it's kinda like create-react-app's eject functionality, you get full access of which is super
+complicated and you will no longer receive updates :( however if you make all of your new Types inside of app/apollo
+there would be nothing stopping you (except major releases) from deleting your apollo/ directory and copying the new one
+in (kinda like npm's node_modules!)
+
+Above explains how to make fully custom modules, however there is also factories inside of appolo/factory that will create
+you custom post types and taxonomies with 0 graphQL code! If you ever needed to do anything crazy, you could just look into
+how it's done inside of apollo/types and then place your custom version into app/apollo/types/
+
+### Extending ###
+say you have a requirement to show what the weather was like on the day a post was created, rather than going into
+apollo/types/posts and modifying you should consider instead using extending. you can [read about it here](https://www.apollographql.com/docs/graphql-tools/generate-schema.html#extend-types) 
+but put basically you would make something like this:
+
+```
+    type WeatherData {
+        isRaining
+        isSunny
+    }
+    extend type Post {
+        weather: WeatherData
+    }
+```
+
+all that would remain for this code to work is to create a resolver that fetches the weather data for the Post type and your done!
+There is no need to re-define the resolvers for the post data as that resolver will still be called, this basically
+just tacks on your query to the Post query. From there the Post page would query for 
+
+```
+    const resolvers = {
+        Post: {
+            weather: ({created}) => getWeatherFor({date: created})),
+        },
+    };
+```

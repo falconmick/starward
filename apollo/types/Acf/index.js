@@ -2,7 +2,7 @@ import FlexibleContent from './FlexibleContent';
 
 const Acf = `
 type Acf {
-  layout: [FlexibleContent]!
+  layout: [FlexibleContent!]
 }
 `;
 

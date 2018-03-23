@@ -10,7 +10,7 @@ import { FormButton } from './Button';
 import { RenderFields } from './RenderFields';
 import * as FormFields from './Fields';
 import { createNewFormValues, extractFormValues, updateFormValuesFromServer } from './Helpers';
-import { formQuery } from '../../queries/formQuery';
+import { formFragment } from '../../apollo/fragments/formFragment';
 
 class GravityForm extends PureComponent {
   constructor(props) {
@@ -180,6 +180,16 @@ const prepareForm = (form) => {
   const fullForm = { ...restOfForm, fields: fullFields};
   return fullForm;
 };
+
+const formQuery = gql`
+    query gravityForm($formId:Int!)
+    {
+        form(formId: $formId) {
+            ...defaultForm
+        }
+    }
+    ${formFragment.form}
+`;
 
 export default compose(
   graphql(formQuery, {

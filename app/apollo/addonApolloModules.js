@@ -7,5 +7,5 @@
 // basic pattern is bundle the type and resolver via apolloBundle and then combine all of those bundles
 // into a module by apolloModule
 
-export { layoutModules } from './acfLayoutModule';
-export { examplePostTypeModule } from './examplePostTypeModule';
+export { pageAcfLayoutModule } from './Acf';
+export { examplePostTypeModule } from './postTypes/examplePostTypeModule';

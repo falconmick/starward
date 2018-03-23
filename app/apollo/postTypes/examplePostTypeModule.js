@@ -1,7 +1,7 @@
-import { postTypeFactory } from '../../apollo/factory/postType';
-import { apolloModule } from '../../apollo/utils/apolloModule';
-import { joinQueryDefinitionString } from '../../apollo/utils/helpers';
-import { taxonomyFactory } from '../../apollo/factory/taxonomy';
+import { postTypeFactory } from '../../../apollo/factory/postType/index';
+import { apolloModule } from '../../../apollo/utils/apolloModule';
+import { joinQueryDefinitionString } from '../../../apollo/utils/helpers';
+import { taxonomyFactory } from '../../../apollo/factory/taxonomy/index';
 
 // first we make the taxonomy as post types can inherit taxonomies and display them
 const { bundle: genreBundle, rootQuery: genreRootQuery, addToPostTypeArgs: addGenresArgs } = taxonomyFactory({typeName: 'Genre', apiEndpoint: 'genre'});

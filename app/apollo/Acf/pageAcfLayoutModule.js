@@ -1,7 +1,7 @@
-import FlexibleContentUnion, { resolvers as flexibleContentUnionResolvers } from '../components/Acf/FlexibleContentUnion';
-import FormSectionType, { resolvers as formSectionResolvers } from '../components/Acf/Layout/FormSection/FormSectionType';
-import { apolloBundle } from '../../apollo/utils/apolloBundle';
-import { apolloModule } from '../../apollo/utils/apolloModule';
+import FlexibleContentUnion, { resolvers as flexibleContentUnionResolvers } from './FlexibleContentUnion';
+import { formSectionResolvers, FormSectionType } from './queryables/FormSection';
+import { apolloBundle } from '../../../apollo/utils/apolloBundle';
+import { apolloModule } from '../../../apollo/utils/apolloModule';
 
 
 const formSectioBundle = apolloBundle({type: FormSectionType, resolvers: formSectionResolvers});
