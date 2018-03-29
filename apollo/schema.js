@@ -12,11 +12,24 @@ const CustomScalars = `
   scalar Date
 `;
 
-// todo: attempt to add fields in here to make the schema compile
+// unfortunatly I cannot have an empty type (RootQuery is built via extending) so I had to add version.
 const schemaTypes = `
-  type RootQuery {}
-  type RootMutation {}
+  type RootQuery {
+    version: String!
+  }
+  type RootMutation {
+    version: String!
+  }
 `;
+
+const dummyFieldResolvers = {
+  RootQuery: {
+    version: () => '1.0.0',
+  },
+  RootMutation: {
+    version: () => '1.0.0',
+  }
+};
 
 const SchemaDefinition = `
   schema {
@@ -26,7 +39,7 @@ const SchemaDefinition = `
 `;
 
 const rootResolvers = { RawJson: RawJsonScalarType, Date: DateScalarType };
-const resolvers = merge(rootResolvers, moduleResolvers);
+const resolvers = merge(rootResolvers, dummyFieldResolvers, moduleResolvers);
 
 export default makeExecutableSchema({
   typeDefs: [CustomScalars, SchemaDefinition, schemaTypes, ...types],

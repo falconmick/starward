@@ -1,9 +1,11 @@
 import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import { createHttpLink } from 'apollo-link-http';
+import { onError } from 'apollo-link-error';
 import { toIdValue } from 'apollo-utilities';
 import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
-import { GRAPHQL_ENDPOINT } from '../app/config/app';
+import { GRAPHQL_ENDPOINT, isProduction } from '../app/config/app';
 import { createPostPagerKey } from './utils/pager';
 
 // export const createSsrClient = (req) => {
@@ -91,12 +93,43 @@ const cacheResolvers = {
   },
 };
 
+// on uncaught errors, look for sings of common issues and handle them
+const meaningfullErrorLogs = ({isClient = false} = {}) => onError(err => {
+  const { graphQLErrors } = err;
+
+  // if it's the client on production we don't want to spam
+  if (isClient && isProduction) {
+    return;
+  }
+
+  const meaningfullErrors = [];
+  // if any of the error messages contain ECONNREFUSED, mamp or the web server isn't accessable
+  if (graphQLErrors.map(({ message }) => message).some(message => message.includes('ECONNREFUSED'))) {
+    meaningfullErrors.push('We couldn\'t reach one of the API\'s that GraphQL relies on, is the web server running?');
+    meaningfullErrors.push('Try checking that the server is available, or perhaps you need to turn MAMP on');
+    meaningfullErrors.push('\r\n');
+  }
+
+  if (meaningfullErrors.length) {
+    console.log('==================================================================');
+    console.log('=======================Meaningful Error Message===================');
+    console.log('==================================================================');
+    meaningfullErrors.forEach(message => console.log(message));
+    console.log('==================================================================');
+    console.log('==================================================================');
+  }
+});
+
 export const createClient = (apolloState) => {
-  const link = new BatchHttpLink({
+  const httpLink = new BatchHttpLink({
     uri: GRAPHQL_ENDPOINT,
     batchInterval: 1,  // in milliseconds I break my queries into small chunks for better caching, 1ms is long enough to add them all together
     batchMax: 10,
   });
+  const link = ApolloLink.from([
+    meaningfullErrorLogs({isClient: true}),
+    httpLink,
+  ]);
   const cache = new InMemoryCache({dataIdFromObject, cacheResolvers}).restore(apolloState);
   return new ApolloClient({
     link,
@@ -105,13 +138,17 @@ export const createClient = (apolloState) => {
 };
 
 export const createSsrClient = (req) => {
-  const link = createHttpLink({
+  const httpLink = createHttpLink({
     uri: GRAPHQL_ENDPOINT,
     credentials: 'same-origin',
     headers: {
       cookie: req.header('Cookie'),
     },
   });
+  const link = ApolloLink.from([
+    meaningfullErrorLogs(),
+    httpLink,
+  ]);
   const cache = new InMemoryCache({dataIdFromObject, cacheResolvers});
   return new ApolloClient({
     link,

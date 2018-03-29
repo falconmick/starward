@@ -26,12 +26,12 @@ export const cacheResolver = (queryName, options = {}) => func => (obj, args) =>
               resolve(returnValue);
             })
             .catch(cacheError => {
-              reject();
+              reject(cacheError);
             });
         }
       })
       .catch(cacheError => {
-        reject();
+        reject(cacheError);
       });
   });
 };
