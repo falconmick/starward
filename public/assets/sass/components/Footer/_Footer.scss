@@ -1,0 +1,146 @@
+/*=============================================>>>>>
+= Footer Component Styles =
+===============================================>>>>>*/
+#footer {
+  background-color: $grey-dark;
+  .main-footer {
+    display: flex;
+    flex-direction: column;
+    padding-top: 35px;
+    @include media($mobile-nav-up) {
+      flex-direction: row;
+      padding-top: 84px;
+    }
+
+
+    .header {
+      @include adelle-semibold;
+      color: $primary-blue;
+      font-size: 18px;
+      line-height: 23px;
+    }
+
+    .details {
+      padding-bottom: 12px;
+      @include media($mobile-nav-up) {
+        padding-bottom: 64px;
+        &:not(:first-of-type) {
+          margin-left: 42px;
+        }
+      }
+
+      &.about-sell-my-shares {
+        flex: 4;
+      }
+      &.quick-links {
+        flex: 2;
+      }
+      &.recent-articles {
+        flex: 7;
+      }
+    }
+    .scroll-top {
+      align-self: flex-start;
+    }
+
+    .summary {
+      .about-sell-my-shares-title {
+        .sell-my-share-icon {
+          display: none;
+        }
+
+        @include media($mobile-nav-up) {
+          .sell-my-share-icon {
+            display: inline-block;
+          }
+          .header {
+            display: none;
+          }
+        }
+      }
+    }
+    .about-sell-my-shares-body {
+      p {
+        @include muli-regular;
+        font-size: 14px;
+        line-height: 23px;
+        color: $white;
+        margin-bottom: 11px;
+      }
+
+      .social-buttons {
+        display: flex;
+
+        .svg-link {
+          &:not(:last-of-type) {
+            margin-right: 10px;
+          }
+          .svg-icon {
+            // flex display fixes weird bounding box issue
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+
+  .copyright {
+    display: flex;
+    flex-wrap: wrap;
+    // padd the chat window so we can see footer
+    padding-bottom: 30px;
+    p {
+      @include muli-regular;
+      font-size: 11px;
+      line-height: 23px;
+      color: $grey-light;
+    }
+    .disclaimer-copyright {
+      flex: 1 1 100%;
+      .summary p {
+        margin-bottom: 0;
+      }
+      .expand-button {
+        flex-basis: 17px;
+        svg path {
+          stroke: $grey-light;
+        }
+      }
+    }
+    .made-with-love {
+      text-align: right;
+    }
+    @include media($mobile-nav-up) {
+      flex-wrap: unset;
+      .disclaimer-copyright {
+        flex-basis: 0%; // IE 11 doesn't support unset, so set to 0% so that minifiers don't set to 0 as it also doesn't support 0, only 0px;
+        .summary {
+          display: none;
+        }
+      }
+      .made-with-love {
+        flex-basis: 30%;
+      }
+    }
+  }
+
+  .link-list {
+    .link-list-item {
+      padding: 5px 0;
+      a {
+        @include muli-bold;
+        color: $white;
+        display: inline-block;
+        font-size: 14px;
+        line-height: 23px;
+        &:visited {
+          color: $white;
+        }
+        &:hover {
+          color: $primary-blue;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

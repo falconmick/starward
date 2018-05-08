@@ -1,0 +1,111 @@
+$component-breakpoint: $tablet-up;
+$component-mid-break: $desktop-up;
+
+.acf-simple-steps {
+  .responsive-background {
+    display: none;
+    @include media($component-breakpoint) {
+      display: block;
+      background-position: bottom right;
+      width: 30%;
+    }
+    @include media($component-mid-break) {
+      width: 63%;
+    }
+  }
+
+  .component-container {
+    display: flex;
+
+    .entry-content, .entry-content p {
+      @include muli-regular;
+      font-size: 15px;
+      line-height: 23px;
+      color: $grey-regular;
+      text-align: center;
+      b {
+        @include muli-bold;
+        font-size: 17px;
+      }
+      .blue {
+        @include muli-semibold;
+        color: $primary-blue;
+      }
+
+      @include media($component-breakpoint) {
+        line-height: 20px;
+        text-align: left;
+      }
+    }
+
+    .entry-content p {
+      margin-bottom: 10px;
+    }
+
+    .step-content {
+      .header {
+        @include adelle-semibold;
+        font-size: 22px;
+        line-height: 30px;
+        color: $primary-navy;
+      }
+
+      @include media($component-breakpoint) {
+        .header {
+          font-size: 34px;
+          line-height: 42px;
+        }
+      }
+    }
+
+
+    .step-wrapper {
+      margin: 60px 0px 76px;
+    }
+    .step-list {
+      margin: 36px 0;
+      .step-step {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 36px;
+        .aside-paragraph {
+          margin-top: 4px;
+          p:first-of-type {
+            margin-bottom: 0;
+          }
+          b {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    @include media($component-breakpoint) {
+      justify-content: flex-end;
+      .step-wrapper {
+        max-width: 70%;
+        margin: 118px 0px 100px;
+      }
+
+      .step-list {
+        .step-step {
+          flex-direction: row;
+          align-items: flex-start;
+          justify-content: space-between;
+          margin-bottom: 18px;
+          .aside-paragraph {
+            padding-left: 8px;
+            flex-basis: 80%;
+          }
+        }
+      }
+    }
+
+    @include media($component-mid-break) {
+      .step-wrapper {
+        max-width: 37%;
+      }
+    }
+  }
+}

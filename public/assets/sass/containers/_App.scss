@@ -1,3 +1,89 @@
 /*=============================================>>>>>
 = App Styles =
 ===============================================>>>>>*/
+.clickable {
+  cursor: pointer;
+}
+
+.med-padded {
+  padding: 0 32px;
+}
+.lge-padded {
+  padding: 0 42px;
+}
+
+@mixin wrapper-for($width) {
+  margin: 0 auto;
+  max-width: $width;
+  &.med-padded {
+    max-width: $width + 64px;
+  }
+  &.lge-padded {
+    max-width: $width + 84px;
+  }
+}
+
+.wrapper-container {
+  @include wrapper-for(1400px);
+}
+
+.wrapper-content {
+  @include wrapper-for(1200px);
+}
+
+.wrapper-small {
+  @include wrapper-for(1000px);
+}
+
+@mixin disable-click {
+  cursor: default;
+  pointer-events: none;
+  a, .link-action {
+    cursor: initial;
+    pointer-events: initial;
+  }
+}
+
+.disable-link-mobile {
+  @include media($mobile-only) {
+    @include disable-click;
+  }
+}
+
+.disable-link-tablet {
+  @include media($tablet-only) {
+    @include disable-click;
+  }
+}
+
+input {
+  &::placeholder, &:-ms-input-placeholder, &::-ms-input-placeholder {
+    color: $grey-light;
+  }
+}
+
+#app {
+  & > div {
+    main > article > section {
+      // fixes weird spacing issue around blocks;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+
+// "overflow is stupid on mobile" - Every Developer Ever
+.no-scroll {
+  overflow: hidden;
+}
+
+// had to disable due to IE11 hating me
+//#app > div {
+//  min-height: 100vh;
+//  display: flex;
+//  flex-direction: column;
+//  main.content {
+//    flex: 1;
+//  }
+//}

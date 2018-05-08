@@ -1,0 +1,42 @@
+$break-point: $mobile-nav-down-USE-WITH-CATION;
+
+.star-slider-achievment {
+  background-color: $primary-navy;
+  .slick-list {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  // only show shake on mobile
+  @include media($break-point) {
+    &:not(.has-had-interaction) {
+      .slick-active {
+        .shake {
+          animation: pull-right 0.82s cubic-bezier(.36, .07, .19, .97) both;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+    }
+  }
+}
+
+.achievment {
+  .achievment-wrapper {
+    display: flex;
+    min-height: 80px;
+    align-items: center;
+    justify-content: center;
+    padding: 18px $padding-small;
+    .achievment-picture {
+
+    }
+    .achievment-paragraph {
+      @include muli-semibold;
+      font-size: 18px;
+      line-height: 23px;
+      color: $white;
+      margin-bottom: 0;
+      margin-left: 6px;
+    }
+  }
+}

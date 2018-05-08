@@ -1,0 +1,48 @@
+$container-break: $desktop-up;
+
+.package-container {
+  @include media($container-break) {
+    @include wrapper-for(1000px);
+  }
+}
+
+// makes that body flex!
+.packages  {
+  .package-bodies, .package-footers {
+    @include media($container-break) {
+      display: flex;
+      justify-content: stretch;
+      .package-body, .package-footer {
+        flex: 1;
+        justify-content: initial;
+        display: flex;
+        flex-direction: column;
+        .bottom-of-body, .top-of-body  {
+          flex: auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  @include media($container-break) {
+    .package-bodies {
+      .package-body:first-of-type .top-of-body {
+        border-top-left-radius: 2px;
+      }
+      .package-body:last-of-type .top-of-body {
+        border-top-right-radius: 2px;
+      }
+    }
+    .package-footers {
+      .package-footer:first-of-type .button-wrapper:after {
+        border-bottom-left-radius: 2px;
+      }
+      .package-footer:last-of-type .button-wrapper:after {
+        border-bottom-right-radius: 2px;
+      }
+    }
+  }
+}

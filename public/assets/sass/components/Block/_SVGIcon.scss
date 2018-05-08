@@ -1,0 +1,52 @@
+@mixin base-svg($width: inherit, $height: inhertit) {
+  &.resized {
+    svg {
+      width: 100% !important;
+      height: 100% !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+
+.svg-icon {
+  display: inline-block;
+  position: relative;
+  @include base-svg;
+  &.svg-facebook-icon {
+    width: 25px;
+    height: 25px;
+    &:hover {
+      cursor: pointer;
+      path {
+        fill: $primary-blue !important;
+      }
+    }
+  }
+  &.svg-google-plus_icon {
+    width: 25px;
+    height: 25px;
+    &:hover {
+      cursor: pointer;
+      path {
+        fill: $primary-blue !important;;
+      }
+    }
+  }
+  &.svg-close-expand {
+    width: 17px;
+    height: 17px;
+  }
+  &.svg-arrow-left {
+    transform: scaleX(-1);
+  }
+  &.svg-arrow-right {
+
+  }
+  &.svg-dow-arrow_select {
+    &.menu-is-open {
+      transform: scaleY(-1);
+    }
+  }
+}

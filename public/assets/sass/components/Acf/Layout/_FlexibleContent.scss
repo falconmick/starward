@@ -1,0 +1,63 @@
+$break-point: $tablet-up;
+
+.acf-flexible-content {
+  .component-container {
+    margin-top: 60px;
+    margin-bottom: 72px;
+    @include media($desktop-up) {
+      margin-top: 110px;
+      margin-bottom: 128px;
+    }
+  }
+  .flex-header {
+    @include adelle-semibold;
+    color: $primary-navy;
+    font-size: 34px;
+    line-height: 38px;
+  }
+  .flexible-content-wrapper {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -32px;
+    .flexible-content {
+      flex: 1;
+      min-width: calc(100% - 32px);
+      margin-left: 32px;
+      @include media($break-point) {
+        min-width: 300px;
+      }
+      p, li span {
+        @include muli-regular;
+        color: $grey-regular;
+        font-size: 15px;
+        line-height: 23px;
+        &.light {
+          @include muli-light;
+        }
+      }
+      ul, ol, p, li span, ul, ol {
+        margin-bottom: 11px;
+      }
+      h1, h2, h3, h4, h5, h6, p.header {
+        @include muli-semibold;
+        color: $primary-blue;
+        margin-bottom: 4px;
+      }
+      a {
+        @include muli-bold;
+        color: $primary-navy;
+        &:hover {
+          color: $primary-blue;
+        }
+      }
+      em {
+        font-weight: 700;
+      }
+      ul, ol {
+        color: $primary-blue;
+        list-style: initial;
+      }
+    }
+  }
+}

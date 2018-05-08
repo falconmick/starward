@@ -1,0 +1,146 @@
+.primary-navigation {
+  flex: 1;
+  align-self: stretch;
+
+  @include media($mobile-nav-up) {
+    padding-left: 7px;
+  }
+
+  .summary {
+    max-width: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .root-nav-ul {
+    display: flex;
+    height: 100%;
+    align-items: stretch;
+    flex-direction: column;
+    margin-top: 22px;
+    @include media($mobile-nav-up) {
+      flex-direction: row;
+      margin-top: 0px;
+    }
+
+    @include media($mobile-nav-up) {
+      .nav-item:not(.disable):hover {
+        & > .collapsed {
+          display: block;
+        }
+      }
+    }
+
+    & > .nav-item {
+      position: relative;
+      padding: 5px 0;
+      @include media($mobile-nav-up) {
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+
+      @include media($broken-subnav-down) {
+        &:first-of-type {
+          .collapsed {
+            left: -7px;
+            transform: none;
+          }
+        }
+      }
+
+      @include media($mobile-nav-up) {
+        &:not(:first-of-type) {
+          margin-left: 34px;
+        }
+
+        .collapsed {
+          display: none;
+          position: absolute;
+          background-color: white;
+          top: 100%;
+          top: calc(100% - 2px);
+          left: 50%;
+          transform: translateX(-50%);
+          padding-top: 18px;
+          padding-left: 22px;
+          padding-right: 22px;
+          padding-bottom: 10px;
+          border-radius: 2px;
+          @include nav-submenu-drop-shadow;
+          .children-nav {
+            list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+            li {
+              .summary {
+                width: 100%;
+                a, span {
+                  width: 100%;
+                  text-align: center;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // fonts and sizes
+    .nav-item > .summary > a {
+      display: inline-block;
+      font-size: 16px;
+      line-height: 23px;
+      color: $grey-semidark;
+      text-decoration: none;
+      &:visited {
+        color: $grey-semidark;
+      }
+      &:hover {
+        text-decoration: none;
+        // by being specific here, we override the color override that children-nav items have (a lighter grey)
+        span {
+          color: $primary-blue;
+        }
+      }
+    }
+    // main nav bar
+    & > .nav-item {
+
+      // active main nav bar
+      &.active > .summary > a  {
+        color: $primary-blue;
+      }
+
+      // regular main nav bar
+      & > .summary > a > span {
+        @include muli-bold;
+      }
+
+      // drop down items
+      .children-nav {
+        min-width: 230px;
+        max-width: 270px;
+        .active {
+          // active drop down item
+          & > .summary > a {
+            @include muli-semibold;
+            color: $primary-blue;
+          }
+        }
+        // regular drop down item
+        a {
+          @include muli-regular;
+          color: $grey-regular;
+          line-height: 16px;
+          padding: 6px 0;
+          font-size: 14px;
+          @include media($mobile-nav-up) {
+            font-size: 16px;
+            line-height: 17px;
+          }
+        }
+      }
+    }
+  }
+}

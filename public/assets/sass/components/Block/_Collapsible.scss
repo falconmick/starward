@@ -1,0 +1,135 @@
+.details {
+  &.auto-expand-tablet {
+    @include media($tablet-up) {
+      .expand-button {
+        display: none;
+      }
+      .collapsed {
+        display: block;
+      }
+    }
+  }
+  &.auto-expand-desktop {
+    @include media($desktop-up) {
+      .expand-button {
+        display: none;
+      }
+      .collapsed {
+        display: block;
+      }
+    }
+  }
+
+  &.expanded {
+    .collapsed {
+      display: block;
+    }
+    .expand-button {
+      // default built in expander
+      .svg-close-expand {
+        transform: rotateZ(45deg);
+      }
+    }
+  }
+
+  &.disable {
+    .collapsed {
+      display: none;
+    }
+    .expand-button {
+      display: none;
+    }
+  }
+
+
+  display: block;
+  @include clearfix;
+
+  .summary {
+    float: left;
+    max-width: 90%;
+  }
+  .expand-button {
+    float: right;
+    display: block;
+    // default built in expander
+    .svg-close-expand {
+      width: 17px;
+      transition: transform 0.1s;
+    }
+  }
+  .collapsed {
+    display: none;
+    float: left;
+    min-width: 100%;
+  }
+}
+
+
+
+// IE 11 doesn't like me.. heres the awesome flexbox version before I had to revert back to floats
+
+/*
+
+.details {
+  &.auto-expand-desktop {
+    @include media($mobile-nav-up) {
+      .expand-button {
+        display: none;
+      }
+      .collapsed {
+        display: block;
+      }
+    }
+  }
+
+  &.expanded {
+    .collapsed {
+      display: block;
+    }
+    .expand-button {
+      // default built in expander
+      .svg-close-expand {
+        transform: rotateZ(45deg);
+      }
+    }
+  }
+
+  &.disable {
+    .collapsed {
+      display: none;
+    }
+    .expand-button {
+      display: none;
+    }
+  }
+
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-start;
+
+  .summary {
+    // give it 1% to start with encase we are hiding the expand button. That way collapsed
+    // will break down to the new line and summary will get it's own line in which content
+    // that needs more than 0 width to work will work!
+    flex: 1 0 1%;
+  }
+  .expand-button {
+    display: flex;
+    align-items: center;
+    // default built in expander
+    .svg-close-expand {
+      flex-basis: 17px;
+      transition: transform 0.1s;
+    }
+  }
+  .collapsed {
+    display: none;
+    flex-basis: 100%;
+    align-self: stretch;
+  }
+}
+
+ */

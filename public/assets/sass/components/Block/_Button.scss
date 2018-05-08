@@ -1,0 +1,47 @@
+@mixin button-theme($background-color, $text-color, $hover-background-color, $hover-text-color) {
+  color: $text-color !important;
+  background-color: $background-color;
+  border: 0;
+  &:hover { // &:not(.disabled):hover
+    background-color: $hover-background-color;
+    color: $hover-text-color !important;
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+@mixin style-content-button {
+  @include muli-extrabold;
+  font-size: 11px;
+  line-height: 30px;
+  padding: 9px 28px;
+}
+
+.button {
+  display: inline-block;
+  white-space: nowrap; // buttons look dumb when they newline
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 2px;
+  letter-spacing: 3px;
+  &.fake-button {
+    cursor: pointer;
+  }
+}
+
+.blue-button {
+  @include button-theme($primary-blue, $primary-light, $primary-navy, $primary-blue);
+  @include style-content-button;
+}
+
+.blue-light-button {
+  @include button-theme($primary-blue, $primary-light, $primary-light, $primary-blue);
+  @include style-content-button;
+}
+
+
+.navy-button {
+  @include button-theme($primary-navy, $primary-blue, $primary-light, $primary-blue);
+  @include style-content-button;
+}

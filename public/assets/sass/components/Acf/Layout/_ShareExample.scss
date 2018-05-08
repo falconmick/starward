@@ -1,0 +1,40 @@
+// make sure to update all definitions in:
+// components/Acf/Layout/_ShareExample.scss
+// components/ShareExamples/*.scss
+$component-breakpoint: $tablet-up;
+
+.acf-share-example {
+  .component-container {
+    margin-top: 74px;
+    margin-bottom: 76px;
+    .share-example-header {
+      @include adelle-semibold;
+      font-size: 24px;
+      line-height: 32px;
+      color: $primary-blue;
+    }
+    .share-example-subheader {
+      @include muli-regular;
+      font-size: 14px;
+      line-height: 22px;
+      color: $grey-regular;
+      margin-top: 20px;
+    }
+  }
+
+  @include media($component-breakpoint) {
+    .component-container {
+      margin-top: 100px;
+      margin-bottom: 117px;
+      .share-example-header {
+        font-size: 34px;
+        line-height: 38px;
+      }
+      .share-example-subheader {
+        @include muli-regular;
+        font-size: 15px;
+        line-height: 23px;
+      }
+    }
+  }
+}

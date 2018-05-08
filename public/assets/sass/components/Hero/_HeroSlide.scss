@@ -1,0 +1,163 @@
+$break-point: $tablet-up;
+
+#app > :not(.home) {
+  .hero-slide {
+    // do note: cannot get damn slides to stretch all the way up :(
+    // so if your slides go larger than this pain will ensue
+    min-height: 320px;
+    @include media($break-point) {
+      min-height: 60vh;
+    }
+    .color-mask {
+      // floating header
+      min-height: 240px;
+      @include media($break-point) {
+        min-height: 60vh;
+
+      }
+    }
+  }
+}
+
+.hero-slide {
+  // do note: cannot get damn slides to stretch all the way up :(
+  // so if your slides go larger than this pain will ensue
+  min-height: 500px;
+  @include media($break-point) {
+    min-height: 80vh;
+  }
+  .color-mask {
+    // floating header
+    padding-top: 56px;
+    padding-bottom: 42px;
+    min-height: 420px;
+    @include media($break-point) {
+      min-height: 80vh;
+      padding-top: 200px;
+    }
+
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+
+    // actual styling for the slide, above is to add mask and padd top
+    .slide-content-wrapper {
+      max-width: (1000px + $double-padding-large);
+      padding: 0 $padding-large;
+
+      .header-text {
+        margin-bottom: 22px;
+        margin-top: 85px;
+        color: $white;
+        text-align: center;
+        p, ol, ul {
+          margin-bottom: 12px;
+        }
+
+        .main-header {
+          @include adelle-semibold;
+          font-size: 24px;
+          line-height: 28px;
+          margin-bottom: 12px;
+        }
+        .sub-header {
+          @include muli-semibold;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-size: 14px;
+          line-height: 18px;
+          @include ie-fix {
+            display: block;
+          }
+          ol {
+            list-style-type: decimal;
+          }
+          ul {
+            list-style-type: circle;
+          }
+          ol, ul {
+            text-align: left;
+            @include clearfix;
+            li {
+              float: left;
+              clear: left;
+            }
+          }
+        }
+        // .header-text
+        @include media($break-point) {
+          margin-top: 20px;
+          .main-header {
+            font-size: 38px;
+            line-height: 42px;
+            margin-bottom: 15px;
+          }
+          .sub-header {
+            font-size: 15px;
+            line-height: 23px;
+          }
+        }
+      }
+
+      .icon-columns-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        .icon-columns-header {
+          @include muli-extrabold;
+          font-size: 14px;
+          line-height: 23px;
+          color: $white;
+          width: 100%;
+          display: none;
+        }
+        .icon-columns {
+          .icon-column {
+            display: flex;
+            flex-direction: column;
+            margin: 8px 0;
+            .hero-icon {
+              display: none;
+              width:
+              img {
+                margin: 0 auto;
+              }
+            }
+          }
+        }
+
+        // .icon-columns-container
+        @include media($break-point) {
+          .icon-columns-header {
+            display: block;
+            text-align: center;
+          }
+          .icon-columns {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-left: -34px;
+            .icon-column {
+              margin-left: 34px;
+              .hero-icon {
+                display: block;
+                align-self: center;
+              }
+              .button {
+                min-width: 205px;
+                margin-top: 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

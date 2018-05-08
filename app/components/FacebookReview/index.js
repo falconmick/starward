@@ -1,0 +1,1 @@
+export { mapFacebookReview } from './FacebookReview';

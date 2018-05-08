@@ -1,0 +1,13 @@
+// make sure to copy any changes from here to:
+// components/Acf/Layout/_OurLocations.scss
+// components/LocationList/*.scss
+$break-point: $tablet-up;
+
+.location-list-container {
+  @include media($break-point) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-right: -24px;
+  }
+}

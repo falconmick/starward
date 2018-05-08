@@ -1,0 +1,28 @@
+.breadcrumbs {
+  .breadcrumb-items {
+    display: flex;
+    flex-wrap: wrap;
+
+    .breadcrumb {
+      &:last-of-type {
+        color: $primary-blue;
+      }
+    }
+
+    .breadcrumb, .breadcrumb a {
+      @include muli-semibold;
+      font-size: 13px;
+      line-height: 28px;
+      color: $grey-regular;
+      text-transform: uppercase;
+
+      a:hover {
+        color: $primary-navy;
+      }
+
+      @include media($mobile-nav-up) {
+        font-size: 14px;
+      }
+    }
+  }
+}

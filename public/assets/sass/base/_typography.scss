@@ -14,7 +14,7 @@ body {
   text-rendering: optimizeLegibility;
   font-smoothing: antialiased;
 
-  @include media($mobile-down) {
+  @include media($mobile-down-USE-WITH-CATION) {
     font-size: 14px;
   }
 }
@@ -51,7 +51,7 @@ h4 { font-size: 16px; }
 h5 { font-size: 16px; }
 h6 { font-size: 14px; }
 
-@include media($mobile-down) {
+@include media($mobile-down-USE-WITH-CATION) {
 
   h1 { font-size: 24px; }
   h2 { font-size: 22px; }
@@ -93,17 +93,6 @@ hr {
   display: block;
   margin: 20px 0;
   border: 0;
-}
-
-blockquote {
-  margin: 0 0 20px;
-  font-family: cambria, georgia, times, serif;
-  font-style: italic;
-  p {
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
 }
 
 table {

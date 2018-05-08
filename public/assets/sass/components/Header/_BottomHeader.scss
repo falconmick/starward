@@ -1,0 +1,64 @@
+.nav-open {
+  .bottom-header {
+    flex-grow: 1;
+  }
+}
+
+.bottom-header {
+  flex-basis: 0px;
+  transition: flex-grow .3s;
+  @include media($mobile-nav-up) {
+    flex-basis: 52px;
+  }
+  .bottom-header-draw {
+    display: none;
+    justify-content: space-between;
+    min-height: 52px;
+    transition: opacity 0.3s;
+    opacity: 0;
+
+
+    flex-direction: column;
+    @include media($mobile-nav-up) {
+      opacity: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .sell-shares-now {
+      align-self: flex-start;
+      margin-top: 16px;
+
+      @include media($mobile-nav-up) {
+        display: none;
+      }
+    }
+
+    .contact-number {
+      @include muli-semibold;
+      font-size: 14px;
+      margin-right: 5px;
+      margin-top: 12px;
+      color: $grey-semidark;
+      text-decoration: none;
+      .detail {
+        color: $primary-blue;
+        @include muli-extrabold;
+      }
+      &:hover {
+        text-decoration: none;
+        color: $primary-blue;
+      }
+
+      @include media($mobile-nav-up) {
+        font-size: 16px;
+        margin-top: 0;
+        .detail {
+
+          @include muli-semibold;
+        }
+      }
+    }
+  }
+}

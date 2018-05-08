@@ -21,10 +21,14 @@
 = Containers (app/containers) =
 ===============================================>>>>>*/
 
-@import "containers/*";
+@import "containers/*.scss";
+@import "containers/**/*.scss";
 
 /*=============================================>>>>>
 = Components (app/components) =
 ===============================================>>>>>*/
 
 @import "components/**/*";
+
+@import "~slick-carousel/slick/slick.css";
+//@import "~slick-carousel/slick/slick-theme.css";

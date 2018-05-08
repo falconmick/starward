@@ -1,0 +1,42 @@
+$container-break: $desktop-up;
+
+.acf-package-comparison {
+  .component-container {
+    margin-top: 36px;
+    margin-bottom: 30px;
+    .head {
+      margin-bottom: 30px;
+      .package-comparison-header {
+        @include adelle-semibold;
+        font-size: 22px;
+        line-height: 36px;
+        color: $primary-navy;
+        text-align: center;
+      }
+      .package-comparison-subheader {
+        @include muli-regular;
+        font-size: 14px;
+        line-height: 23px;
+        color: $primary-navy;
+        margin-top: 20px;
+      }
+    }
+  }
+
+  @include media($container-break) {
+    .component-container {
+      margin-top: 108px;
+      margin-bottom: 148px;
+      .head {
+        margin-bottom: 56px;
+        .package-comparison-header {
+          font-size: 34px;
+          line-height: 38px;
+        }
+        .package-comparison-subheader {
+          line-height: 20px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+.responsive-background {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  &.background-image-bottom {
+    background-position-y: bottom;
+  }
+  .color-mask {
+    // breaks IE 11, DO NOT DO THIS
+    flex: 1;
+    @include ie-fix {
+      flex: auto;
+    }
+  }
+
+  &.responsive {
+    @include media($wp-large-down) {
+      background-image: var(--resp-large) !important;
+    }
+    @include media($wp-medium-large-down) {
+      background-image: var(--resp-medium_large) !important;
+    }
+    @include media($wp-medium-down) {
+      background-image: var(--resp-medium) !important;
+    }
+    @include media($wp-thumbnail-down) {
+      background-image: var(--resp-thumbnail) !important;
+    }
+  }
+}
+
+.position-image-top .responsive-background {
+  background-position: top;
+}
+
+.responsive-background-cover {
+  background-size: cover;
+}
+
+.responsive-background-contain {
+  background-size: contain;
+}

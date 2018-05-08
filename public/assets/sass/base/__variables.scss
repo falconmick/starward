@@ -2,41 +2,73 @@
 = Body font colour =
 ===============================================>>>>>*/
 $textcolor: #222;
+$white: #ffffff;
 /*=============================================>>>>>
 = Brand colours =
 ===============================================>>>>>*/
-$primary: #D95B43;
-$secondary: #EBD077;
-$tertiary: #54777B;
-$highlight: #542537;
-$primary-darker: darken($primary, 5%);
-$secondary-darker: darken($secondary, 5%);
-$tertiary-darker: darken($tertiary, 5%);
-$highlight-darker: darken($highlight, 5%);
+$primary-navy: #08415C;
+$primary-blue: #16B2DE;
+$primary-light: #EFF3F9;
+
+$grey-dark: #172C33;
+$grey-semidark: #2E4147;
+$grey-regular: #45565C;
+$grey-light: #6A787D;
+
+$default-mask: #2E2E2E;
 
 /*=============================================>>>>>
-= Black/white =
+= Fonts =
 ===============================================>>>>>*/
-$white: #ffffff;
-$black: #000000;
-$off-white: #f2f2f2;
-$off-black: #1a1a1a;
+$ff-muli: 'Muli', sans-serif;
+$ff-adelle: 'Adelle', serif;
+
+@mixin muli-extrabold {
+  font-family: $ff-muli;
+  font-weight: 800;
+}
+
+@mixin muli-bold {
+  font-family: $ff-muli;
+  font-weight: 700;
+}
+
+@mixin muli-semibold {
+  font-family: $ff-muli;
+  font-weight: 600;
+}
+
+@mixin muli-regular {
+  font-family: $ff-muli;
+  font-weight: 400;
+}
+
+@mixin muli-light {
+  font-family: $ff-muli;
+  font-weight: 300;
+}
+
+@mixin adelle-semibold {
+  font-family: $ff-adelle;
+  font-weight: 600;
+}
 
 /*=============================================>>>>>
-= User noticiation colours =
+= Padding/Margin =
 ===============================================>>>>>*/
-$success: #5cb85c;
-$warning: #f0ad4e;
-$error: #d9534f;
+$padding-small: 16px;
+$double-padding-small: 32px;
+$padding-regular: 20px;
+$double-padding-regular: 40px;
+$padding-large: 24px;
+$double-padding-large: 48px;
+
+
 
 /*=============================================>>>>>
-= Social colours =
+= Z-Indexes =
 ===============================================>>>>>*/
-$twitter-hex: #00aced;
-$facebook-hex: #3b5998;
-$linkedin-hex: #007bb6;
-$youtube-hex: #bb0000;
-$tumblr-hex: #32506d;
-$instagram-hex: #517fa4;
-$vimeo-hex: #aad450;
-$lastfm-hex: #D51007;
+$iframe-z-index:    100001;
+$loading-z-index:   100000;
+$menu-z-index:      99999;
+$page-background-z-index: -9990;

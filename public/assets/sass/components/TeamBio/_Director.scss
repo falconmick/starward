@@ -1,0 +1,78 @@
+$page-break: $desktop-up;
+
+.acf-team-bio {
+  .director-wrapper {
+    .director-wrapper-inner {
+      background-color: $primary-navy;
+      .director-photo-desktop {
+        display: none;
+      }
+      .director-photo {
+        display: block;
+        width: 100%;
+      }
+      .floating-head-box {
+        padding-bottom: 56px;
+        padding-top: 48px;
+        .director-bio {
+          .director-header {
+            @include adelle-semibold;
+            color: $primary-blue;
+            font-size: 24px;
+            line-height: 30px;
+            margin-bottom: 8px;
+          }
+          .sub-header {
+            @include muli-regular;
+            color: $white;
+            font-size: 12px;
+            line-height: 20px;
+            margin-bottom: 20px;
+          }
+          .entry-content {
+            @include muli-regular;
+            color: $white;
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+  @include media($page-break) {
+    .director-wrapper {
+      @include clearfix;
+      .director-wrapper-inner {
+        .director-photo-desktop {
+          display: block;
+          float: right;
+          width: 50%;
+          margin-left: 50px;
+        }
+        .director-photo {
+          display: none;
+        }
+        .floating-head-box {
+          padding-top: 62px;
+          padding-bottom: 76px;
+          .director-bio {
+            .director-header {
+              font-size: 34px;
+              line-height: 38px;
+              margin-bottom: 8px;
+            }
+            .sub-header {
+              font-size: 13px;
+              line-height: 23px;
+              margin-bottom: 23px;
+            }
+            .entry-content {
+              font-size: 15px;
+              line-height: 23px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,25 @@
 /*=============================================>>>>>
 = 404 Component Styles =
 ===============================================>>>>>*/
+.four-oh-four {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $primary-light;
+  .header {
+    @include adelle-semibold;
+    font-size: 34px;
+    line-height: 38px;
+    text-align: center;
+    color: $primary-navy;
+  }
+  .four-oh-four-label {
+    @include muli-bold;
+    font-size: 80px;
+    color: $grey-light;
+    opacity: 0.1;
+    text-align: center;
+  }
+}

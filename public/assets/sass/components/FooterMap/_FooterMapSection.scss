@@ -1,0 +1,14 @@
+.footer-map-section {
+  &.primary-light-footer-gradient {
+    @include create-footer-map-gradient($primary-light);
+  }
+  &.primary-blue-footer-gradient {
+    @include create-footer-map-gradient($primary-blue);
+  }
+  &.white-footer-gradient {
+    @include create-footer-map-gradient($white);
+  }
+  &.navy-footer-gradient {
+    @include create-footer-map-gradient($primary-navy);
+  }
+}

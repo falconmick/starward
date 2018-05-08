@@ -1,0 +1,38 @@
+.question-answer {
+  padding: 12px 0;
+  .question {
+    @include muli-bold;
+    font-size: 14px;
+    line-height: 23px;
+    color: $primary-navy;
+    text-transform: uppercase;
+  }
+  .answer {
+    @include muli-regular;
+    font-size: 14px;
+    line-height: 22px;
+    color: $grey-regular;
+    p {
+      margin-bottom: 12px;
+    }
+    a {
+      color: $primary-navy;
+      &:hover {
+        color: $primary-blue;
+      }
+    }
+  }
+  @include media($tablet-up) {
+    .question {
+      font-size: 15px;
+      line-height: 23px;
+    }
+    .answer {
+      font-size: 15px;
+      line-height: 22px;
+      p {
+        margin-bottom: 16px;
+      }
+    }
+  }
+}

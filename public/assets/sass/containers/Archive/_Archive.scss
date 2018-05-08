@@ -1,0 +1,33 @@
+.archive-container {
+  .posts_categories {
+    padding-top: 78px;
+    @include media($tablet-up) {
+      padding-top: 114px;
+    }
+    .wrapper {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      .starward-select, .search-form {
+        flex: 1 0 300px;
+        max-width: 320px;
+        padding-top: 24px;
+      }
+
+      padding-top: 31px;
+      padding-bottom: 58px;
+
+      @include media($tablet-up) {
+        padding-top: 26px;
+        padding-bottom: 60px;
+      }
+    }
+    .cat-header {
+      @include adelle-semibold;
+      font-size: 34px;
+      line-height: 38px;
+      color: $primary-navy;
+      text-align: center;
+    }
+  }
+}

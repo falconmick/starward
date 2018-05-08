@@ -1,0 +1,36 @@
+.breadcrumb-search {
+  background-color: $primary-light;
+  .inner-wrapper {
+    min-height: 100px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+
+    & > * {
+      margin-top: 22px;
+      margin-bottom: 22px;
+    }
+
+    @include media($mobile-down-USE-WITH-CATION) {
+      flex-wrap: wrap;
+      & > * {
+        min-width: 100%;
+      }
+    }
+
+    .search-form {
+      input {
+        height: 24px;
+        width: 210px;
+        font-size: 16px;
+        background-color: $primary-light;
+        margin-top: 6px;
+      }
+      border-bottom: #979797 solid 1px;
+    }
+
+    .crumb-container {
+    }
+  }
+}

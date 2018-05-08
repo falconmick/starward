@@ -3,63 +3,69 @@
 ===============================================>>>>>*/
 
 // ----- Default grid settings ----- //
-
-$max-width:           1320px;
+$grid-pad:            16px;
+$grid-pad-tablet:     24px;
+$max-width:           1344px;
 $grid-columns:        12;
-$gap:                 20px;
+$gap:                 $grid-pad;
 $default-feature:     max-width;
+
+$max-width-tablet:    656px - ($grid-pad * 2);
+$max-width-desktop:   $max-width - ($grid-pad * 2);
 
 
 // ----- Define breakpoints ----- //
 
-$large-desktop-breakpoint:  1600px;
-$desktop-breakpoint:        1300px;
-$tablet-breakpoint:         1080px;
-$mobile-breakpoint:         80px;
+$desktop-breakpoint:        992px;
+$large-tablet-breakpoint:   800px;
+$tablet-breakpoint:         480px;
 
-$large-desktop-down:        new-breakpoint(max-width ($large-desktop-breakpoint) 12);
-$desktop-down:              new-breakpoint(max-width ($desktop-breakpoint) 12);
-$tablet-down:               new-breakpoint(max-width ($tablet-breakpoint) 12);
-$mobile-down:               new-breakpoint(max-width ($mobile-breakpoint) 4);
-
-$large-desktop-up:          new-breakpoint(min-width $large-desktop-breakpoint 12);
+$page-max-width:            new-breakpoint(min-width $max-width 12);
 $desktop-up:                new-breakpoint(min-width $desktop-breakpoint 12);
+$large-tablet-up:           new-breakpoint(min-width $large-tablet-breakpoint 12);
 $tablet-up:                 new-breakpoint(min-width $tablet-breakpoint 12);
-$mobile-up:                 new-breakpoint(min-width $mobile-breakpoint 12);
+
+$desktop-only:              $desktop-up;
+$large-tablet-only:           new-breakpoint((min-width $large-tablet-breakpoint max-width ($desktop-breakpoint - 1) 12));
+$tablet-only:               new-breakpoint((min-width $tablet-breakpoint max-width ($large-tablet-breakpoint - 1) 12));
+$mobile-only:               new-breakpoint(max-width ($tablet-breakpoint - 1) 4);
+
+
+$wp-thumbnail-width:           150px;
+$wp-medium-width:              300px;
+$wp-medium-large:              768px;
+$wp-large-width:               1024px;
+
+$wp-thumbnail-down:              new-breakpoint(max-width $wp-thumbnail-width 12);
+$wp-medium-down:              new-breakpoint(max-width $wp-medium-width 12);
+$wp-medium-large-down:              new-breakpoint(max-width $wp-medium-large 12);
+$wp-large-down:              new-breakpoint(max-width $wp-large-width 12);
 
 
 // --------------------------------------------------------------------------
 //   Initialise media query order
 // --------------------------------------------------------------------------
 
-@include media($large-desktop-down) { /* */ }
-@include media($desktop-down) { /* */ }
-@include media($tablet-down) { /* */ }
-@include media($mobile-down) { /* */ }
+//@include media($large-desktop-down) { /* */ }
+//@include media($desktop-down) { /* */ }
+//@include media($tablet-down) { /* */ }
+//@include media($mobile-down) { /* */ }
 
-@include media($mobile-up) { /* */ }
 @include media($tablet-up) { /* */ }
 @include media($desktop-up) { /* */ }
-@include media($large-desktop-up) { /* */ }
+@include media($page-max-width) { /* */ }
 
+// WARNING: This site was built mobile up... This is for special use cases
+// as such as hide on mobile... We need  it there because we want to preserve
+// the original display type, and forcefully override it on mobile and smaller
+// therefore we need this!!
+//
+// Also we now have a mobile only breakpoint, maybe you want that
+$mobile-down-USE-WITH-CATION: new-breakpoint(max-width ($tablet-breakpoint - 1) 4);
+$tablet-down-USE-WITH-CATION: new-breakpoint(max-width ($desktop-breakpoint - 1) 12);
+@include media($mobile-down-USE-WITH-CATION) { /* */ }
+@include media($tablet-down-USE-WITH-CATION) { /* */ }
 
-// --------------------------------------------------------------------------
-//   Centering mixin for containers
-// --------------------------------------------------------------------------
-
-@mixin center {
-  @include outer-container;
-
-  @include media($desktop-down) {
-    width: $desktop;
-  }
-
-  @include media($tablet-down) {
-    width: $tablet;
-  }
-
-  @include media($mobile-down) {
-    max-width: $mobile;
-    width: auto;
-  }
-}
+$mobile-nav-down-USE-WITH-CATION: $tablet-down-USE-WITH-CATION;
+$mobile-nav-up: $desktop-up;
+$broken-subnav-down: new-breakpoint(max-width 1600px 12);

@@ -1,3 +1,68 @@
 /*=============================================>>>>>
 = Mixin Helper =
 ===============================================>>>>>*/
+@mixin nav-drop-shadow {
+  -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5);
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.5);
+}
+
+@mixin nav-submenu-drop-shadow {
+  -webkit-box-shadow: 0px 4px 2px -1px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0px 4px 2px -1px rgba(0,0,0,0.3);
+  box-shadow: 0px 4px 2px -1px rgba(0,0,0,0.3);
+}
+
+
+@mixin circle($width, $color) {
+  width: $width;
+  height: $width;
+  background: $color;
+  -webkit-border-radius: $width/2;
+  -moz-border-radius: $width/2;
+  border-radius: $width/2;
+}
+
+@mixin ie-fix {
+  @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+    @content
+  }
+}
+
+@mixin create-footer-map-gradient($top-color, $footer-color: $grey-dark, $split-point: 75%) {
+  background: $top-color;
+  background: -moz-linear-gradient(top, $top-color 0%, $top-color $split-point, $footer-color $split-point, $footer-color 100%);
+  background: -webkit-linear-gradient(top, $top-color 0%,$top-color $split-point,$footer-color $split-point,$footer-color 100%);
+  background: linear-gradient(to bottom, $top-color 0%,$top-color $split-point,$footer-color $split-point,$footer-color 100%);
+}
+
+@mixin first-of-three {
+  &:nth-of-type(3n+1) {
+    @content
+  }
+}
+@mixin second-of-three {
+  &:nth-of-type(3n+2) {
+    @content
+  }
+}
+@mixin third-of-three {
+  &:nth-of-type(3n+3) {
+    @content
+  }
+}
+
+@mixin hover-lift {
+  transition: box-shadow .2s ease, transform .2s ease;
+  &:hover, &:focus {
+    box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.5);
+    transform: translate(-1px, -1px);
+  }
+}
+
+@mixin post-block-color($color) {
+  background: $color !important;
+  .color-mask {
+    background-color: rgba(#ffffff, 0) !important;
+  }
+}

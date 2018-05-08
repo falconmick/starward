@@ -1,0 +1,95 @@
+.acf-icon-details-list {
+  .component-container {
+    margin: 68px auto 80px;
+    .icon-details-header {
+      text-align: center;
+      @include adelle-semibold;
+      font-size: 22px;
+      line-height: 32px;
+      color: $white;
+    }
+    @include media($mobile-nav-up) {
+
+      margin: 100px auto 150px;
+      .icon-details-header {
+        font-size: 34px;
+        line-height: 38px;
+        color: $primary-blue;
+      }
+    }
+
+    .icon-details-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      $grid-gutter: 8px;
+      margin-left: -$grid-gutter;
+      .icon-detail {
+        flex: 1 1 320px; // if we ever want more than 4, use this
+        //max-width: 247px;
+        max-width: 100%;
+        margin: 50px 0 0 $grid-gutter;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .header {
+          @include muli-semibold;
+          font-size: 16px;
+          line-height: 38px;
+          color: $primary-blue;
+          max-width: 247px;
+        }
+
+        .entry-content, .entry-content p {
+          @include muli-semibold;
+          font-size: 14px;
+          line-height: 20px;
+          color: $white;
+          max-width: 100%
+        }
+        .entry-content p {
+          margin-bottom: 10px;
+          max-width: 247px;
+        }
+        .entry-content a {
+          color: $primary-blue;
+          &:hover {
+            color: $primary-light;
+          }
+        }
+
+        .detail-icon {
+          height: 90px;
+          width: auto;
+        }
+      }
+
+      @include media($mobile-nav-up) {
+        justify-content: space-between;
+
+        $grid-gutter: 24px;
+        margin-left: -$grid-gutter;
+        .icon-detail {
+          margin: 70px 0 0 $grid-gutter;
+          .header {
+            font-size: 26px;
+            line-height: 38px;
+          }
+          .entry-content, .entry-content p {
+            font-size: 15px;
+            line-height: 20px;
+            .header {
+              margin-bottom: 12px;
+            }
+          }
+          .detail-icon {
+            margin-bottom: 20px;
+          }
+        }
+      }
+    }
+  }
+}

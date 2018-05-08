@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="45" height="45">
+  <g id="Symbols" fill="none" fill-rule="evenodd">
+    <g id="Mobile-Footer" transform="translate(-50 -352)">
+      <g id="Ride-to-top" transform="translate(50 352)">
+        <rect id="Rectangle-3-Copy-21" width="43" height="43" x="1" y="1" stroke="#16B2DE" stroke-width="2" rx="2"/>
+        <path id="Shape" fill="#FFF" fill-rule="nonzero" d="M34.7544 16.2512a.841.841 0 0 0-1.199 0L23.0115 26.9485 12.4472 16.2512a.841.841 0 0 0-1.1991 0c-.3308.335-.3308.8792 0 1.2142l11.1433 11.2834c.1654.1675.3721.2512.5995.2512.2068 0 .4342-.0837.5996-.2512l11.1433-11.2834a.8485.8485 0 0 0 .0206-1.2142z" transform="rotate(-180 23 22.5)"/>
+      </g>
+    </g>
+  </g>
+</svg>

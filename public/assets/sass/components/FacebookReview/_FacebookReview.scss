@@ -1,0 +1,98 @@
+$review-box-width: 360px;
+
+.facebook-review {
+  background-color: white;
+  -webkit-box-shadow: 1px 2px 6px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 1px 2px 6px 0px rgba(0,0,0,0.75);
+  box-shadow: 1px 2px 6px 0px rgba(0,0,0,0.75);
+  flex-basis: $review-box-width;
+  padding: 10px 12px;
+  border-radius: 2px;
+  .top-panel {
+    display: flex;
+    .profile-picture {
+      height: 60px;
+      width: 60px;
+      border-radius: 100%;
+      margin-right: 12px;
+    }
+    .review-meta {
+      .reviewee {
+        .name {
+          @include muli-extrabold;
+          font-size: 16px;
+          line-height: 20px;
+          color: $primary-navy;
+          padding-right: 6px;
+        }
+        .review-stars {
+          display: inline-flex;
+          align-items: center;
+          background-color: $primary-blue;
+          padding: 0 12px;
+          @include muli-extrabold;
+          font-size: 16px;
+          line-height: 22px;
+          color: $white;
+          border-radius: 2px;
+          img {
+            padding-left: 3px;
+          }
+        }
+        margin-bottom: 4px;
+      }
+      .time-ago {
+        @include muli-semibold;
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: -0.3px;
+        color: $grey-light;
+      }
+    }
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    .review-message {
+      @include muli-regular;
+      color: $grey-regular;
+      font-size: 15px;
+      line-height: 23px;
+      margin-bottom: 0;
+    }
+    .review-link {
+      @include muli-semibold;
+      color: $primary-blue;
+      font-size: 15px;
+      line-height: 23px;
+      text-align: right;
+      &:hover {
+        color: $primary-navy;
+      }
+    }
+  }
+  @include media($desktop-up) {
+    margin-right: 24px;
+    margin-bottom: 42px;
+  }
+}
+.facebook-review-container {
+  display: none !important;
+  .facebook-review {
+    margin-right: 12px;
+    margin-bottom: 21px;
+  }
+  @include media($tablet-up) {
+    display: flex !important;
+  }
+}
+.facebook-review-slider {
+  margin: 0 -24px;
+  .facebook-review {
+    margin: 4px auto 64px;
+    max-width: $review-box-width;
+  }
+  @include media($tablet-up) {
+    display: none;
+  }
+}

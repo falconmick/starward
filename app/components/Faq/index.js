@@ -1,0 +1,1 @@
+export { mapQuestionAnswer } from './QuestionAnswer';

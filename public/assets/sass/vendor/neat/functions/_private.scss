@@ -72,7 +72,7 @@
   @return $values;
 }
 
-// Guid direction
+// Layout direction
 @function get-direction($layout, $default) {
   $direction: null;
 

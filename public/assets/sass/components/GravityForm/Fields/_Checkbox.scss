@@ -1,0 +1,26 @@
+.checkboxes-field {
+  &.error {
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 4px;
+      background-color: red;
+    }
+    input:not(:checked) {
+      position: relative;
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 4px;
+        background-color: red;
+      }
+    }
+  }
+}

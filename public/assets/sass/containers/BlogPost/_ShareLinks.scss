@@ -1,0 +1,19 @@
+.share-links {
+  display: flex;
+  align-items: center;
+  .share-text {
+    margin-right: 4px;
+    @include muli-bold;
+    font-size: 12px;
+    line-height: 23px;
+    color: #B4BBBE;
+  }
+  .svg-link {
+    margin-left: 8px;
+    &:hover {
+      path {
+        fill: $primary-navy;
+      }
+    }
+  }
+}

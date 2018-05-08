@@ -1,0 +1,69 @@
+// make sure to copy any changes from here to:
+// components/Acf/Layout/_OurLocations.scss
+// components/LocationList/*.scss
+$break-point: $tablet-up;
+
+.location-item {
+  .summary {
+    .header {
+      @include muli-bold;
+      font-size: 17px;
+      line-height: 38px;
+      color: $primary-blue;
+      text-transform: uppercase;
+    }
+  }
+  .location-collapsed {
+    margin-top: 8px;
+    margin-bottom: 30px;
+    @include muli-regular;
+    font-size: 14px;
+    line-height: 22px;
+    color: $grey-regular;
+    p {
+      margin-bottom: 12px;
+    }
+
+    .tel, .mail {
+      @include muli-semibold;
+      color: $primary-blue;
+      a {
+        @include muli-regular;
+        color: $grey-regular;
+        &:hover {
+          color: $primary-navy;
+        }
+      }
+    }
+    .google-map, .facebook-link {
+      @include muli-semibold;
+      display: flex;
+      align-items: center;
+      a {
+        color: $grey-regular;
+        text-decoration: underline;
+        &:hover {
+          color: $primary-navy;
+        }
+      }
+      svg path {
+        fill: $primary-blue;
+      }
+    }
+  }
+
+  @include media($break-point) {
+    flex-basis: 360px;
+    margin-right: 24px;
+    //flex-shrink: 0;
+    .summary {
+      .header {
+        font-size: 18px;
+      }
+    }
+    .location-collapsed {
+      font-size: 15px;
+      margin-bottom: 50px;
+    }
+  }
+}

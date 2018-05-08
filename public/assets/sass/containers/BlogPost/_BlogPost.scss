@@ -1,0 +1,88 @@
+.blog-post-article {
+  .post-header {
+    @include adelle-semibold;
+    font-size: 24px;
+    line-height: 30px;
+    color: $primary-navy;
+    @include media($tablet-up) {
+      font-size: 34px;
+      line-height: 38px;
+    }
+  }
+
+  .entry-meta {
+    margin-top: 5px;
+    @include muli-semibold;
+    font-size: 12px;
+    line-height: 23px;
+    color: $grey-regular;
+    @include media($tablet-up) {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+  }
+
+  .share-links {
+    margin-top: 106px;
+    margin-bottom: 8px;
+  }
+
+  .blog-article {
+    margin-top: 30px;
+    margin-bottom: 40px;
+    @include muli-semibold;
+    font-size: 14px;
+    line-height: 23px;
+    color: $grey-regular;
+    @include media($tablet-up) {
+      margin-top: 36px;
+      font-size: 15px;
+      line-height: 23px;
+      margin-bottom: 80px;
+    }
+
+    .blue {
+      color: $primary-blue;
+    }
+
+    ul, ol, p, li span, ul, ol {
+      margin-bottom: 11px;
+    }
+    h1, h2, h3, h4, h5, h6, p.header {
+      @include muli-semibold;
+      color: $primary-blue;
+      margin-top: 53px;
+      margin-bottom: 4px;
+      font-size: 15px;
+      @include media($tablet-up) {
+        font-size: 17px;
+      }
+    }
+    a {
+      @include muli-bold;
+      color: $primary-navy;
+      &:hover {
+        color: $primary-blue;
+      }
+    }
+    ul, ol {
+      list-style: initial;
+    }
+    blockquote {
+      margin-top: 26px;
+      margin-bottom: 38px;
+      background-color: $grey-regular;
+      color: $white;
+      padding: 32px 38px;
+      & :last-child {
+        margin-bottom: 0;
+      }
+
+      @include media($tablet-up) {
+        margin-top: 50px;
+        margin-bottom: 66px;
+        padding: 48px 50px;
+      }
+    }
+  }
+}

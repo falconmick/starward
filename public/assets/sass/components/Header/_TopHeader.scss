@@ -1,0 +1,75 @@
+@include media($mobile-nav-down-USE-WITH-CATION) {
+  .nav-open {
+    .top-header {
+      .left-header-content {
+        display: none;
+      }
+    }
+  }
+  .nav-closed {
+    .top-header {
+      .right-header-content {
+        display: none;
+      }
+    }
+  }
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  @include media($mobile-nav-up) {
+    height: 90px;
+  }
+
+  .left-header-content {
+    flex: 1;
+    @include media($mobile-nav-up) {
+      display: block !important;
+    }
+    a {
+      display: block;
+      .img-icon {
+        height: 30px;
+        @include media($mobile-nav-up) {
+          height: 39px;
+        }
+      }
+    }
+  }
+  .right-header-content {
+    flex-shrink: 1;
+    flex-basis: 500px;
+    display: flex;
+    .sell-shares-now {
+      display: none;
+      @include media($mobile-nav-up) {
+        display: block;
+      }
+    }
+    .inline-search-form {
+      flex: 1 1;
+      margin-left: 36px;
+      margin-right: 16px;
+
+
+      @include media($mobile-nav-down-USE-WITH-CATION) {
+        flex-direction: row-reverse;
+        margin-left: 0;
+        .link-action {
+          margin-left: 0;
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+  .toggle-nav-container {
+    display: block;
+    min-width: 40px;
+    @include media($mobile-nav-up) {
+      display: none;
+    }
+  }
+}

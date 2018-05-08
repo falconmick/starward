@@ -1,0 +1,49 @@
+$component-breakpoint: $desktop-up;
+$component-second-breakpoint: $page-max-width;
+
+.footer-map-container {
+  background-color: $primary-blue;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+
+  &.med-padded, &.lge-padded {
+    padding-right: 0;
+  }
+
+  .map-side-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pull-right-map {
+    display: none;
+    &:not(.has-side-content) {
+      padding: 0 20px;
+      margin: auto;
+    }
+  }
+
+  @include media($component-breakpoint) {
+    justify-content: space-between;
+    .map-side-content {
+      padding-left: 83px;
+      padding-right: 20px;
+      align-items: flex-start;
+    }
+    .pull-right-map {
+      display: flex;
+      height: 320px;
+      padding-right: 20px;
+    }
+  }
+  @include media($component-second-breakpoint) {
+    .pull-right-map {
+      height: auto;
+    }
+  }
+}

@@ -1,0 +1,83 @@
+.nav-grid-views {
+  .mobile-view {
+    .outer-archive-post-wrapper {
+      @include first-of-three {
+        .responsive-background {
+          @include post-block-color($primary-blue);
+        }
+        .blank-button {
+          @extend .navy-button
+        }
+      }
+      @include second-of-three {
+        .responsive-background {
+          @include post-block-color($primary-navy);
+        }
+        .blank-button {
+          @extend .blue-light-button;
+        }
+      }
+      @include third-of-three {
+        .blank-button {
+          @extend .blue-light-button;
+        }
+      }
+    }
+  }
+  .desktop-view {
+    .outer-archive-post-wrapper {
+      &:nth-of-type(1), &:nth-of-type(5), &:nth-of-type(7) {
+        .responsive-background {
+          @include post-block-color($primary-blue);
+        }
+        .blank-button {
+          @extend .navy-button
+        }
+      }
+      &:nth-of-type(2), &:nth-of-type(6) {
+        .responsive-background {
+          @include post-block-color($primary-navy);
+        }
+        .header {
+          color: $primary-blue;
+        }
+        .blank-button {
+          @extend .blue-light-button;
+        }
+      }
+      &:nth-of-type(3), &:nth-of-type(4), &:nth-of-type(8) {
+        .blank-button {
+          @extend .blue-light-button;
+        }
+      }
+    }
+
+    &.more-than-six {
+      .outer-archive-post-wrapper {
+        &:nth-child(4) {
+          flex-basis: 66.66%;
+        }
+        &:nth-of-type(5) {
+          .responsive-background {
+            @include post-block-color($grey-regular);
+          }
+          .blank-button {
+            @extend .blue-light-button;
+          }
+          .header {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  @include media($desktop-up) {
+    .mobile-view {
+      display: none;
+    }
+    .desktop-view {
+      display: flex;
+    }
+  }
+}

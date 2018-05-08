@@ -1,21 +1,19 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import cx from 'classnames'
 import moment from 'moment';
 
 export const PostMeta = props => {
-  const { modified, author } = props;
-
-  const modifiedMoment = moment(modified);
+  const { date, author, className } = props;
   return (
-    <div className="entry-meta">
-      <time className="updated" dateTime={modifiedMoment.format('YYYY-MM-DD HH:mm')}>
-        Posted {modifiedMoment.calendar()}
-      </time>
+    <div className={cx('entry-meta', className)}>
       {author ?
-        <p className="byline author vcard">
-          By <Link to={`/author/${author.slug}`} rel="author" className="fn">{author.name}</Link>
-        </p>
-      : <span /> }
+        <span className="byline author vcard">
+          Written By {author.name + ', '}
+        </span>
+        : <span /> }
+      <time className="updated" dateTime={moment(date).format('YYYY-MM-DD HH:mm')}>
+        {moment(date).format('MMM Do, YYYY')}
+      </time>
     </div>
   );
 };
@@ -23,4 +21,5 @@ export const PostMeta = props => {
 PostMeta.propTypes = {
   date: PropTypes.string,
   author: PropTypes.object,
+  className: PropTypes.string,
 };

@@ -1,0 +1,107 @@
+.paginator-component {
+  .pagination {
+    display: flex;
+    align-items: center;
+    li {
+      //@include style-h7;
+      color: #B3B3B3;
+
+      &:not(:nth-last-child(3)):not(:nth-last-child(1)):not(:first-child) {
+        padding-right: 8px;
+      }
+
+      &:first-child {
+        padding-right: 12px;
+      }
+      &:last-child {
+        padding-left: 12px;
+      }
+
+      &:first-child:not(.disabled), &:last-child:not(.disabled) {
+        $hover-effect-color: darken($primary-blue, 10%);
+        svg path {
+          stroke: rgba($hover-effect-color, 0);
+          stroke-width: 1px;
+          transition: stroke 0.2s ease;
+        }
+        &:hover {
+          svg path {
+            stroke: $hover-effect-color;
+            stroke-dasharray: 35;
+            animation: dash 50s linear;
+          }
+        }
+      }
+
+      // hide next/prev links
+      &:nth-child(2), &:nth-last-child(2) {
+        display: none;
+      }
+
+      a {
+        display: flex;
+      }
+
+      //&.disabled {
+      //
+      //  // hide first/last if disabled
+      //  &:nth-child(1), &:nth-last-child(1) {
+      //    display: none;
+      //  }
+      //}
+
+      &.disabled, &.active {
+        a {
+          @include disable-click;
+        }
+      }
+    }
+  }
+
+  &.paginator-component-centered {
+    @include clearfix;
+    .paginator-container-to-center {
+      margin: 0 auto;
+      display: table;
+    }
+    .paginator-container-to-right {
+      float: right;
+    }
+  }
+
+
+
+  // theming
+ .pagination {
+   padding-top: 30px;
+   padding-bottom: 34px;
+   @include media($desktop-up) {
+     padding-top: 66px;
+     padding-bottom: 130px;
+   }
+   li {
+     a {
+       @include muli-extrabold;
+       font-size: 12px;
+       line-height: 30px;
+       color: #B4BBBE;
+     }
+     &.active {
+       a {
+         color: $primary-navy;
+       }
+     }
+     &.disabled {
+       svg path {
+         fill: $primary-navy;
+       }
+     }
+   }
+ }
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 1000;
+  }
+}

@@ -1,3 +1,19 @@
 /*=============================================>>>>>
 = Font Helper =
 ===============================================>>>>>*/
+// Order of the includes matters, and it is: normal, bold, italic, bold+italic.
+
+@mixin font-face-starward($font-family, $file-path, $weight: normal) {
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    src: url('#{$file-path}.eot');
+    src: url('#{$file-path}.eot?#iefix')               format('embedded-opentype'),
+    url('#{$file-path}.woff2')                    format('woff2'),
+    url('#{$file-path}.woff')                     format('woff'),
+    url('#{$file-path}.ttf')                      format('truetype'),
+  }
+}
+
+@include font-face-starward('Adelle', '/assets/fonts/adelle/35C807_1_0', 600);
+@include font-face-starward('Adelle', '/assets/fonts/adelle/35C807_0_0', 700);

@@ -1,0 +1,44 @@
+$component-breakpoint: $desktop-up;
+$component-second-breakpoint: $page-max-width;
+
+.map-side-content {
+  padding-top: 60px;
+  padding-bottom: 40px;
+  .primary-header {
+    @include adelle-semibold;
+    color: $primary-light;
+    font-size: 22px;
+    line-height: 30px;
+    margin-bottom: 20px;
+  }
+  p {
+    margin-bottom: 0;
+  }
+  .contact-info {
+    @include muli-extrabold;
+    color: $primary-light;
+    font-size: 15px;
+    line-height: 15px;
+    margin-bottom: 8px;
+    &:last-of-type {
+      margin-bottom: 28px;
+    }
+    .phone, .email {
+      @include muli-bold;
+      color: $primary-light;
+      &:hover {
+        color: $primary-navy;
+      }
+    }
+  }
+
+  @include media($component-breakpoint) {
+    .primary-header {
+      font-size: 34px;
+      line-height: 38px;
+    }
+    .contact-info {
+      font-size: 16px;
+    }
+  }
+}

@@ -1,0 +1,86 @@
+$page-break: $desktop-up;
+
+.team-wrapper {
+  background-color: $primary-light;
+  padding-bottom: 72px;
+  .team-member-wrapper {
+    padding-top: 64px;
+    .banner {
+      .team-member-photo {
+        height: 220px;
+        margin: 0 auto;
+        margin-bottom: 62px;
+        max-width: 380px;
+        .color-mask {
+          display: flex;
+          flex-direction: column-reverse;
+          .title {
+            margin: 0 10% -62px;
+            background-color: $primary-navy;
+            padding-top: 14px;
+            padding-bottom: 24px;
+            padding-left: 12px;
+            padding-right: 12px;
+            text-align: center;
+            .member-header {
+              @include adelle-semibold;
+              font-size: 34px;
+              line-height: 38px;
+              color: $primary-blue;
+              margin-bottom: 9px;
+            }
+            .job-role {
+              @include muli-semibold;
+              font-size: 13px;
+              line-height: 11px;
+              color: $white;
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .team-member-bio {
+      @include muli-regular;
+      font-size: 14px;
+      line-height: 20px;
+      color: $grey-regular;
+      padding-top: 32px;
+      text-align: center;
+    }
+  }
+
+
+  @include media($page-break) {
+    @include clearfix;
+    padding-top: 110px; // to compensate for -40 in odd team-wrappers + 70 for the padding top we originaly wanted
+    .team-member-wrapper {
+      width: 50%;
+      float: left;
+      padding-top: 72px;
+      &:nth-of-type(even) {
+        margin-top: 140px;
+      }
+      &:nth-of-type(odd) {
+        margin-top: -40px;
+        padding-top: 0;
+      }
+      .team-member-container {
+        max-width: 404px;
+        margin: 0 auto;
+        .banner {
+          .team-member-photo {
+            height: 355px;
+            max-width: 404px;
+          }
+        }
+      }
+
+      .team-member-bio {
+        font-size: 15px;
+        line-height: 23px;
+      }
+    }
+  }
+}

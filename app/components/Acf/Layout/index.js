@@ -1,4 +1,11 @@
-export {IntroSection} from './IntroSection';
-export {Services} from './Services';
-export { FormSection } from './FormSection';
-export {FormSection as FormSectionUncached} from './FormSection';
+export { Hero } from './Hero';
+export { SimpleSteps } from './SimpleSteps';
+export { IconDetailsList } from './IconDetailsList';
+export { PackageComparison } from './PackageComparison';
+export { FlexibleContent } from './FlexibleContent';
+export { ShareExample } from './ShareExample';
+export { OurLocations } from './OurLocations';
+export { Faq } from './Faq';
+export { FacebookReviews } from './FacebookReviews';
+export { TeamBio } from './TeamBio';
+export { PaymentForm } from './PaymentForm';

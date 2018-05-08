@@ -1,0 +1,39 @@
+// make sure to copy any changes from here to:
+// components/Acf/Layout/_OurLocations.scss
+// components/LocationList/*.scss
+$break-point: $tablet-up;
+
+.acf-our-locations {
+  .component-container {
+    margin-bottom: 45px;
+    .map-container {
+      @include create-footer-map-gradient(
+              $top-color: $white,
+              $footer-color: $primary-light,
+              $split-point: 50%
+      );
+    }
+    .locations {
+      & > .header {
+        @include adelle-semibold;
+        font-size: 24px;
+        line-height: 30px;
+        color: $primary-navy;
+        margin-bottom: 24px;
+        margin-top: 40px;
+      }
+    }
+  }
+  @include media($break-point) {
+    .component-container {
+      margin-bottom: 84px;
+      .locations {
+        & > .header {
+          font-size: 34px;
+          line-height: 38px;
+          margin-top: 120px;
+        }
+      }
+    }
+  }
+}

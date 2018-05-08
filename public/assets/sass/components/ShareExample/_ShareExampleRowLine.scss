@@ -1,0 +1,59 @@
+// make sure to update all definitions in:
+// components/Acf/Layout/_ShareExample.scss
+// components/ShareExamples/*.scss
+$component-breakpoint: $tablet-up;
+
+.share-example-row-line {
+  p {
+    @include muli-regular;
+    font-size: 14px;
+    line-height: 22px;
+    color: $grey-regular;
+    margin-bottom: 0;
+    &.label {
+      @include muli-semibold;
+    }
+  }
+  margin-bottom: 10px;
+
+  @include media($component-breakpoint) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    p {
+      font-size: 15px;
+      line-height: 25px;
+      &.label {
+        flex: 1;
+        padding-right: 24px;
+      }
+      &.value {
+        width: 80px;
+        text-align: right;
+      }
+      &.description {
+        min-width: 100%;
+      }
+    }
+  }
+  @include media($desktop-up) {
+    flex-wrap: nowrap;
+    p {
+      &.label {
+        flex: none;
+        width: 18%;
+        padding-right: 24px;
+      }
+      &.value {
+        width: 12%;
+        padding-right: 24px;
+        text-align: left;
+      }
+      &.description {
+        flex: 1;
+        min-width: auto;
+      }
+    }
+  }
+}
