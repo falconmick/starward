@@ -9,8 +9,7 @@ var distPath = commonConfig.output.distPath;
 var publicPath = commonConfig.output.publicPath;
 
 module.exports = [
-  appConfig,
-  {
+  appConfig, {
     // The configuration for the server-side rendering
     name: 'server-side rendering',
     context: path.join(__dirname, '..', 'app'),

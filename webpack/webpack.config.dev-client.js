@@ -4,47 +4,48 @@ var hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&tim
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var commonConfig = require('./common.config');
+var commonLoaders = commonConfig.commonLoaders;
 var assetsPath = commonConfig.output.assetsPath;
 var publicPath = commonConfig.output.publicPath;
 
-var commonLoaders = [
-  {
-    /*
-     * TC39 categorises proposals for babel in 4 stages
-     * Read more http://babeljs.io/docs/usage/experimental/
-     */
-    test: /\.js$|\.jsx$/,
-    loader: 'babel-loader',
-    // Reason why we put this here instead of babelrc
-    // https://github.com/gaearon/react-transform-hmr/issues/5#issuecomment-142313637
-    query: {
-      presets: ['react-hmre', 'es2015', 'react', 'stage-0'],
-      plugins: ['transform-decorators-legacy']
-    },
-    exclude: path.join( __dirname, '..', 'node_modules')
-  },
-  {
-    test: /\.scss$/,
-    loader: 'style!css!sass!import-glob',
-    include: path.join( __dirname, '..', 'public/assets/sass')
-  },
-  {
-    test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: "url-loader?limit=10000&mimetype=application/font-woff"
-  },
-  {
-    test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: "file-loader"
-  },
-  {
-    test: /\.(png|jpg|jpeg|gif)(\?.*$|$)/,
-    loader: 'url',
-    query: {
-        name: '[hash].[ext]',
-        limit: 10000,
-    }
-  }
-];
+// var commonLoaders = [
+//   {
+//     /*
+//      * TC39 categorises proposals for babel in 4 stages
+//      * Read more http://babeljs.io/docs/usage/experimental/
+//      */
+//     test: /\.js$|\.jsx$/,
+//     loader: 'babel-loader',
+//     // Reason why we put this here instead of babelrc
+//     // https://github.com/gaearon/react-transform-hmr/issues/5#issuecomment-142313637
+//     query: {
+//       presets: ['react-hmre', 'es2015', 'react', 'stage-0'],
+//       plugins: ['transform-decorators-legacy']
+//     },
+//     exclude: path.join( __dirname, '..', 'node_modules')
+//   },
+//   {
+//     test: /\.scss$/,
+//     loader: 'style!css!sass!import-glob',
+//     include: path.join( __dirname, '..', 'public/assets/sass')
+//   },
+//   {
+//     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+//     loader: "url-loader?limit=10000&mimetype=application/font-woff"
+//   },
+//   {
+//     test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+//     loader: "file-loader"
+//   },
+//   {
+//     test: /\.(png|jpg|jpeg|gif)(\?.*$|$)/,
+//     loader: 'url',
+//     query: {
+//         name: '[hash].[ext]',
+//         limit: 10000,
+//     }
+//   }
+// ];
 
 module.exports = {
     // eval - Each module is executed with eval and //@ sourceURL.
@@ -89,9 +90,14 @@ module.exports = {
     },
     module: {
       loaders: commonLoaders
-      .concat({
+        .concat({
           test: /\.css$/,
-          loader: ['style', 'css']
+          loaders: ['style', 'css']
+        })
+        .concat({
+          test: /\.scss$/,
+          loader: 'style!css!sass!import-glob',
+          include: path.join( __dirname, '..', 'public/assets/sass')
         })
     },
     postcss: () => {
