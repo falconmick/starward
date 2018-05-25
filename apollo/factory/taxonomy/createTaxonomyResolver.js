@@ -14,10 +14,18 @@ export const createResolver = ({typeName, singleQueryName, archiveQueryName, get
   };
 };
 
-export const extendArchiveResolver = ({extendingTypeName, taxonomyFieldName, getTaxonomies}) => {
+export const extendTaxonomyOntoPostTypeResolver = ({extendingTypeName: postTypeTypeName, taxonomyFieldName, getTaxonomies}) => {
   return {
-    [extendingTypeName]: {
+    [postTypeTypeName]: {
       [taxonomyFieldName]: getTaxonomies,
+    },
+  };
+};
+
+export const extendPostTypeOntoTaxonomyResolver = ({taxonomyTypeName, postTypeFieldName, taxonomyCamelCase, getPosts}) => {
+  return {
+    [taxonomyTypeName]: {
+      [postTypeFieldName]: getPosts({taxonomyField: taxonomyCamelCase}),
     },
   };
 };

@@ -1,15 +1,16 @@
 import { merge } from 'lodash';
 import { apolloBundle } from '../../utils/apolloBundle';
-import { createType, extendArchiveType } from './createTaxonomyType';
-import { createResolver, extendArchiveResolver } from './createTaxonomyResolver';
+import { createType, extendTaxonomyOntoPostTypeType, extendPostTypeOntoTaxonomyType } from './createTaxonomyType';
+import { createResolver, extendTaxonomyOntoPostTypeResolver, extendPostTypeOntoTaxonomyResolver } from './createTaxonomyResolver';
 import { taxonomyQueryFactory } from '../../utils/taxonomyQueryFactory';
+import { postQueryFactory } from '../../utils/postQueryFactory';
 
 const taxonomyExtenderFactory =
-  ({typeName: taxonomyTypeName, archiveQueryName, getTaxonomies}) =>
-    ({typeName: extendingTypeName}) => {
+  ({typeName: taxonomyTypeName, archiveQueryName, getTaxonomies, typeNameCamelCase: taxonomyCamelCase}) =>
+    ({typeName: extendingTypeName, archiveQueryName: postTypeArchiveQueryName, getPosts}) => {
   const _addTaxonomyToPostType = ({taxonomyFieldName = archiveQueryName}) => {
-    const rawType = extendArchiveType({taxonomyFieldName, taxonomyTypeName, extendingTypeName});
-    const resolvers = extendArchiveResolver({extendingTypeName, taxonomyFieldName, getTaxonomies});
+    const rawType = extendTaxonomyOntoPostTypeType({taxonomyFieldName, taxonomyTypeName, extendingTypeName});
+    const resolvers = extendTaxonomyOntoPostTypeResolver({extendingTypeName, taxonomyFieldName, getTaxonomies});
 
     return {
       rawType,
@@ -25,15 +26,18 @@ const taxonomyExtenderFactory =
     return apolloBundle({type, resolvers});
   };
 
-  const _addPostTypeToTaxonomy = ({}) => {
+  const _addPostTypeToTaxonomy = ({postTypeFieldName = postTypeArchiveQueryName}) => {
+    const rawType = extendPostTypeOntoTaxonomyType({taxonomyTypeName, postTypeFieldName, extendingTypeName});
+    const resolvers = extendPostTypeOntoTaxonomyResolver({taxonomyTypeName, postTypeFieldName, taxonomyCamelCase, getPosts});
+
     return {
-      rawType: '',
-      resolvers: {}
+      rawType,
+      resolvers,
     };
   };
 
-  const _addPostTypeToTaxonomyBundle = ({}) => {
-    const { rawType, resolvers } = _addPostTypeToTaxonomy({});
+  const _addPostTypeToTaxonomyBundle = ({postTypeFieldName}) => {
+    const { rawType, resolvers } = _addPostTypeToTaxonomy({postTypeFieldName});
 
     const type = () => [rawType];
 
@@ -42,9 +46,9 @@ const taxonomyExtenderFactory =
 
   // args passed are optional (if your feild names don't follow convention you'll need
   // to re-name them here so we can find them on the API response
-  const _twoWayBindPostTypeToTaxonomy = ({taxonomyFieldName} = {}) => {
+  const _twoWayBindPostTypeToTaxonomy = ({postTypeFieldName, taxonomyFieldName} = {}) => {
     const { rawType: typeA, resolvers: resolverA } = _addTaxonomyToPostType({taxonomyFieldName});
-    const { rawType: typeB, resolvers: resolverB } = _addPostTypeToTaxonomy({});
+    const { rawType: typeB, resolvers: resolverB } = _addPostTypeToTaxonomy({postTypeFieldName, taxonomyCamelCase});
 
     const type = () => [typeA, typeB];
     const resolvers = merge(resolverA, resolverB);
@@ -78,6 +82,6 @@ export const taxonomyFactory = ({typeName, queryName, apiEndpoint}) => {
 
   return {
     bundle,
-    taxonomyExtender: taxonomyExtenderFactory({typeName, archiveQueryName, getTaxonomies}),
+    taxonomyExtender: taxonomyExtenderFactory({typeName, archiveQueryName, getTaxonomies, typeNameCamelCase}),
   };
 };

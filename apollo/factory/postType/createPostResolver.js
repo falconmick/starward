@@ -1,13 +1,10 @@
-import { postQueryFactory } from '../../utils/postQueryFactory';
 import {
   authorResolvers, basePostTypeResolvers, excerptResolvers,
   featuredMediaResolvers
 } from '../../utils/postTypeResolver';
 
 
-export const createResolver = ({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint}) => {
-  const { getPost, getPosts } = postQueryFactory({typeNameCamelCase, apiEndpoint});
-
+export const createResolver = ({typeName, singleQueryName, archiveQueryName, getPost, getPosts}) => {
   const typeResolver = {
     ...authorResolvers,
     ...featuredMediaResolvers,
@@ -18,7 +15,7 @@ export const createResolver = ({typeName, singleQueryName, archiveQueryName, typ
   return {
     RootQuery: {
       [singleQueryName]: getPost,
-      [archiveQueryName]: getPosts
+      [archiveQueryName]: getPosts(), // this query is also used by taxonomies who need to inject stuff here, we don't need to!
     },
     [typeName]: typeResolver,
   };

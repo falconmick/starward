@@ -7,12 +7,14 @@ import { taxonomyFactory } from '../../../apollo/factory/taxonomy/index';
 const { bundle: genreBundle, taxonomyExtender: genreExtender } = taxonomyFactory({typeName: 'Genre', apiEndpoint: 'genre'});
 
 const bookTypeName = 'Book';
-const bookBundle = postTypeFactory({typeName: bookTypeName, apiEndpoint: 'books-api'});
+// we return getPosts as genreExtender will need it to query books related to a taxonomy as the book API
+// holds that ability to search
+const { bundle: bookBundle, getPosts } = postTypeFactory({typeName: bookTypeName, apiEndpoint: 'books-api'});
 
 // sets up the genreExtender to extend Book, then adds both single and archive taxonomy access.
 // if the field names that the API returns are different from the fields that genre added to
 // root query, then we would pass the correct single/archive field names to .archive();
-const extendedBookBundle = genreExtender({typeName: bookTypeName}).twoWayBindPostTypeToTaxonomy();
+const extendedBookBundle = genreExtender({typeName: bookTypeName, archiveQueryName: 'books', getPosts}).twoWayBindPostTypeToTaxonomy();
 
 export const examplePostTypeModule = apolloModule(bookBundle, genreBundle, extendedBookBundle);
 
@@ -27,6 +29,11 @@ query books {
       genres {
         name
         id
+        books(page:1,perPage:2) {
+          pageData{
+            title
+          }
+        }
       }
       acf {
         layout {

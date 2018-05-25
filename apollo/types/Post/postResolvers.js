@@ -8,7 +8,7 @@ const { getPost, getPosts } = postQueryFactory({apiEndpoint: 'posts'});
 export const resolvers = {
   RootQuery: {
     post: getPost,
-    posts: getPosts
+    posts: getPosts(), // this query is also used by taxonomies who need to inject stuff here, we don't need to!
   },
   Post: {
     categories: ({categories}) => {

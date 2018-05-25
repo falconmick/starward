@@ -2,6 +2,7 @@ import { apolloBundle } from '../../utils/apolloBundle';
 import { createPagableType } from '../../utils/pager';
 import { createType } from './createPostType';
 import { createResolver } from './createPostResolver';
+import { postQueryFactory } from '../../utils/postQueryFactory';
 
 /**
  *
@@ -30,10 +31,14 @@ export const postTypeFactory = ({typeName, queryName, apiEndpoint, acf = {}} = {
   const type = () => [postTypeString, paginatedTypeString, acfType];
 
   // create the post and archive resolvers
-  const resolvers = createResolver({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint});
+  const { getPost, getPosts } = postQueryFactory({typeNameCamelCase, apiEndpoint});
+  const resolvers = createResolver({typeName, singleQueryName, archiveQueryName, getPost, getPosts});
 
   // bundle the type and resolver
   const bundle = apolloBundle({type, resolvers});
 
-  return bundle;
+  return {
+    bundle,
+    getPosts,
+  };
 };

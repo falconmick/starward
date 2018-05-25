@@ -17,8 +17,14 @@ extend type RootQuery {
 }
 `);
 
-export const extendArchiveType = ({taxonomyTypeName, taxonomyFieldName, extendingTypeName}) => (`
+export const extendTaxonomyOntoPostTypeType = ({taxonomyTypeName, taxonomyFieldName, extendingTypeName}) => (`
 extend type ${extendingTypeName} {
   ${taxonomyFieldName}: [${taxonomyTypeName}]
+}
+`);
+
+export const extendPostTypeOntoTaxonomyType = ({taxonomyTypeName, postTypeFieldName, extendingTypeName}) => (`
+extend type ${taxonomyTypeName} {
+  ${postTypeFieldName}(query: String, page: Int, perPage: Int): ${extendingTypeName}Pager
 }
 `);
