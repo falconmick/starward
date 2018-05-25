@@ -1,30 +1,11 @@
-import { merge } from 'lodash';
 import { apolloBundle } from '../../utils/apolloBundle';
-import { createType, extendSingleType, extendArchiveType } from './createTaxonomyType';
-import { createResolver, extendSingleResolver, extendArchiveResolver } from './createTaxonomyResolver';
+import { createType, extendArchiveType } from './createTaxonomyType';
+import { createResolver, extendArchiveResolver } from './createTaxonomyResolver';
 import { taxonomyQueryFactory } from '../../utils/taxonomyQueryFactory';
 
 const taxonomyExtenderFactory =
-  ({typeName: taxonomyTypeName, singleQueryName, archiveQueryName, getTaxonomies, getTaxonomy}) =>
+  ({typeName: taxonomyTypeName, archiveQueryName, getTaxonomies}) =>
     ({typeName: extendingTypeName}) => {
-  const _single = ({taxonomyFieldName}) => {
-    const rawType = extendSingleType({taxonomyFieldName, taxonomyTypeName, extendingTypeName});
-    const resolvers = extendSingleResolver({extendingTypeName, taxonomyFieldName, getTaxonomy});
-
-    return {
-      rawType,
-      resolvers,
-    };
-  };
-
-  const _singleBundle = ({taxonomyFieldName = singleQueryName} = {}) => {
-    const { rawType, resolvers } = _single({taxonomyFieldName});
-
-    const type = () => [rawType];
-
-    return apolloBundle({type, resolvers});
-  };
-
   const _archive = ({taxonomyFieldName}) => {
     const rawType = extendArchiveType({taxonomyFieldName, taxonomyTypeName, extendingTypeName});
     const resolvers = extendArchiveResolver({extendingTypeName, taxonomyFieldName, getTaxonomies});
@@ -43,20 +24,8 @@ const taxonomyExtenderFactory =
     return apolloBundle({type, resolvers});
   };
 
-  const _both = ({taxonomySingleFieldName = archiveQueryName, taxonomyArchiveFieldName = singleQueryName} = {}) => {
-    const { rawType: rawSingleType, resolvers: singleResolvers } = _single({taxonomyFieldName: taxonomySingleFieldName});
-    const { rawType: rawArchiveType, resolvers: archiveResolvers } = _archive({taxonomyFieldName: taxonomyArchiveFieldName});
-
-    const type = () => [rawSingleType, rawArchiveType];
-    const resolvers = merge(singleResolvers, archiveResolvers);
-
-    return apolloBundle({type, resolvers});
-  };
-
   return {
-    single: _singleBundle,
     archive: _archiveBundle,
-    both: _both,
   };
 };
 
@@ -79,6 +48,6 @@ export const taxonomyFactory = ({typeName, queryName, apiEndpoint}) => {
 
   return {
     bundle,
-    taxonomyExtender: taxonomyExtenderFactory({typeName, singleQueryName, archiveQueryName, getTaxonomies, getTaxonomy}),
+    taxonomyExtender: taxonomyExtenderFactory({typeName, archiveQueryName, getTaxonomies}),
   };
 };

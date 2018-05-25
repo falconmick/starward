@@ -14,14 +14,6 @@ export const createResolver = ({typeName, singleQueryName, archiveQueryName, get
   };
 };
 
-export const extendSingleResolver = ({extendingTypeName, taxonomyFieldName, getTaxonomy}) => {
-  return {
-    [extendingTypeName]: {
-      [taxonomyFieldName]: getTaxonomy,
-    },
-  };
-};
-
 export const extendArchiveResolver = ({extendingTypeName, taxonomyFieldName, getTaxonomies}) => {
   return {
     [extendingTypeName]: {

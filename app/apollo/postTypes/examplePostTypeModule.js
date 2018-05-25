@@ -1,6 +1,5 @@
 import { postTypeFactory } from '../../../apollo/factory/postType/index';
 import { apolloModule } from '../../../apollo/utils/apolloModule';
-import { joinQueryDefinitionString } from '../../../apollo/utils/helpers';
 import { taxonomyFactory } from '../../../apollo/factory/taxonomy/index';
 
 // first we make the taxonomy as post types can inherit taxonomies and display them
