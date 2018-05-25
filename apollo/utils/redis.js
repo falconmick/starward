@@ -2,8 +2,9 @@ import { redisClient, redisConfig } from '../../server/redis';
 import { createIdFromArgs } from './pager';
 
 export const cacheResolver = (queryName, options = {}) => func => (obj, args) => {
-  const { timeout = redisConfig.redisLongExpiry } = options;
-  const argsAsKeyPart = createIdFromArgs(JSON.stringify(args));
+  const { timeout = redisConfig.redisLongExpiry, additionalArgsMapper = () => {} } = options;
+  const additionalArgs = additionalArgsMapper(obj, args);
+  const argsAsKeyPart = createIdFromArgs(JSON.stringify({args, additionalArgs}));
   const cacheKey = `${queryName}-${argsAsKeyPart}`;
 
   return new Promise((resolve, reject) => {
@@ -15,7 +16,7 @@ export const cacheResolver = (queryName, options = {}) => func => (obj, args) =>
           resolve(parsedResult);
         } else {
           // resolve the request
-          const potentialPromise = func(obj, args);
+          const potentialPromise = func(obj, args, additionalArgs);
 
           // note: Promise.all accepts non promises too! it just synchronously returns
           // this way our query resolvers can return values instantly or via promise
