@@ -16,3 +16,15 @@ extend type RootQuery {
   ${archiveQueryName}(listOfIds: [Int!]): [${typeName}]
 }
 `);
+
+export const extendSingleType = ({taxonomyTypeName, taxonomyFieldName, extendingTypeName}) => (`
+extend type ${extendingTypeName} {
+  ${taxonomyFieldName}: ${taxonomyTypeName}
+}
+`);
+
+export const extendArchiveType = ({taxonomyTypeName, taxonomyFieldName, extendingTypeName}) => (`
+extend type ${extendingTypeName} {
+  ${taxonomyFieldName}: [${taxonomyTypeName}]
+}
+`);

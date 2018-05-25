@@ -1,9 +1,6 @@
-import { taxonomyQueryFactory } from '../../utils/taxonomyQueryFactory';
 import { resolveDashCase } from '../../utils/resolverTools';
 
-export const createResolver = ({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint}) => {
-  const { getTaxonomies, getTaxonomy } = taxonomyQueryFactory({typeNameCamelCase, apiEndpoint});
-
+export const createResolver = ({typeName, singleQueryName, archiveQueryName, getTaxonomies, getTaxonomy}) => {
   return {
     RootQuery: {
       [archiveQueryName]: getTaxonomies,
@@ -14,5 +11,21 @@ export const createResolver = ({typeName, singleQueryName, archiveQueryName, typ
         return resolveDashCase(yoast);
       },
     }
+  };
+};
+
+export const extendSingleResolver = ({extendingTypeName, taxonomyFieldName, getTaxonomy}) => {
+  return {
+    [extendingTypeName]: {
+      [taxonomyFieldName]: getTaxonomy,
+    },
+  };
+};
+
+export const extendArchiveResolver = ({extendingTypeName, taxonomyFieldName, getTaxonomies}) => {
+  return {
+    [extendingTypeName]: {
+      [taxonomyFieldName]: getTaxonomies,
+    },
   };
 };

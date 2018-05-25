@@ -8,16 +8,13 @@ import { createResolver } from './createPostResolver';
  * @param typeName
  * @param queryName
  * @param apiEndpoint
- * @param taxonomies
  * @param acf: used so we can choose to use a non default flexible conten (inside ACF, post might have it's own Flexible Content!
  * @returns {{bundle, rootQuery: *}}
  */
-export const postTypeFactory = ({typeName, queryName, apiEndpoint, taxonomies = [], acf = {}} = {}) => {
+export const postTypeFactory = ({typeName, queryName, apiEndpoint, acf = {}} = {}) => {
   if (!typeName) {
     console.error('typeName is a required argument of createPostTypeType');
   }
-
-  const taxonomyTypeArray = taxonomies.map(({taxonomyType}) => taxonomyType);
 
   // if no type, an empty array is fine!!
   const { acfType = () => [], acfTypeName } = acf;
@@ -28,12 +25,12 @@ export const postTypeFactory = ({typeName, queryName, apiEndpoint, taxonomies = 
   const archiveQueryName = archive || singleQueryName + 's';
 
   // create the post and archive GraphQL Types
-  const postTypeString = createType({typeName, taxonomies, acfTypeName, archiveQueryName, singleQueryName});
+  const postTypeString = createType({typeName, acfTypeName, archiveQueryName, singleQueryName});
   const paginatedTypeString = createPagableType(typeName);
-  const type = () => [postTypeString, paginatedTypeString, acfType, ...taxonomyTypeArray];
+  const type = () => [postTypeString, paginatedTypeString, acfType];
 
   // create the post and archive resolvers
-  const resolvers = createResolver({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint, taxonomies});
+  const resolvers = createResolver({typeName, singleQueryName, archiveQueryName, typeNameCamelCase, apiEndpoint});
 
   // bundle the type and resolver
   const bundle = apolloBundle({type, resolvers});
