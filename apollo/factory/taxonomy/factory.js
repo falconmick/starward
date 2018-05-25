@@ -1,3 +1,4 @@
+import { merge } from 'lodash';
 import { apolloBundle } from '../../utils/apolloBundle';
 import { createType, extendArchiveType } from './createTaxonomyType';
 import { createResolver, extendArchiveResolver } from './createTaxonomyResolver';
@@ -6,7 +7,7 @@ import { taxonomyQueryFactory } from '../../utils/taxonomyQueryFactory';
 const taxonomyExtenderFactory =
   ({typeName: taxonomyTypeName, archiveQueryName, getTaxonomies}) =>
     ({typeName: extendingTypeName}) => {
-  const _archive = ({taxonomyFieldName}) => {
+  const _addTaxonomyToPostType = ({taxonomyFieldName = archiveQueryName}) => {
     const rawType = extendArchiveType({taxonomyFieldName, taxonomyTypeName, extendingTypeName});
     const resolvers = extendArchiveResolver({extendingTypeName, taxonomyFieldName, getTaxonomies});
 
@@ -16,16 +17,45 @@ const taxonomyExtenderFactory =
     };
   };
 
-  const _archiveBundle = ({taxonomyFieldName = archiveQueryName} = {}) => {
-    const { rawType, resolvers } = _archive({taxonomyFieldName});
+  const _addTaxonomyToPostTypeBundle = ({taxonomyFieldName} = {}) => {
+    const { rawType, resolvers } = _addTaxonomyToPostType({taxonomyFieldName});
 
     const type = () => [rawType];
 
     return apolloBundle({type, resolvers});
   };
 
+  const _addPostTypeToTaxonomy = ({}) => {
+    return {
+      rawType: '',
+      resolvers: {}
+    };
+  };
+
+  const _addPostTypeToTaxonomyBundle = ({}) => {
+    const { rawType, resolvers } = _addPostTypeToTaxonomy({});
+
+    const type = () => [rawType];
+
+    return apolloBundle({type, resolvers});
+  };
+
+  // args passed are optional (if your feild names don't follow convention you'll need
+  // to re-name them here so we can find them on the API response
+  const _twoWayBindPostTypeToTaxonomy = ({taxonomyFieldName} = {}) => {
+    const { rawType: typeA, resolvers: resolverA } = _addTaxonomyToPostType({taxonomyFieldName});
+    const { rawType: typeB, resolvers: resolverB } = _addPostTypeToTaxonomy({});
+
+    const type = () => [typeA, typeB];
+    const resolvers = merge(resolverA, resolverB);
+
+    return apolloBundle({type, resolvers});
+  };
+
   return {
-    archive: _archiveBundle,
+    addTaxonomyToPostType: _addTaxonomyToPostTypeBundle,
+    addPostTypeToTaxonomy: _addPostTypeToTaxonomyBundle,
+    twoWayBindPostTypeToTaxonomy: _twoWayBindPostTypeToTaxonomy,
   };
 };
 

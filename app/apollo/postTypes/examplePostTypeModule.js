@@ -2,7 +2,8 @@ import { postTypeFactory } from '../../../apollo/factory/postType/index';
 import { apolloModule } from '../../../apollo/utils/apolloModule';
 import { taxonomyFactory } from '../../../apollo/factory/taxonomy/index';
 
-// first we make the taxonomy as post types can inherit taxonomies and display them
+// the taxonomy returns a bundle and a tool to add itself to as many post types as you wish!
+// this is because typically you will have 1 post type with 1-many taxonomies
 const { bundle: genreBundle, taxonomyExtender: genreExtender } = taxonomyFactory({typeName: 'Genre', apiEndpoint: 'genre'});
 
 const bookTypeName = 'Book';
@@ -11,7 +12,7 @@ const bookBundle = postTypeFactory({typeName: bookTypeName, apiEndpoint: 'books-
 // sets up the genreExtender to extend Book, then adds both single and archive taxonomy access.
 // if the field names that the API returns are different from the fields that genre added to
 // root query, then we would pass the correct single/archive field names to .archive();
-const extendedBookBundle = genreExtender({typeName: bookTypeName}).archive();
+const extendedBookBundle = genreExtender({typeName: bookTypeName}).twoWayBindPostTypeToTaxonomy();
 
 export const examplePostTypeModule = apolloModule(bookBundle, genreBundle, extendedBookBundle);
 
