@@ -45,6 +45,7 @@ export default makeExecutableSchema({
   typeDefs: [CustomScalars, SchemaDefinition, schemaTypes, ...types],
   resolvers,
   resolverValidationOptions: {
-    requireResolversForAllFields: false
+    // requireResolversForAllFields: false,
+    requireResolversForResolveType: false
   }
 });
