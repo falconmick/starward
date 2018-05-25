@@ -77,7 +77,7 @@ const dataIdFromObject = object => {
 //
 // TLDR: cacheResolvers map data returned by page ACF requests to the schemas RootQuery.
 // todo: Move to the Types folders and integrate with module system.
-const cacheResolvers = {
+const cacheRedirects = {
   Query: {
     form: (_, {formId}) => {
       return toIdValue(defaultDataIdFromObject({ __typename: 'Form', id: formId }));
@@ -130,7 +130,7 @@ export const createClient = (apolloState) => {
     meaningfullErrorLogs({isClient: true}),
     httpLink,
   ]);
-  const cache = new InMemoryCache({dataIdFromObject, cacheResolvers}).restore(apolloState);
+  const cache = new InMemoryCache({dataIdFromObject, cacheRedirects}).restore(apolloState);
   return new ApolloClient({
     link,
     cache,
@@ -149,7 +149,7 @@ export const createSsrClient = (req) => {
     meaningfullErrorLogs(),
     httpLink,
   ]);
-  const cache = new InMemoryCache({dataIdFromObject, cacheResolvers});
+  const cache = new InMemoryCache({dataIdFromObject, cacheRedirects});
   return new ApolloClient({
     link,
     cache,
