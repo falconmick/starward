@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createMemoryHistory, match } from 'react-router';
 import createRoutes from '../../app/routes';
 import configureStore from '../../app/utils/configureStore';
-import { baseURL } from '../../app/config/app';
+import { baseURL, GRAPHQL_ENDPOINT } from '../../app/config/app';
 import { REDIS_PREFIX } from '../config/app';
 import pageRenderer from './pageRenderer';
 import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
@@ -10,6 +10,7 @@ import fetchDataForApp from '../../app/utils/fetchDataForApp';
 import { redisConfig } from '../redis';
 import { environment } from '../utility';
 import { createSsrClient as createClient } from '../../apollo/createClient';
+import { fragmentTypeGenerator } from '../../apollo/utils/fragmentTypeGenerator';
 
 // configure baseURL for axios requests (for serverside API calls)
 axios.defaults.baseURL = baseURL;
@@ -24,9 +25,15 @@ if (environment.isRedisEnabled && !REDIS_PREFIX) {
  * We grab the state passed in from the server and the req object from Express/Koa
  * and pass it into the Router.run function.
  */
-export default (redisClient) => (req, res) => {
+export default (redisClient) => async (req, res) => {
   const history = createMemoryHistory();
-  const apolloClient = createClient(req);
+
+  // In memory cache doesn't know about our Unions and Interfaces and therefore cannot
+  // properly cache anything that uses them, for that reason we pass a schema down
+  // to the client so that it can match the cache properly using __typename
+  // see https://www.apollographql.com/docs/react/advanced/fragments.html#fragment-matcher
+  const fragmentTypes = await fragmentTypeGenerator(GRAPHQL_ENDPOINT);
+  const apolloClient = createClient(req, fragmentTypes);
   const store = configureStore({}, history);
   const routes = createRoutes(store);
 
@@ -56,7 +63,7 @@ export default (redisClient) => (req, res) => {
     fetchDataForRoute(props)
       .then(data => {
         const status = data && data.handle404 ? 404 : 200;
-        pageRenderer(store, props, apolloClient, (html) => {
+        pageRenderer(store, props, apolloClient, fragmentTypes, (html) => {
           res.status(status).send(html);
           const redisKey = props.location.pathname;
           const isPreview = props.location.query.preview;

@@ -4,7 +4,7 @@ import { BatchHttpLink } from 'apollo-link-batch-http';
 import { createHttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { toIdValue } from 'apollo-utilities';
-import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
+import { InMemoryCache, defaultDataIdFromObject, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { GRAPHQL_ENDPOINT, isProduction } from '../app/config/app';
 import { createPostPagerKey } from './utils/pager';
 
@@ -120,7 +120,7 @@ const meaningfullErrorLogs = ({isClient = false} = {}) => onError(err => {
   }
 });
 
-export const createClient = (apolloState) => {
+export const createClient = (apolloState, fragmentTypes) => {
   const httpLink = new BatchHttpLink({
     uri: GRAPHQL_ENDPOINT,
     batchInterval: 1,  // in milliseconds I break my queries into small chunks for better caching, 1ms is long enough to add them all together
@@ -130,14 +130,22 @@ export const createClient = (apolloState) => {
     meaningfullErrorLogs({isClient: true}),
     httpLink,
   ]);
-  const cache = new InMemoryCache({dataIdFromObject, cacheRedirects}).restore(apolloState);
+
+  // In memory cache doesn't know about our Unions and Interfaces and therefore cannot
+  // properly cache anything that uses them, for that reason we pass a schema down
+  // to the client so that it can match the cache properly using __typename
+  // see https://www.apollographql.com/docs/react/advanced/fragments.html#fragment-matcher
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData: fragmentTypes
+  });
+  const cache = new InMemoryCache({dataIdFromObject, cacheRedirects, fragmentMatcher}).restore(apolloState);
   return new ApolloClient({
     link,
     cache,
   });
 };
 
-export const createSsrClient = (req) => {
+export const createSsrClient = (req, fragmentTypes) => {
   const httpLink = createHttpLink({
     uri: GRAPHQL_ENDPOINT,
     credentials: 'same-origin',
@@ -149,7 +157,14 @@ export const createSsrClient = (req) => {
     meaningfullErrorLogs(),
     httpLink,
   ]);
-  const cache = new InMemoryCache({dataIdFromObject, cacheRedirects});
+  // In memory cache doesn't know about our Unions and Interfaces and therefore cannot
+  // properly cache anything that uses them, for that reason we pass a schema down
+  // to the client so that it can match the cache properly using __typename
+  // see https://www.apollographql.com/docs/react/advanced/fragments.html#fragment-matcher
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData: fragmentTypes
+  });
+  const cache = new InMemoryCache({dataIdFromObject, cacheRedirects, fragmentMatcher});
   return new ApolloClient({
     link,
     cache,

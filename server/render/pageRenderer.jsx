@@ -36,7 +36,7 @@ const createApp = (store, props, apolloClient, resCallback) => {
 
 const styles = process.env.NODE_ENV === 'production' ? '<link rel="stylesheet" href="/assets/css/styles.css">' : '';
 
-const buildPage = ({ html = '', initialState = {}, apolloState = {}, headAssets}) => {
+const buildPage = ({ html = '', initialState = {}, apolloState = {}, fragmentTypes, headAssets}) => {
   return `
 <!doctype html>
 <html>
@@ -50,14 +50,15 @@ const buildPage = ({ html = '', initialState = {}, apolloState = {}, headAssets}
     <div id="app">${html}</div>
     <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
     <script>window.__APOLLO_STATE__ = ${JSON.stringify(apolloState).replace(/</g, '\\u003c')}</script>
+    <script>window.__FRAGMENT_TYPES__= ${JSON.stringify(fragmentTypes)}</script>
     <script src="https://cdn.polyfill.io/v2/polyfill.js?features=default,es6"></script>
     <script type="text/javascript" charset="utf-8" src="/assets/app.js"></script>
   </body>
 </html>`;
 };
 
-export default (store, props, apolloClient, resCallback) => {
+export default (store, props, apolloClient, fragmentTypes, resCallback) => {
   createApp(store, props, apolloClient, (html, initialState, apolloState, headAssets) => {
-    resCallback(buildPage({ html, initialState, apolloState, headAssets }));
+    resCallback(buildPage({ html, initialState, apolloState, fragmentTypes, headAssets }));
   });
 };

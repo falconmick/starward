@@ -1,11 +1,18 @@
-// EmptyType is a fallback for if the developer hasn't created
-// a custom ACF Layout resolver
-const FlexibleContentUnion = `
-type EmptyType {
-thisisnotused: String
-}
-union FlexibleContentUnion = FormSection | EmptyType
-`;
+import { createResolvers } from './flexibleContentUnionResolvers';
 
-export default () => [FlexibleContentUnion];
-export { resolvers } from './flexibleContentUnionResolvers';
+export const buildFlexibleContentUnion = ({flexibleContentUnionValues}) => {
+  const FlexibleContentUnion = `
+  type EmptyType {
+    isEmptyType: Boolean
+  }
+  union FlexibleContentUnion = ${[...flexibleContentUnionValues, 'EmptyType'].join(' | ')}
+  `;
+
+  const type = () => [FlexibleContentUnion];
+  const resolvers = createResolvers(flexibleContentUnionValues);
+
+  return {
+    type,
+    resolvers,
+  };
+};

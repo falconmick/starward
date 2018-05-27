@@ -15,7 +15,7 @@ import styles from '../public/assets/sass/styles.scss';
 // Grab the state from a global injected into
 // server-generated HTML
 const initialState = window.__INITIAL_STATE__;
-const apolloClient = createClient(window.__APOLLO_STATE__);
+const apolloClient = createClient(window.__APOLLO_STATE__, window.__FRAGMENT_TYPES__);
 
 const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);

@@ -168,7 +168,6 @@ Whenever you create a new FlexibleContentUnion resolver type (above) you must al
 1. Create a bundle for that Type inside of app/apollo/acfLayoutModules.js and add it to the apolloModule function
 2. Add your type to the FlexibleContentUnion definition inside of app/component/Acf/FlexibleContentUnion/index.js
 3. Add to the acf fragment your type and it's query (for example, if your using ACF in the Page query, you would add to: app/apollo/fragments/pageFragment.js, see FormSection under queryable)
-4. Prepend your Query inside of WP ACF with: `__queryable__` i.e. __queryable__FormSection
 
 :scream::scream::scream:
 DANGER: do not import a GraphQL resolver into any code located inside of app/

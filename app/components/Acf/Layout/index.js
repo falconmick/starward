@@ -1,4 +1,3 @@
-export {IntroSection} from './IntroSection';
+export {IntroSection} from './IntroSection/IntroSection';
 export {Services} from './Services';
-export { FormSection } from './FormSection';
-export {FormSection as FormSectionUncached} from './FormSection';
+export {FormSection} from './FormSection';

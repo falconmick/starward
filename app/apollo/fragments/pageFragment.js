@@ -9,12 +9,16 @@ export const pageFragment = {
               layout {
                   autoFields
                   queryable {
+                      __typename
                       ... on FormSection {
                           form {
                               ...defaultForm
                           }
                           showDescription
                           showTitle
+                      }
+                      ... on EmptyType {
+                          isEmptyType
                       }
                   }
               }
