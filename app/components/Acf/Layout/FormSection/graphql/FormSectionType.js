@@ -1,6 +1,4 @@
 // NOTE: Cannot import this inside of web app or redis will be included, which obviously doesn't work on client side!!
-import { wrapFlexibleContentGraphQL } from '../../util';
-import { resolvers } from './formSectionResolvers';
 
 const FormSection = `
 type FormSection {
@@ -10,7 +8,5 @@ type FormSection {
 }
 `;
 
-const type = () => [FormSection];
-const typeName = 'FormSection';
-
-export const formSection = wrapFlexibleContentGraphQL({type, typeName, resolvers});
+export const type = () => [FormSection];
+export const typeName = 'FormSection';
