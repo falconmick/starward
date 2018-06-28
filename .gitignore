@@ -63,6 +63,7 @@ compiled
 config/app.js
 app/config/app.js
 server/config/app.js
+graphql.schema.json
 
 # Webstorm
 .idea
