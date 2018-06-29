@@ -2,23 +2,27 @@
 
 This project uses Apollo GraphQL as its primary form of data transport between the server and your front end app. It is comprised of the following queries:
 
-- settings: Settings
-- page(splat: String): Page
-- pages(query: String, page: Int, perPage: Int): PagePager
-- menuItem(slug: String): [MenuItem]
-- categories(listOfIds:[Int!]): [Category]
-- category(id: Int!): Category
+- version: String
+- form(formId: Int!): Form
+- media(id: Int!): Media
 - post(slug: String!): Post
 - posts(query: String, page: Int, perPage: Int): PostPager
-- users: [User]
-- user(id: Int!): User
-- media(id: Int!): Media
+- category(id: Int!): Category
+- categories(listOfIds: \[Int!]): \[Category]
+- menuItem(slug: String): \[MenuItem]
+- page(splat: String): Page
+- pages(query: String, page: Int, perPage: Int): PagePager
+- settings: Settings
 - tag(id: Int!): Tag
-- tags(listOfIds:[Int!]): [Tag!]
-- form(formId: Int!): Form
+- tags(listOfIds: \[Int!]): \[Tag!]
+- users: \[User]
+- user(id: Int!): User
+
 
 These queries that are provided by default map directly to the Wordpress API endpoints as such you can use then to get the data that you would normally expend to get from the API.
-You can find these queries located inside of apollo/types/index.js.
+You can find these queries located inside of apollo/types/index.js. Note that the version endpoint currently is just a requirement of that GraphQL does
+not allow you to define a Query without any fields, of which we use type extension to define all of our fields, so as we create the RootQuery
+we need a field to go in there, so a dummy version field it is!!!
 
 ## Types, Queries, Mutations, Resolvers
 
@@ -36,26 +40,57 @@ As you might have noticed, its only required that an index file is created (exam
 sometimes an API call will return an object as a JSON field, so basically all your using this type for is a place for that
 data to be palced and a way to query just what you need!
 
-the apollo/type/{TypeName}/{TypeName}Resolver.js file has the following main fields on the object it returns, see for example an example Post resolver
+the apollo/type/{TypeName}/{TypeName}Resolver.js file has the following main fields on the object it returns, see for example an example Media resolver
 
-    export const resolvers = {
-      RootQuery: {
-        post: getPost,
-        posts: getPosts
-      },
-      Post: {
-        categories: ({categories}) => {
-          return getCategories(null, {listOfIds: categories});
-        },
-        excerpt: ({excerpt}) => {
-          return excerpt.rendered;
-        }
-      },
-    };
+```
+import moment from 'moment';
+import { getMedia } from './mediaQueries';
+import { extractRendered } from '../../utils/resolverTools';
 
-If you need to shape data from the WP API, you would the Post object for the above resolver, as you can see I was able
-to make it so that when the user queries excerpt, they recieve excerpt.rendered as WP returns an Object for excerpt in 
-the WP API call. Other common uses of this is to convert UTC time into ISO, see apollo/util/postTypeResolver.js
+export const resolvers = {
+  RootQuery: {
+    media: getMedia,
+  },
+  Media: {
+    url: ({guid}) => {
+      return extractRendered(guid);
+    },
+    created: ({date_gmt}) => {
+      const asMoment = moment.utc(date_gmt);
+      return asMoment.toISOString();
+    },
+    modified: ({modified_gmt}) => {
+      const asMoment = moment.utc(modified_gmt);
+      return asMoment.toISOString();
+    },
+    guid: ({guid}) => {
+      return extractRendered(guid);
+    },
+    title: ({title}) => {
+      return extractRendered(title);
+    },
+    caption: ({caption}) => {
+      return extractRendered(caption);
+    },
+  }
+};
+
+```
+
+This resolver will define what function calls will satisfy the RootQuery fields (i.e. media)
+and will also define how to resolve the fields of the Media post type (i.e. created comes to us as a GMT time and we convert it to a UTC ISO string)
+inside of the Media resolver we could also define how to fetch more data, for example Media
+might have a field called relatedImages that is a list of ID's, we would use somthing like the following to
+allow users of the Media type to also optionally fetch the related images
+
+```
+........
+Media: {
+relatedImages: ({relatedImageArray}) => {
+  return goFetchSomeMediaItems(relatedImageArray);
+},
+......
+```
 
 
 ## How To Query!
@@ -126,7 +161,7 @@ for you, unless you write types and queries for your ACF layout components (see 
 performance by pre-fetching things like forms in the page query!!)
 
 #### How to build Queries?
-whilest in dev goto: [localhost:3000/graphiql](http://localhost:3000/graphiql) and you will get a live editor that provides 
+whilest in dev goto: [Graphiql](http://localhost:3000/graphiql) and you will get a live editor that provides
 intelisence, schema type checking and documentation provided via #'s in our Type definitions.
 
 
@@ -139,7 +174,7 @@ intelisence, schema type checking and documentation provided via #'s in our Type
 - Terse definition of required data without needing to buid 100 endpoints. Now for example if I were to build RedLily onto this I would 
 have just passed the project Id's down to the other Projects CTA and write a query that request JUST 
 the title, image, descr, link for each of the items rather than manual entry of these items :()
-- Easy Infinite queries (i.e. related posts, the more button. TODO: put info on appending to an array query data) 
+- Easy Infinite queries (i.e. related posts, the more button)
 
 ## FlexibleContentUnion and how to write awesome ACF Layouts
 
@@ -152,24 +187,22 @@ If you did not, the page would load and then after showing the client the awesom
 For an example of how to prefetch data, see app/components/acf/layout/FormSection
 There are the following files:
 
-* **FormSection.jsx** ACF React Component that renders the Field
-* **FormSectionType.js** Defines the ACF Field data that will be passed to it (page.acf.layout)
-* **formSectionResolvers.js** Contains the query to be ran whenever this field is returned in the ACF Layout
+* **FormSection.jsx** ACF React Component that renders the ACF Field, n.b. the GraphQL calls are located inside of the \<GravityForm> component it utilises
+* **graphql/FormSectionType.js** Defines the ACF Field that ACF's flexible content returns
+* **graphql/formSectionResolvers.js** Contains the query to be ran whenever this field is returned in the ACF Layout
+* **graphql/index.js** This is used to wrap up the type, type name and resolvers into an easily consumed object that we export from `app/components/Acf/Layout/graphql.js`
+we do this because by wrapping up all of our graphQL parts into a known object that exists in a known area (Layout/graphql.js shown just before this) the code located
+inside of app/apollo/FlexibleContentUnion can parse our custom ACF graphQL resolver!
 
-You will notice that this is similar to apollo/types/{TypeName}, of which it is! The main difference is that you
-do not define a {TypeName}Queries.js file because we are not defining any Queries!! Instead we are opening 
-app/components/acf/FlexibleContentUnion/index.js and adding our type to the FlexibleContentUnion Type's Union.
+You will notice that this is similar to apollo/types/{TypeName}, because it is! If you don't like defining Server ran code inside of /app feel free
+to move this elsewhere
 
-We do this because all we are doing with this code is defining a list of Types to resolve sub-queries from other
-queries that utilise ACF.
+**What's important** is that you need to make sure that if you define a custom ACF resolver like FormSection/graphql that you export an object from the
+`app/components/Acf/Layout/graphql.js`  file and that the object you export was created with the `wrapFlexibleContentGraphQL({type, typeName, resolvers})` function
 
-Whenever you create a new FlexibleContentUnion resolver type (above) you must also:
-
-1. Create a bundle for that Type inside of app/apollo/acfLayoutModules.js and add it to the apolloModule function
-2. Add your type to the FlexibleContentUnion definition inside of app/component/Acf/FlexibleContentUnion/index.js
-3. Add to the acf fragment your type and it's query (for example, if your using ACF in the Page query, you would add to: app/apollo/fragments/pageFragment.js, see FormSection under queryable)
 
 :scream::scream::scream:
+
 DANGER: do not import a GraphQL resolver into any code located inside of app/
 All Server based code is located outside of app/ to avoid really weird node only dependancies being missing. For example:
 
@@ -192,14 +225,9 @@ to leak in:
 * app/components/Acf/Layout/FormSections/formSectionsResolvers
 * app/components/Acf/Layout/FormSections/formSectionsType
 
-currently the only Server based code that's located inside of app/ is relating to the code which lets us define Acf fields 
-so that we may pre-fetch (above) the code originally was located inside of apollo/types/Acf/Fields however this meant
-that you needed to fly all the way out of your component's directory into apollo/ to do these changes
-Of which you still need to move out of the directory to add the item to the FlexibleContentUnion and acfApolloModules, so
-perhapse this should move back into apollo/ or maybe even apollo-custom/ so that we can still treat the ACF field
-pre-fetching as a seperation from apollo/ as currently thanks to modules dev's shouldn't need to touch apollo/ to add
-graphQL shcema
-TODO: talk with Sam/Allen about what's more important. Having files close, or Server stuff not in app/
+currently the only Server based code that's located inside of app/ is the above files. They're located inside of /app because otherwise you cannot do
+feature based project structure. Perhapse given how annoying pulling in Server only references can be (and how easy) the above should be moved out.
+For now however they're not... all hail feature based projects.
 
 :scream::scream::scream:
 
@@ -211,7 +239,7 @@ bundles! Because of this we now package all of our new Types and their resolvers
 us the ability to get a list of modules and merge them!!
 
 If you wish to add new Types and resolvers (say for an Instagram endpoint) simply build the Types and Resolvers wherever
-you want (i.e. inside of app/components or a npm package for awesome re-usability!!) and then make a module from them and export
+you want (i.e. inside of app/apollo/types/Instagram or a npm package for awesome re-usability!!) and then make a module from them and export
 that modules from app/apollo/apolloModules.js (see the file for more info!).
 
 
@@ -224,22 +252,6 @@ GraphQL, if you feel like documenting them, place this here OR in a new file as 
 **The remainder of this documentation is not required to understand how to work with the GraphQL in this project, it's more a brain dump of information about
 how things work under the hood so that if you need to know why X is doing Y, you can!:**
 
-The two root fields are RootQuery and Post. RootQuery is where you place all of your queries that resolve the queries 
-for the schema first listed in this document (apollo/types/index.js). If your do not implement every query defined in the schema you will get an 
-error from Apollo when it tries to assemble your schema. Likewise if you implement a query that does not exist on the schema 
-an error will occur too. Inside of the apollo/schema.js file we merge all of the resolves together, so that each RootQuery 
-will combine into one lage object which will include all of your queries. This is how we are able to split the resolver 
-definition into multiple files/folders. There is one more root field on this object that is called RootMutation, this is 
-the place where you put your mutation implementations into the resolver. Currently the only mutation is located inside of 
-apollo/types/SubmittedForm/submittedFormQuery.js as such I did not make a seperate naming convention for the mutations 
-implementation and called it submittedFormQuery, but perhapse a better name would be submittedFormMutation.js.
-
-### Shaping data returned from the WP API
-
-As you would have noticed on the Post field in the root of this object, we have some of the fields defined in the Post Type 
-as laid out in the index.js for thsi folder. You can use this object to define any data shaping as show by excerpt or any 
-API call chaining as shown by categories. The way this works is once the resolver, for example getPost returns or is resolved 
-(if a promise is returned) the value returned will be first filtered by the callers GraphQL Query and then passed
-through each of these fields, as you can see the returned value of the query is passed in as the first prop, so you may 
-access any value returned by your query to forfill the shaping of your response. Any fields not placed inside of this object (Post) 
-and requested byt the users Query will just pass through as they were returned.
+- RootQuery and RootMutation explained: why so empty? They're empty because I am using the extends keyword from the GraphQL language to define all
+fields that are queryable/mutatable for our schema. This is done because it lets me bundle up all of the Types, Resolvers into a single folder and
+then also define how they hook into our schema via extends. This looks to be common practice

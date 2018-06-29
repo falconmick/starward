@@ -1,36 +1,25 @@
 # Adding Post Types
 
-TODO: update to new version /w modules and create this post type inside of apollo-custom/post-types
-TODO: then make apollo module bundler look into apollo-custom/index.js for a list of all custom Bundles
+This is super duper simple, just checkout app/apollo/postTypes/examplePostTypeModule.
 
-The process of adding a custom post type follows the same steps as extending-graphql.md
+This file does make your module via the following calls:
 
-The differences are:
+1. **taxonomyFactory** - pass in the type name and the api endpoint that your WP exposes it on and
+it will return you an object with your bundle (used to create the overall module) plus a taxonomyExtender
+which can be used later *see bellow*
+2. **postTypeFactory** - same as taxonomy, but instead it makes a post type bundle and also the
+getPosts function which you can use to resolve posts from within your taxonomy, this is required if you use the taxonomyExtender
 
-1. You need to create a custom post type inside of the WP project. You can find the example post type php file inside of postTypeExample/bookPostType.php. 
-Note to keep an eye on: 
-    * rest_base: determines the wp endpoint you pass into the wpProxy inside of the query.
-    * supports: this is where you define all of the features you want your posttype to have like 
-    'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields', 'page-attributes', 'post-formats'
-    
-2. Type definition (index.js). As the supports for a posttype is configurable, you need to add/remove fields. You will 
-need to manually call the API endpoint to figure out what values are returned to add to your Type. See Post's Type as allot 
-of the common options, like Titles and Excerpts are enabled by default and being used.
-3. Resolvers: As par the Type def, some of the supports return data that isn't shaped too nicely. See Posts for example, 
-where I am using the following pre-defind resolvers that you can add to your post type! Note: all Post Types must use basePostTypeResolvers. See example provided 
-    * ...authorResolvers,
-    * ...featuredMediaResolvers,
-    * ...excerptResolvers,
-4. Taxonomies, See the example, it's pretty strait forward.
 
-Once you have completed the normal setups plus these added steps based on the example you should be able to access your 
-custom post type!!
+you will then notice that you can optionally use the taxonomyExtender returned by your taxonomy to
+add the ability to query your posts from your taxonomy! WOW! also you can then call twoWayBindPostTypeToTaxonomy after
+to also add the ability to call the taxonomy from the Post.. AWWEEESOME!
 
-### Potential Improvements.
+It's pretty simple really!
 
-We need to make a new Type for each post type as post types can have different supports, however the Query file is 
-going to be 100% the same each time, so perhapse we should wrap this into a factory/curry function that lets us 
-pass in the api endpoint and do the rest without the copy pasta. Feel free anyone!
-
-todo: create factory for custom post types that lets the user define taxonomies, supports and other basic stuff that needs to
-be configurable.
+### Improvements
+one thing I really don't like about the factories at the moment is that you get ALL of the fields that a post/taxonomy
+could possibly have. However when you setup your taxonomy/post you might not include some of these features and thus
+these fields will always return null :( Perhapse a better solution would be to create a function that given a Post type
+or Taxonomy name extend that usign the extends keyword that GraphQL provides and then supply a resolver, then we add the
+bundle this function returns with our overall module.

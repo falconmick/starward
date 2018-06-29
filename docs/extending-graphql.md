@@ -5,7 +5,7 @@ to add to the schema a new endpoint or resource, you typically need the followin
 1. Type definition
 2. Resolver for Type's Queries
 
-The folder structure used is as follows (all placed within app/apollo/types):
+The folder structure used is as follows (all placed within app/apollo/types, please don't place inside of apollo/types because that will make patching any bugs harder as we will get conflicts):
 
     {TypeName}/
             ---index.js             -- Type
@@ -18,8 +18,8 @@ index.js
     
     import CoolTypeExample from './CoolTypeExample
 
-    const User = `
-    type User {
+    const AwesomenessIndicator = `
+    type AwesomenessIndicator {
         id: ID!
         name: String!
         url: String
@@ -28,32 +28,47 @@ index.js
         avatar_urls: RawJson
         meta: [String]!
     }
+
+
+    extend type RootQuery {
+        awesomeness(userId: Int!): AwesomenessIndicator
+    }
+
+    input coolLevleInput {
+      userId: ID!
+      value: String
+    }
+
+    extend type RootMutation {
+        adjustCoolness(coolInput: coolLevleInput!): AwesomenessIndicator
+    }
     `;
     
-    export default () => [User, CoolTypeExample];
-    export { resolvers } from './userResolvers';
+    export default () => [AwesomenessIndicator, CoolTypeExample];
+    export { resolvers } from './awesomenessResolvers';
     
 this file is comprised of:
-1. type is defined using template litterals, for more information on graphQL syntax, I suggest google, it's quite the resource! 
-Do note however, commas will not break your definitions if placed at the end of each line, however they will look ugly
-2. export default, when we export our type so that our schema may consume it, we export it as a function because on occation 
-a Type will reference a Type which also references it. So we need to make sure as Apollo creaes our schema, that it knows of 
-all types needed to make this type! And we return as a function call and not a plain boring array to avoid circular dependancies!
+1. type is defined using template litterals, for more information on graphQL syntax, I suggest google, it's quite the resource!
+2. export default, when we export our type so that our schema may consume it, we export it as a function because on occasion
+a Type will reference a Type which also references it (circular dependency) therefore we export the type as a function so
+that it will not pull in a module which also pulls it in. Checkout [the docs](https://www.apollographql.com/docs/graphql-tools/generate-schema.html#modularizing) for more info
 3. export the resolver for this type! Coming up next in this example is the resolver, basically we export the Type and Resolver from 
-this file so that we only need one import line per Type!!!
+this file so that we only need one import line per Type! This is just cleanliness and not a requirement, you can choose not to export your resolver
 
-userResolver.js
+awesomenessResolvers.js
 
-    import { getUsers, getUser } from './userQueries';
+    import { getAwesomeness } from './awesomenessQueries';
+    import { setCoolness } from './awesomenessMutations';
     import { querySomeBooks } from '../Book/bookQueries';
     
     export const resolvers = {
         RootQuery: {
-            users: getUsers,
-            user: getUser
+            awesomeness: getAwesomeness
         },
-        RootMutation: {},
-        User: {
+        RootMutation: {
+            adjustCoolness: setCoolness,
+        },
+        AwesomenessIndicator: {
             cooleos: ({cooleos}) => {
                 return { whatsCool: `${cooleos} is cool` };
             },
@@ -66,7 +81,7 @@ userResolver.js
 this file returns an object comprised of:
 1. RootQuery, this is where you link the queries outlined inside of schema.js to the actual code that get's the data!
 2. RootMutation, same as Query, but mutations!
-3. User, this is used for any custom resolving you need to do for the data returned by your RootQueries or to stitch 
+3. AwesomenessIndicator, this is used for any custom resolving you need to do for the data returned by your RootQueries or to stitch
 together other types that need to be called! For example User might have favourite books where are exposed under books, 
 you have to call the right endpoint to get the books given the users favouriteBookIds
 
@@ -75,32 +90,27 @@ userQueries.js
     import { createWordpressGraphqlProxy } from '../../utils/queryTools';
     import { cacheResolver } from '../../utils/redis';
     
-    const wpUserProxy = createWordpressGraphqlProxy('wp/v2/users');
+    const wpAwesomenessProxy = createWordpressGraphqlProxy('wp/v2/awesomeness');
     
-    export const getUsers = cacheResolver('getUsers')(() => {
-      return wpUserProxy.selectAll();
+    export const getAwesomeness = cacheResolver('getAwesomeness')((obj, { id }) => {
+      return wpAwesomenessProxy.select(id);
     });
     
-    export const getUser = cacheResolver('getUser')((obj, { id }) => {
-      return wpUserProxy.select(id);
+    export const getAwesomenessNotCached = (obj, { id }) => {
+      return wpAwesomenessProxy.select(id);
     });
-    
-    export const getUserNotCached = (obj, { id }) => {
-      return wpUserProxy.select(id);
-    });
+
+    // mutation stuff would be here too, but you get the idea
     
 This file just provides the calls out to the API to resolve the data we requested. createWordpressGraphqlProxy is a tool 
-created to generalises calling the WP API as the lovely people at WP actually are pretty consistant with both 
+created to hide the generalises of calling the WP API as the lovely people at WP actually are pretty consistant with both
 naming of paramaters and the way you access data. If you want to know how it works, open it up and find how i used each 
 of the functions, like selectAll.
-Also I wrap each resolver function in a HOF called cacheResolver which will cache the given function into redis if the 
+Also I wrap each resolver function in a Higher Order Function called cacheResolver which will cache the given function into redis if the
 props passed in (second paramater of the function, see (, { id }) for getUser) and the unique name passed as the first 
 value before the function in the next part of the curry. 
-If you don't want your call cached, just don't use the cacheResolver HOF as shown by getUserNotCached, I don't remember what
-the first paramater is, but the second is the values passed in by the query's paramaters. todo: the first param is usually
-where the args from a non RootQuery call happen, perhapse when a non RootQuery (i.e. User: books()=>{...}) from the resolver above) calls
-the resolver, we should instead pass params into the second paramater as so that we don't use the first arg for anything.
-an example of where the non RootQuery uses the first param is apollo/factory/postType/createPostTypeResolver's createResolver
+If you don't want your call cached, just don't use the cacheResolver HOF as shown by getAwesomenessNotCached, the first
+ param it passes is the context (I think, but I don't use this) followed by the second, which is the values passed in by the query's paramaters.
 
 
 ## How to hook your type and resolver in!
@@ -109,10 +119,8 @@ if you wish to add your new types and resolvers in, simply follow the patterns s
 you will notice the following important methods!
 1. apolloBundle
 2. apolloModule
-also note how this file has a string defining the RootQueries and RootMutations, you will need to create one too to line up
-with the types that you exported to your resolver's RootQuery and RootMutation.
-after you copy how modules are made, you should end up with a single awesome module that's all yours! your last task is to
-import then export that module in a special folder that apollo looks in for add-in modules called: app/apollo/addonApolloModules.js
+You should end up with all of your bundles being wrapped into a module that you export! your last task is to
+import then export that module in a special folder that apollo looks in for add-in modules called: `app/apollo/addonApolloModules.js`
 for an example of this see the file! also note that examplePostTypeModule can be removed and layoutModules is how we achieve ACF Field pre-fetching!
 
 ## Tips ##
@@ -121,11 +129,10 @@ it should be treated like a node_modle, or even better yet (as I want this to ha
 When you do edit it, it's kinda like create-react-app's eject functionality, you get full access of which is super
 complicated and you will no longer receive updates :( however if you make all of your new Types inside of app/apollo
 there would be nothing stopping you (except major releases) from deleting your apollo/ directory and copying the new one
-in (kinda like npm's node_modules!)
+in (kinda like npm's node_modules when you upgrade em!)
 
 Above explains how to make fully custom modules, however there is also factories inside of appolo/factory that will create
-you custom post types and taxonomies with 0 graphQL code! If you ever needed to do anything crazy, you could just look into
-how it's done inside of apollo/types and then place your custom version into app/apollo/types/
+you custom post types and taxonomies with 0 graphQL code! If you ever needed to do anything crazy, checkout `app/apollo/postTypes/examplePostTypeModule` for how it's done!
 
 ### Extending ###
 say you have a requirement to show what the weather was like on the day a post was created, rather than going into
@@ -134,8 +141,8 @@ but put basically you would make something like this:
 
 ```
     type WeatherData {
-        isRaining
-        isSunny
+        isRaining: Booleanm
+        isSunny: Booleanm
     }
     extend type Post {
         weather: WeatherData
@@ -153,3 +160,5 @@ just tacks on your query to the Post query. From there the Post page would query
         },
     };
 ```
+
+oh and you would need to make sure that you also wrap the type and resolver up into a module which you import into `app/apollo/addonApolloModules.js`
