@@ -1,9 +1,3 @@
-const mapTaxonomyIntoTypeField = taxomony => {
-  const { archiveTaxonomyQueryName, taxonomyTypeName } = taxomony;
-
-  return `${archiveTaxonomyQueryName}: [${taxonomyTypeName}!]\n`;
-};
-
 export const createType = ({typeName, acfTypeName, archiveQueryName, singleQueryName}) => {
   const acfType = acfTypeName || 'Acf'; // if the acf that is given to a page !== whats given to this post
   //                                    (the flexible content layout) we can use the correct type here
