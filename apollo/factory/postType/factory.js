@@ -3,6 +3,7 @@ import { createPagableType } from '../../utils/pager';
 import { createType } from './createPostType';
 import { createResolver } from './createPostResolver';
 import { postQueryFactory } from '../../utils/postQueryFactory';
+import PostType from '../../interface/postType';
 
 /**
  *
@@ -28,7 +29,7 @@ export const postTypeFactory = ({typeName, queryName, apiEndpoint, acf = {}} = {
   // create the post and archive GraphQL Types
   const postTypeString = createType({typeName, acfTypeName, archiveQueryName, singleQueryName});
   const paginatedTypeString = createPagableType(typeName);
-  const type = () => [postTypeString, paginatedTypeString, acfType];
+  const type = () => [postTypeString, paginatedTypeString, acfType, PostType];
 
   // create the post and archive resolvers
   const { getPost, getPosts } = postQueryFactory({typeNameCamelCase, apiEndpoint});

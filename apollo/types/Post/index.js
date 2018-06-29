@@ -1,72 +1,20 @@
-import BetterFeaturedImage from '../BetterFeaturedImage';
-import Yoast from '../Yoast/index';
-import Acf from '../Acf';
-import Category from '../Category';
-import User from '../User/index';
-import Media from '../Media';
-import Tag from '../Tag/index';
-import PostType from '../../interface/postType';
-import { createPagableType } from '../../utils/pager';
+import { taxonomyFactory } from '../../factory/taxonomy';
+import { postTypeFactory } from '../../factory/postType';
+import { apolloModule } from '../../utils/apolloModule';
 
-/**
- * Example usage:
- * note: never place variables into queries directly
- * use arguments: http://graphql.org/graphql-js/passing-arguments/
- *
- query PostQuery {
-    posts {
-      ...postFragment
-    }
-    post(slug:"second-post") {
-      ...postFragment
-    }
-  }
+// given that creating post types is common the code to create a post type is setup to be re-usable,
+// which is why this Type isn't like the others
 
- fragment postFragment on Post {
-    id
-    slug
-    content {
-      rendered
-    }
-  }
- */
-const Post = `
-type Post implements PostType {
-    id: ID!
-    # in UTC time
-    created: Date!
-    # in UTC time
-    modified: Date!
-    guid: String!
-    slug: String!
-    status: String!
-    type: String!
-    link: String!
-    title: String!
-    content: String!
-    excerpt: String!
-    author: User!
-    featured_media: Media
-    comment_status: String!
-    ping_status: String!
-    sticky: Boolean!
-    template: String!
-    format: String!
-    meta: [String]!
-    categories: [Category]!
-    tags: [Tag]!
-    better_featured_image: BetterFeaturedImage
-    yoast: Yoast!
-    acf: Acf!
-}
+// setup the category taxonomy
+const { bundle: categoryBundle, taxonomyExtender: postExtender } = taxonomyFactory({
+  typeName: 'Category',
+  apiEndpoint: 'categories'
+});
 
-extend type RootQuery {
-  post(slug: String!): Post
-  posts(query: String, page: Int, perPage: Int): PostPager
-}
-`;
+// setup the Post post type
+const bookTypeName = 'Post';
+const { bundle: postBundle, getPosts } = postTypeFactory({typeName: bookTypeName, apiEndpoint: 'posts'});
 
-const PaginatedPostType = createPagableType('Post');
+const extendedPostBundle = postExtender({typeName: bookTypeName, archiveQueryName: 'posts', getPosts}).twoWayBindPostTypeToTaxonomy();
 
-export default () => [Post, PaginatedPostType, BetterFeaturedImage, Yoast, Acf, Category, User, Media, Tag, PostType];
-export { resolvers } from './postResolvers';
+export const postBundles = [postBundle, categoryBundle, extendedPostBundle];

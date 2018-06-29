@@ -37,13 +37,14 @@ const createApp = (store, props, apolloClient, resCallback) => {
 const styles = process.env.NODE_ENV === 'production' ? '<link rel="stylesheet" href="/assets/css/styles.css">' : '';
 
 const buildPage = ({ html = '', initialState = {}, apolloState = {}, fragmentTypes, headAssets}) => {
+  const { title = '', meta = '', link = '' } = headAssets || {};
   return `
 <!doctype html>
 <html>
   <head>
-    ${headAssets.title.toString()}
-    ${headAssets.meta.toString()}
-    ${headAssets.link.toString()}
+    ${title.toString()}
+    ${meta.toString()}
+    ${link.toString()}
     ${styles}
   </head>
   <body>

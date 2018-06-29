@@ -3,7 +3,7 @@ import { apolloBundle } from '../../utils/apolloBundle';
 import { createType, extendTaxonomyOntoPostTypeType, extendPostTypeOntoTaxonomyType } from './createTaxonomyType';
 import { createResolver, extendTaxonomyOntoPostTypeResolver, extendPostTypeOntoTaxonomyResolver } from './createTaxonomyResolver';
 import { taxonomyQueryFactory } from '../../utils/taxonomyQueryFactory';
-import { postQueryFactory } from '../../utils/postQueryFactory';
+import Taxonomy from '../../interface/taxonomy';
 
 const taxonomyExtenderFactory =
   ({typeName: taxonomyTypeName, archiveQueryName, getTaxonomies, typeNameCamelCase: taxonomyCamelCase}) =>
@@ -71,7 +71,7 @@ export const taxonomyFactory = ({typeName, queryName, apiEndpoint}) => {
 
   // create the taxonomy GraphQL Type
   const taxonomyTypeString = createType({typeName, singleQueryName, archiveQueryName});
-  const type = () => [taxonomyTypeString];
+  const type = () => [taxonomyTypeString, Taxonomy];
 
   // create the post and archive resolvers
   const { getTaxonomies, getTaxonomy } = taxonomyQueryFactory({typeNameCamelCase, apiEndpoint});

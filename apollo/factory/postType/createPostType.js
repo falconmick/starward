@@ -30,7 +30,6 @@ export const createType = ({typeName, acfTypeName, archiveQueryName, singleQuery
       template: String!
       format: String!
       meta: [String]!
-      categories: [Category]!
       tags: [Tag]!
       better_featured_image: BetterFeaturedImage
       yoast: Yoast!
