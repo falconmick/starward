@@ -43,6 +43,9 @@
 # track .editorconfig file (i.e. do NOT ignore it)
 !.editorconfig
 
+# track the Dockerfile
+!Dockerfile
+
 # track readme.md in the root (i.e. do NOT ignore it)
 !readme.md
 
