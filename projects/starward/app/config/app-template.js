@@ -1,4 +1,4 @@
-import { HOST, PORT, ENV } from '../../env';
+import { STARWARD_EXTERNAL_URL, ENV } from '../../env';
 
 // Wordpress
 export const SITE_NAME = 'Starward';
@@ -10,7 +10,7 @@ export const AUTHOR_SLUG = 'author';
 export const SEARCH_SLUG = 'search';
 
 // Starward
-export const baseURL = `http://${HOST}:${PORT}`;
+export const baseURL = `${STARWARD_EXTERNAL_URL}`;
 
 // GraphQL
 export const ROOT_API = `${baseURL}/api`;

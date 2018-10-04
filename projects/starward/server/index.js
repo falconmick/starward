@@ -1,6 +1,7 @@
 import express from 'express';
 import webpack from 'webpack';
 import { isDebug } from '../app/config/app';
+import { HOST } from '../env';
 import initExpress from './init/express';
 import initStarwardRoutes from './init/api';
 // import initRoutes from './init/routes';
@@ -46,4 +47,4 @@ initStarwardRoutes(app);
  */
 app.get('*', renderMiddleware);
 
-app.listen(app.get('port'));
+app.listen(app.get('port'), HOST);
