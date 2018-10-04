@@ -1,0 +1,64 @@
+version: '3.6'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    expose:
+      - "80"
+      - "433"
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+      - ./docker/logs/nginx:/var/log/nginx
+      - ./projects/wordpress:/var/www/html
+      - ./docker/certs:/etc/letsencrypt
+      - ./docker/certs-data:/data/letsencrypt
+    links:
+      - wordpress
+      - starward
+    restart: always
+
+  mysql:
+    image: mariadb
+    container_name: mysql
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    restart: always
+
+  wordpress:
+    image: starward-wp:latest
+    container_name: wordpress
+    volumes:
+      - ./projects/wordpress:/var/www/html
+    environment:
+      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_TABLE_PREFIX=wp_
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_DB_PASSWORD=password
+    links:
+      - mysql
+    restart: always
+  starward:
+    image: starward:latest
+    container_name: starward
+    environment:
+      - REDIS_HOST=redis
+      - HOST=starward
+    depends_on:
+      - wordpress
+      - mysql
+      - redis
+    restart: always
+    expose:
+      - "3000"
+    links:
+      - redis
+      - wordpress
+  redis:
+    image: redis:4.0.11
+    container_name: redis
+    restart: always
