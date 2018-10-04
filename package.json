@@ -1,0 +1,20 @@
+{
+  "name": "starward-monorepo",
+  "version": "1.0.0",
+  "description": "> Full-stack Wordpress boilerplate web app built using ReactJS and WP REST API v2, built on the awesome reactGo framework  :tada:",
+  "main": "index.js",
+  "scripts": {
+    "setup": "node ./scripts/setupDev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/falconmick/starward.git"
+  },
+  "keywords": [],
+  "author": "Michael Crook <ausiemick@yahoo.com> (www.mcrook.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/falconmick/starward/issues"
+  },
+  "homepage": "https://github.com/falconmick/starward#readme"
+}
