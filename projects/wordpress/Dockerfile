@@ -10,6 +10,7 @@ RUN rm -rf /var/www/html/wp-content/plugins
 
 COPY wp-content/plugins/. ./wp-content/plugins/
 COPY wp-content/themes/. ./wp-content/themes/
+COPY assets/. ./assets/
 
 ARG COMMIT_HASH
 LABEL maintainer="michael@birdbrain.com.au"

@@ -1,0 +1,10 @@
+# to get this working on staging we will need to setup env variables
+# per project, see https://github.com/docker/compose/issues/3874#issuecomment-377162033
+version: '3.6'
+services:
+  nginx:
+    volumes:
+    - ./projects/wordpress:/var/www/html/example.com
+    - ./docker/nginx:/etc/nginx/conf.d
+    - ./docker/certs:/etc/letsencrypt
+    - ./docker/certs-data:/data/letsencrypt
