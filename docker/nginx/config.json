@@ -1,0 +1,27 @@
+{
+  "base": {
+    "app": {
+      "domain": "starward.dev",
+      "isHttps": false
+    },
+    "wp": {
+      "domain": "wpstarward.dev",
+      "isHttps": false
+    }
+  },
+  "variants": [
+    {
+      "name": "staging",
+      "config": {
+        "app": {
+          "domain": "wp.docker.birdbrain.io",
+          "isHttps": true
+        },
+        "wp": {
+          "domain": "app.docker.birdbrain.io",
+          "isHttps": true
+        }
+      }
+    }
+  ]
+}

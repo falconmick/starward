@@ -10,7 +10,7 @@ services:
       - "80"
       - "433"
     volumes:
-      - ./docker/nginx:/etc/nginx/conf.d
+      - ./docker/nginx/localhost:/etc/nginx/conf.d
       - ./docker/logs/nginx:/var/log/nginx
       - ./projects/wordpress:/var/www/html
       - ./docker/certs:/etc/letsencrypt
